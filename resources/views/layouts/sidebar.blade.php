@@ -45,13 +45,13 @@
                 <i class="fas fa-utensils mr-3 text-brand-400"></i>
                 Gestion des recettes
             </a>
-            <a href="{{route('gestionIngredients')}}"
-                class="nav-item flex items-center {{request()->routeIs('gestionIngredients') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('ingredients.index')}}"
+                class="nav-item flex items-center {{request()->routeIs('ingredients.index') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-carrot mr-3 text-brand-400"></i>
                 Gestion des ingrédients
             </a>
-            <a href="{{route('gestionCategories')}}"
-                class="nav-item flex items-center {{request()->routeIs('gestionCategories') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('categories.index')}}"
+                class="nav-item flex items-center {{request()->routeIs('categories.index') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-tags mr-3 text-brand-400"></i>
                 Catégories d'ingrédients
             </a>

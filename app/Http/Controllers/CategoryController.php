@@ -43,10 +43,6 @@ class CategoryController extends Controller
      */
     public function destroy(Request $request)
     {
-        $validated = $request->validate([
-            'id' => 'required|integer|exists:categories,id',
-        ]);
-
         $category = Category::find($request->id);
         $category->delete();
         return redirect()->route('categories.index');

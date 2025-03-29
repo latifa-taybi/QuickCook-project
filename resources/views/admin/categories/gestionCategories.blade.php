@@ -309,8 +309,6 @@
                 const id = row.querySelector('td:first-child').textContent.trim();
                 idInput.value = id;
                 deleteConfirmModal.classList.remove("hidden");
-                alert(id);
-
             });
         });
         // Fermer le modal de suppression

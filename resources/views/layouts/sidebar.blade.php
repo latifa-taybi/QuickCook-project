@@ -17,13 +17,13 @@
         <div class="p-4 border-b border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0 relative">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User"
+                    <img src="" alt="User"
                         class="h-10 w-10 rounded-full object-cover">
                     <span
                         class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-dark"></span>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium text-white">John Doe</p>
+                    <p class="text-sm font-medium text-white">Latifa Taybi</p>
                     <p class="text-xs text-gray-400">Administrateur</p>
                 </div>
             </div>

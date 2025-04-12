@@ -6,6 +6,7 @@ use App\Http\Requests\StoreIngredientRequest;
 use App\Http\Requests\UpdateIngredientRequest;
 use App\Models\Ingredient;
 use App\Models\Category;
+use App\Models\Unite;
 use Illuminate\Http\Request;
 
 class IngredientController extends Controller
@@ -17,7 +18,8 @@ class IngredientController extends Controller
     {
         $ingredients = Ingredient::with('category')->get();
         $categories = Category::all();
-        return view('admin.ingredients.gestionIngredients', compact('ingredients', 'categories'));
+        $unites = Unite::all();
+        return view('admin.ingredients.gestionIngredients', compact('ingredients','unites', 'categories'));
     }
 
     /**
@@ -48,21 +50,20 @@ class IngredientController extends Controller
         $ingredient->update([
             'name' => $request->name,
             'category_id' => $request->category_id,
-            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('photos') : $ingredient->photo,
+            'photo' => $request->hasFile('photo') ? $request->file('photo')->store('photos', 'public') : $ingredient->photo,
             'description' => $request->description,
         ]);
 
         return redirect()->route('ingredients.index');
     }
-
     /**
      * Supprimer un ingrédient.
      */
     public function destroy(Request $request)
     {
-        $ingredient = Ingredient::findOrFail($request->id);
+        $ingredient = Ingredient::find($request->id);
+        // dd($ingredient);
         $ingredient->delete();
-
         return redirect()->route('ingredients.index');
     }
 }

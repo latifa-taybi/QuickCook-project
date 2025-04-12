@@ -5,13 +5,6 @@ use App\Http\Controllers\IngredientController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/editCategorie', function () {
-    return view('admin.categories.editCategorie');
-})->name('editCategorie');
-
-// Route::get('/gestionIngredients', function () {
-//     return view('admin.ingredients.gestionIngredients');
-// })->name('gestionIngredients');
 
 Route::get('/gestionRecettes', function () {
     return view('admin.recettes.gestionRecettes');

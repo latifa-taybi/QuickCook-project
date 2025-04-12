@@ -58,9 +58,6 @@
                                 class="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-brand-500 focus:border-brand-500 rounded-lg shadow-sm">
                                 <option value="">Tous les régimes</option>
                                 <option value="vegetarien">Végétarien</option>
-                                <option value="vegan">Vegan</option>
-                                <option value="sans-gluten">Sans gluten</option>
-                                <option value="sans-lactose">Sans lactose</option>
                             </select>
                         </div>
 
@@ -68,8 +65,6 @@
                         <div>
                             <select id="sortRecipes"
                                 class="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-brand-500 focus:border-brand-500 rounded-lg shadow-sm">
-                                <option value="recent">Plus récentes</option>
-                                <option value="popular">Plus populaires</option>
                                 <option value="time-asc">Temps (croissant)</option>
                                 <option value="time-desc">Temps (décroissant)</option>
                                 <option value="name-asc">Nom (A-Z)</option>
@@ -84,8 +79,7 @@
                     <div class="recipe-card bg-white rounded-lg shadow overflow-hidden">
                         <div class="relative">
                             <img class="h-48 w-full object-cover"
-                                src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
-                                alt="Salade fraîcheur">
+                                src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salade fraîcheur">
                             <div class="absolute top-0 right-0 m-2">
                                 <span
                                     class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -132,8 +126,8 @@
         </div>
     </div>
 
-    <!-- Modal pour ajouter/modifier une recette -->
-    <div id="recipeModal" class="modal fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+    <!-- Modal pour ajouter une recette -->
+    <div id="recipeModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
         role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -143,9 +137,15 @@
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Ajouter une recette
-                            </h3>
+                            <div class="flex justify-between items-start">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                    Ajouter une recette
+                                </h3>
+                                <button type="button" id="closeModalBtn"
+                                    class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                             <div class="mt-4">
                                 <!-- Tabs -->
                                 <div class="border-b border-gray-200">
@@ -181,13 +181,16 @@
                                         <!-- Recipe Name and Category -->
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
-                                                <label for="recipeName" class="block text-sm font-semibold text-gray-700">Nom de la recette</label>
+                                                <label for="recipeName"
+                                                    class="block text-sm font-semibold text-gray-700">Nom de la
+                                                    recette</label>
                                                 <input type="text" name="recipeName" id="recipeName"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     required>
                                             </div>
                                             <div>
-                                                <label for="recipeCategory" class="block text-sm font-semibold text-gray-700">Catégorie</label>
+                                                <label for="recipeCategory"
+                                                    class="block text-sm font-semibold text-gray-700">Catégorie</label>
                                                 <select id="recipeCategory" name="recipeCategory"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     required>
@@ -200,17 +203,21 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    
+
                                         <!-- Prep Time, Cook Time, and Servings -->
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
-                                                <label for="prepTime" class="block text-sm font-semibold text-gray-700">Temps de préparation (min)</label>
+                                                <label for="prepTime"
+                                                    class="block text-sm font-semibold text-gray-700">Temps de
+                                                    préparation (min)</label>
                                                 <input type="number" name="prepTime" id="prepTime" min="0"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     required>
                                             </div>
                                             <div>
-                                                <label for="difficulty" class="block text-sm font-semibold text-gray-700">Niveau de difficulté</label>
+                                                <label for="difficulty"
+                                                    class="block text-sm font-semibold text-gray-700">Niveau de
+                                                    difficulté</label>
                                                 <select id="difficulty" name="difficulty"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     required>
@@ -220,62 +227,72 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    
+
                                         <!-- Recipe Description -->
                                         <div>
-                                            <label for="recipeDescription" class="block text-sm font-semibold text-gray-700">Description</label>
+                                            <label for="recipeDescription"
+                                                class="block text-sm font-semibold text-gray-700">Description</label>
                                             <textarea id="recipeDescription" name="recipeDescription" rows="4"
                                                 class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                 required></textarea>
                                         </div>
-                                    
+
                                         <!-- Dietary Restrictions -->
                                         <div>
-                                            <label class="block text-sm font-semibold text-gray-700">Régimes alimentaires</label>
+                                            <label class="block text-sm font-semibold text-gray-700">Régimes
+                                                alimentaires</label>
                                             <div class="mt-3 flex flex-wrap gap-4">
                                                 <label class="inline-flex items-center">
-                                                    <input type="checkbox" class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
+                                                    <input type="checkbox"
+                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
                                                         name="diet" value="vegetarien">
                                                     <span class="ml-2 text-sm text-gray-700">Végétarien</span>
                                                 </label>
                                                 <label class="inline-flex items-center">
-                                                    <input type="checkbox" class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
+                                                    <input type="checkbox"
+                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
                                                         name="diet" value="vegan">
                                                     <span class="ml-2 text-sm text-gray-700">Vegan</span>
                                                 </label>
                                                 <label class="inline-flex items-center">
-                                                    <input type="checkbox" class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
+                                                    <input type="checkbox"
+                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
                                                         name="diet" value="sans-gluten">
                                                     <span class="ml-2 text-sm text-gray-700">Sans gluten</span>
                                                 </label>
                                                 <label class="inline-flex items-center">
-                                                    <input type="checkbox" class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
+                                                    <input type="checkbox"
+                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
                                                         name="diet" value="sans-lactose">
                                                     <span class="ml-2 text-sm text-gray-700">Sans lactose</span>
                                                 </label>
                                             </div>
                                         </div>
                                     </div>
-                                    
+
 
                                     <!-- Tab 2: Ingrédients -->
                                     <div id="tab-ingredients" class="tab-content space-y-6 bg-white">
                                         <!-- Add Ingredient Form -->
                                         <div class="flex items-center space-x-6">
                                             <div class="flex-1">
-                                                <label for="ingredientName" class="block text-sm font-semibold text-gray-700">Ingrédient</label>
+                                                <label for="ingredientName"
+                                                    class="block text-sm font-semibold text-gray-700">Ingrédient</label>
                                                 <input type="text" id="ingredientName"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     placeholder="Nom de l'ingrédient">
                                             </div>
                                             <div class="w-24">
-                                                <label for="ingredientQuantity" class="block text-sm font-semibold text-gray-700">Quantité</label>
-                                                <input type="number" id="ingredientQuantity" min="0" step="0.01"
+                                                <label for="ingredientQuantity"
+                                                    class="block text-sm font-semibold text-gray-700">Quantité</label>
+                                                <input type="number" id="ingredientQuantity" min="0"
+                                                    step="0.01"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     placeholder="Quantité">
                                             </div>
                                             <div class="w-24">
-                                                <label for="ingredientUnit" class="block text-sm font-semibold text-gray-700">Unité</label>
+                                                <label for="ingredientUnit"
+                                                    class="block text-sm font-semibold text-gray-700">Unité</label>
                                                 <select id="ingredientUnit"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm">
                                                     <option value="g">g</option>
@@ -294,24 +311,28 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    
+
                                         <!-- Ingredients List -->
                                         <div class="bg-gray-50 rounded-lg p-4">
-                                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Liste des ingrédients</h4>
+                                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Liste des ingrédients
+                                            </h4>
                                             <ul id="ingredientsList" class="space-y-3">
-                                                <li class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
+                                                <li
+                                                    class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
                                                     <span class="text-sm text-gray-800">200g de farine</span>
                                                     <button type="button" class="text-red-500 hover:text-red-700">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                                 </li>
-                                                <li class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
+                                                <li
+                                                    class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
                                                     <span class="text-sm text-gray-800">3 œufs</span>
                                                     <button type="button" class="text-red-500 hover:text-red-700">
                                                         <i class="fas fa-times"></i>
                                                     </button>
                                                 </li>
-                                                <li class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
+                                                <li
+                                                    class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
                                                     <span class="text-sm text-gray-800">100g de sucre</span>
                                                     <button type="button" class="text-red-500 hover:text-red-700">
                                                         <i class="fas fa-times"></i>
@@ -319,7 +340,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>                                    
+                                    </div>
 
                                     <!-- Tab 3: Étapes de préparation -->
                                     <div id="tab-steps" class="tab-content space-y-4">
@@ -345,21 +366,6 @@
                                                 <li
                                                     class="step-item flex justify-between items-center p-2 rounded-md bg-white">
                                                     <span>Préchauffer le four à 180°C.</span>
-                                                    <button type="button" class="text-red-500 hover:text-red-700">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </li>
-                                                <li
-                                                    class="step-item flex justify-between items-center p-2 rounded-md bg-white">
-                                                    <span>Mélanger les ingrédients secs dans un saladier.</span>
-                                                    <button type="button" class="text-red-500 hover:text-red-700">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </li>
-                                                <li
-                                                    class="step-item flex justify-between items-center p-2 rounded-md bg-white">
-                                                    <span>Incorporer les œufs un à un en mélangeant bien entre chaque
-                                                        ajout.</span>
                                                     <button type="button" class="text-red-500 hover:text-red-700">
                                                         <i class="fas fa-times"></i>
                                                     </button>
@@ -400,36 +406,6 @@
                                         </div>
 
                                         <div>
-                                            <label class="block text-sm font-medium text-gray-700">Photos
-                                                supplémentaires</label>
-                                            <div
-                                                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                                                <div class="space-y-1 text-center">
-                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
-                                                        fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                        <path
-                                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                    <div class="flex text-sm text-gray-600">
-                                                        <label for="files-upload"
-                                                            class="relative cursor-pointer bg-white rounded-md font-medium text-brand-600 hover:text-brand-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-brand-500">
-                                                            <span>Télécharger des images</span>
-                                                            <input id="files-upload" name="files-upload"
-                                                                type="file" class="sr-only" multiple
-                                                                accept="image/*">
-                                                        </label>
-                                                        <p class="pl-1">ou glisser-déposer</p>
-                                                    </div>
-                                                    <p class="text-xs text-gray-500">
-                                                        PNG, JPG, GIF jusqu'à 10MB
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div>
                                             <label for="videoUrl" class="block text-sm font-medium text-gray-700">URL
                                                 de vidéo (YouTube, Vimeo)</label>
                                             <input type="url" id="videoUrl" name="videoUrl"
@@ -447,9 +423,9 @@
                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
                         suivant
                     </button>
-                    <button type="button" id="cancelRecipeBtn"
+                    <button type="button" id="previousBtn"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Annuler
+                        Précédent
                     </button>
                 </div>
             </div>
@@ -457,8 +433,8 @@
     </div>
 
     <!-- Modal de confirmation de suppression -->
-    <div id="deleteConfirmModal" class="modal fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
+    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -497,344 +473,465 @@
     </div>
 
     <!-- Modal de visualisation de recette -->
-    <div id="viewRecipeModal" class="modal fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+    <div id="viewRecipeModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
         role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
             <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
+                <!-- En-tête avec bouton fermer -->
+                <div class="absolute top-4 right-4 z-10">
+                    <button type="button" id="closeViewRecipeBtn"
+                        class="rounded-full bg-white p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Contenu principal -->
                 <div class="bg-white">
-                    <div class="relative">
-                        <img class="w-full h-64 object-cover"
+                    <!-- Image avec overlay -->
+                    <div class="relative h-72 w-full overflow-hidden">
+                        <img class="w-full h-full object-cover"
                             src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salade fraîcheur"
                             id="viewRecipeImage">
-                        <button type="button" id="closeViewRecipeBtn"
-                            class="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2" id="viewRecipeTitle">Salade fraîcheur</h3>
-
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <i class="fas fa-leaf mr-1"></i> Végétarien
-                            </span>
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                <i class="fas fa-utensils mr-1"></i> Entrée
-                            </span>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 right-0 p-6">
+                            <div class="flex flex-wrap gap-2 mb-2">
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-brand-600 shadow-sm">
+                                    <i class="fas fa-leaf mr-1"></i> Végétarien
+                                </span>
+                                <span
+                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-purple-600 shadow-sm">
+                                    <i class="fas fa-utensils mr-1"></i> Entrée
+                                </span>
+                            </div>
+                            <h3 class="text-3xl font-bold text-white" id="viewRecipeTitle">Salade fraîcheur</h3>
                         </div>
+                    </div>
 
-                        <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <div class="flex items-center mr-4">
-                                <i class="fas fa-clock mr-1"></i>
+                    <!-- Détails de la recette -->
+                    <div class="px-6 py-5">
+                        <!-- Métadonnées -->
+                        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2 text-brand-500"></i>
                                 <span id="viewRecipeTime">15 min</span>
                             </div>
-                            <div class="flex items-center mr-4">
-                                <i class="fas fa-utensils mr-1"></i>
+                            <div class="flex items-center">
+                                <i class="fas fa-utensils mr-2 text-brand-500"></i>
                                 <span id="viewRecipeDifficulty">Facile</span>
                             </div>
-                            <div class="flex items-center mr-4">
-                                <i class="fas fa-users mr-1"></i>
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-2 text-brand-500"></i>
                                 <span id="viewRecipeServings">4 personnes</span>
                             </div>
                         </div>
 
-                        <p class="text-gray-600 mb-6" id="viewRecipeDescription">Une salade légère et rafraîchissante
-                            parfaite pour l'été, avec des légumes croquants et une vinaigrette citronnée.</p>
+                        <!-- Description -->
+                        <div class="prose prose-sm max-w-none text-gray-600 mb-8" id="viewRecipeDescription">
+                            <p>Une salade légère et rafraîchissante parfaite pour l'été, avec des légumes croquants et
+                                une vinaigrette citronnée.</p>
+                        </div>
 
+                        <!-- Grille ingrédients/préparation -->
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div>
-                                <h4 class="text-lg font-medium text-gray-900 mb-3">Ingrédients</h4>
-                                <ul class="space-y-2" id="viewRecipeIngredients">
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>200g de laitue</span>
+                            <!-- Ingrédients -->
+                            <div class="bg-gray-50 rounded-xl p-5">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                    <i class="fas fa-shopping-basket mr-2 text-brand-500"></i>
+                                    Ingrédients
+                                </h4>
+                                <ul class="space-y-3" id="viewRecipeIngredients">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">200g de laitue</span>
                                     </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>2 tomates</span>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">2 tomates</span>
                                     </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>1 concombre</span>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">1 concombre</span>
                                     </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>1 poivron rouge</span>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">1 poivron rouge</span>
                                     </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>2 c. à soupe d'huile d'olive</span>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">2 c. à soupe d'huile d'olive</span>
                                     </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>1 c. à soupe de jus de citron</span>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">1 c. à soupe de jus de citron</span>
                                     </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>Sel et poivre</span>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
+                                        <span class="flex-1">Sel et poivre</span>
                                     </li>
                                 </ul>
                             </div>
 
-                            <div>
-                                <h4 class="text-lg font-medium text-gray-900 mb-3">Préparation</h4>
-                                <ol class="space-y-3 list-decimal list-inside" id="viewRecipeSteps">
-                                    <li class="pl-2">
+                            <!-- Préparation -->
+                            <div class="bg-gray-50 rounded-xl p-5">
+                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                                    <i class="fas fa-list-ol mr-2 text-brand-500"></i>
+                                    Préparation
+                                </h4>
+                                <ol class="space-y-4" id="viewRecipeSteps">
+                                    <li class="flex">
+                                        <span
+                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">1</span>
                                         <span>Laver et couper tous les légumes.</span>
                                     </li>
-                                    <li class="pl-2">
+                                    <li class="flex">
+                                        <span
+                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">2</span>
                                         <span>Mélanger l'huile d'olive, le jus de citron, le sel et le poivre pour faire
                                             la vinaigrette.</span>
                                     </li>
-                                    <li class="pl-2">
+                                    <li class="flex">
+                                        <span
+                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">3</span>
                                         <span>Disposer les légumes dans un saladier.</span>
                                     </li>
-                                    <li class="pl-2">
+                                    <li class="flex">
+                                        <span
+                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">4</span>
                                         <span>Verser la vinaigrette sur la salade et mélanger délicatement.</span>
                                     </li>
-                                    <li class="pl-2">
+                                    <li class="flex">
+                                        <span
+                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">5</span>
                                         <span>Servir immédiatement.</span>
                                     </li>
                                 </ol>
                             </div>
+                        </div>
+
+                        <!-- Boutons d'action -->
+                        <div class="mt-8 flex justify-end space-x-3">
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                                <i class="fas fa-print mr-2"></i> Imprimer
+                            </button>
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                                <i class="fas fa-share-alt mr-2"></i> Partager
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <script>
-        // Gestion du sidebar mobile
-        const sidebar = document.getElementById('sidebar');
-        const openSidebarBtn = document.getElementById('openSidebarBtn');
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sélection des éléments du DOM
+            const addRecipeBtn = document.getElementById('addRecipeBtn');
+            const recipeModal = document.getElementById('recipeModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const saveRecipeBtn = document.getElementById('saveRecipeBtn');
+            const previousBtn = document.getElementById('previousBtn');
+            const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const viewRecipeModal = document.getElementById('viewRecipeModal');
+            const closeViewRecipeBtn = document.getElementById('closeViewRecipeBtn');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const addIngredientToList = document.getElementById('addIngredientToList');
+            const addStepToList = document.getElementById('addStepToList');
+            const deleteRecipeButtons = document.querySelectorAll('.delete-recipe');
+            const viewRecipeButtons = document.querySelectorAll('.view-recipe');
+            const editRecipeButtons = document.querySelectorAll('.edit-recipe');
 
-        openSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.add('open');
-        });
+            // Variables pour suivre la navigation dans les onglets
+            let currentTabIndex = 0;
+            const totalTabs = tabButtons.length;
 
-        closeSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-        });
-
-        // Gestion du menu utilisateur
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const userDropdown = document.getElementById('userDropdown');
-
-        userMenuBtn.addEventListener('click', () => {
-            userDropdown.classList.toggle('hidden');
-        });
-
-        // Fermer le dropdown quand on clique ailleurs
-        document.addEventListener('click', (event) => {
-            if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
-                userDropdown.classList.add('hidden');
+            // Fonctions pour la gestion des modales
+            function openModal(modal) {
+                modal.classList.remove('hidden');
             }
-        });
 
-        // Gestion des onglets dans le modal de recette
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
+            function closeModal(modal) {
+                modal.classList.add('hidden');
+            }
 
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabId = button.getAttribute('data-tab');
+            // Fonctions pour la gestion des onglets
+            function showTab(tabId) {
+                // Cacher tous les contenus d'onglets
+                tabContents.forEach(content => {
+                    content.classList.remove('active');
+                });
 
-                // Désactiver tous les onglets
-                tabButtons.forEach(btn => btn.classList.remove('active', 'text-brand-600',
-                    'border-brand-500'));
-                tabButtons.forEach(btn => btn.classList.add('text-gray-500', 'border-transparent'));
-                tabContents.forEach(content => content.classList.remove('active'));
+                // Supprimer la classe active de tous les boutons d'onglets
+                tabButtons.forEach(button => {
+                    button.classList.remove('active', 'border-brand-500', 'text-brand-600');
+                    button.classList.add('text-gray-500', 'border-transparent');
+                });
 
-                // Activer l'onglet sélectionné
-                button.classList.add('active', 'text-brand-600', 'border-brand-500');
-                button.classList.remove('text-gray-500', 'border-transparent');
-                document.getElementById(`tab-${tabId}`).classList.add('active');
+                // Afficher le contenu de l'onglet sélectionné
+                const selectedTab = document.getElementById('tab-' + tabId);
+                if (selectedTab) {
+                    selectedTab.classList.add('active');
+                }
+
+                // Mettre en évidence le bouton d'onglet sélectionné
+                const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+                if (selectedButton) {
+                    selectedButton.classList.remove('text-gray-500', 'border-transparent');
+                    selectedButton.classList.add('active', 'border-brand-500', 'text-brand-600');
+
+                    // Mettre à jour l'index de l'onglet actuel
+                    currentTabIndex = Array.from(tabButtons).indexOf(selectedButton);
+                }
+
+                // Mettre à jour le texte du bouton "suivant/enregistrer" selon l'onglet
+                if (saveRecipeBtn) {
+                    if (currentTabIndex === totalTabs - 1) {
+                        saveRecipeBtn.textContent = 'Enregistrer';
+                    } else {
+                        saveRecipeBtn.textContent = 'Suivant';
+                    }
+                }
+
+                // Afficher/masquer le bouton Précédent
+                if (previousBtn) {
+                    if (currentTabIndex === 0) {
+                        previousBtn.style.display = 'none';
+                    } else {
+                        previousBtn.style.display = 'inline-flex';
+                    }
+                }
+            }
+
+            // Gestion des événements pour le bouton d'ajout de recette
+            if (addRecipeBtn) {
+                addRecipeBtn.addEventListener('click', function() {
+                    openModal(recipeModal);
+                    showTab('info'); // Afficher le premier onglet par défaut
+                });
+            }
+
+            // Gestion des événements pour le bouton de fermeture de la modal
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', function() {
+                    closeModal(recipeModal);
+                    // Réinitialiser le formulaire si nécessaire
+                    document.getElementById('recipeForm').reset();
+                });
+            }
+
+            // Gestion des événements pour les boutons d'onglets
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    showTab(tabId);
+                });
             });
-        });
 
-        // Gestion des modals
-        const recipeModal = document.getElementById('recipeModal');
-        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-        const viewRecipeModal = document.getElementById('viewRecipeModal');
-        const addRecipeBtn = document.getElementById('addRecipeBtn');
-        const cancelRecipeBtn = document.getElementById('cancelRecipeBtn');
-        const saveRecipeBtn = document.getElementById('saveRecipeBtn');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        const closeViewRecipeBtn = document.getElementById('closeViewRecipeBtn');
-        const recipeForm = document.getElementById('recipeForm');
-        const modalTitle = document.getElementById('modal-title');
+            // Gestion des événements pour le bouton suivant/enregistrer
+            if (saveRecipeBtn) {
+                saveRecipeBtn.addEventListener('click', function() {
+                    if (currentTabIndex < totalTabs - 1) {
+                        // Passer à l'onglet suivant
+                        const nextTabButton = tabButtons[currentTabIndex + 1];
+                        const nextTabId = nextTabButton.getAttribute('data-tab');
+                        showTab(nextTabId);
+                    } else {
+                        // Sur le dernier onglet, enregistrer la recette
+                        // Ici, vous pouvez ajouter le code pour enregistrer la recette
+                        console.log('Enregistrement de la recette...');
+                        closeModal(recipeModal);
+                        // Réinitialiser le formulaire après l'enregistrement
+                        document.getElementById('recipeForm').reset();
+                    }
+                });
+            }
 
-        let currentRecipeId = null;
+            // Gestion des événements pour le bouton précédent
+            if (previousBtn) {
+                previousBtn.addEventListener('click', function() {
+                    if (currentTabIndex > 0) {
+                        // Revenir à l'onglet précédent
+                        const prevTabButton = tabButtons[currentTabIndex - 1];
+                        const prevTabId = prevTabButton.getAttribute('data-tab');
+                        showTab(prevTabId);
+                    }
+                });
+            }
 
-        // Ouvrir le modal d'ajout de recette
-        addRecipeBtn.addEventListener('click', () => {
-            modalTitle.textContent = 'Ajouter une recette';
-            recipeForm.reset();
-            document.getElementById('recipeId').value = '';
-            recipeModal.classList.add('active');
-        });
+            // Gestion des événements pour le bouton d'ajout d'ingrédient
+            if (addIngredientToList) {
+                addIngredientToList.addEventListener('click', function() {
+                    const ingredientName = document.getElementById('ingredientName').value;
+                    const ingredientQuantity = document.getElementById('ingredientQuantity').value;
+                    const ingredientUnit = document.getElementById('ingredientUnit').value;
 
-        // Fermer le modal de recette
-        cancelRecipeBtn.addEventListener('click', () => {
-            recipeModal.classList.remove('active');
-        });
+                    if (ingredientName && ingredientQuantity) {
+                        const ingredientText =
+                        `${ingredientQuantity}${ingredientUnit} de ${ingredientName}`;
 
-        // Fermer le modal de confirmation de suppression
-        cancelDeleteBtn.addEventListener('click', () => {
-            deleteConfirmModal.classList.remove('active');
-        });
-
-        // Fermer le modal de visualisation de recette
-        closeViewRecipeBtn.addEventListener('click', () => {
-            viewRecipeModal.classList.remove('active');
-        });
-
-        // Gérer les boutons d'édition
-        document.querySelectorAll('.edit-recipe').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-                modalTitle.textContent = 'Modifier la recette';
-
-                // Simuler le chargement des données de la recette
-                // Dans une application réelle, vous feriez un appel API ici
-                const mockData = getMockRecipeData(id);
-
-                // Remplir le formulaire avec les données
-                document.getElementById('recipeId').value = id;
-                document.getElementById('recipeName').value = mockData.name;
-                document.getElementById('recipeCategory').value = mockData.category;
-                document.getElementById('prepTime').value = mockData.prepTime;
-                document.getElementById('cookTime').value = mockData.cookTime;
-                document.getElementById('servings').value = mockData.servings;
-                document.getElementById('difficulty').value = mockData.difficulty;
-                document.getElementById('recipeDescription').value = mockData.description;
-
-                // Réinitialiser les onglets
-                tabButtons[0].click();
-
-                recipeModal.classList.add('active');
-            });
-        });
-
-        view-recipe = document.querySelectorAll('.view-recipe');
-        view-recipe.addEventListener('click', () => {
-            viewRecipeModal.classList.add('active');
-        })
-        // Gérer les boutons de visualisation
-        document.querySelectorAll('.view-recipe').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-
-                // Simuler le chargement des données de la recette
-                // Dans une application réelle, vous feriez un appel API ici
-                const mockData = getMockRecipeData(id);
-
-                // Remplir le modal avec les données
-                document.getElementById('viewRecipeTitle').textContent = mockData.name;
-                document.getElementById('viewRecipeTime').textContent =
-                    `${parseInt(mockData.prepTime) + parseInt(mockData.cookTime)} min`;
-                document.getElementById('viewRecipeDifficulty').textContent = mockData.difficulty ===
-                    'facile' ? 'Facile' : mockData.difficulty === 'moyen' ? 'Moyen' : 'Difficile';
-                document.getElementById('viewRecipeServings').textContent =
-                    `${mockData.servings} personne${mockData.servings > 1 ? 's' : ''}`;
-                document.getElementById('viewRecipeDescription').textContent = mockData.description;
-
-                
-            });
-        });
-
-        // Gérer les boutons de suppression
-        document.querySelectorAll('.delete-recipe').forEach(button => {
-            button.addEventListener('click', () => {
-                currentRecipeId = button.getAttribute('data-id');
-                deleteConfirmModal.classList.add('active');
-            });
-        });
-
-        // Simuler l'ajout d'un ingrédient à la liste
-        const addIngredientToList = document.getElementById('addIngredientToList');
-        const ingredientsList = document.getElementById('ingredientsList');
-
-        addIngredientToList.addEventListener('click', () => {
-            const name = document.getElementById('ingredientName').value;
-            const quantity = document.getElementById('ingredientQuantity').value;
-            const unit = document.getElementById('ingredientUnit').value;
-
-            if (name && quantity) {
-                const li = document.createElement('li');
-                li.className = 'ingredient-item flex justify-between items-center p-2 rounded-md bg-white';
-                li.innerHTML = `
-                    <span>${quantity}${unit} de ${name}</span>
+                        // Créer un nouvel élément de liste pour l'ingrédient
+                        const li = document.createElement('li');
+                        li.className =
+                            'ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100';
+                        li.innerHTML = `
+                    <span class="text-sm text-gray-800">${ingredientText}</span>
                     <button type="button" class="text-red-500 hover:text-red-700">
                         <i class="fas fa-times"></i>
                     </button>
                 `;
 
-                // Ajouter l'événement de suppression
-                li.querySelector('button').addEventListener('click', () => {
-                    li.remove();
+                        // Ajouter l'événement de suppression
+                        const deleteButton = li.querySelector('button');
+                        deleteButton.addEventListener('click', function() {
+                            li.remove();
+                        });
+
+                        // Ajouter l'ingrédient à la liste
+                        document.getElementById('ingredientsList').appendChild(li);
+
+                        // Réinitialiser les champs d'ingrédient
+                        document.getElementById('ingredientName').value = '';
+                        document.getElementById('ingredientQuantity').value = '';
+                    }
                 });
-
-                ingredientsList.appendChild(li);
-
-                // Réinitialiser les champs
-                document.getElementById('ingredientName').value = '';
-                document.getElementById('ingredientQuantity').value = '';
             }
-        });
 
-        // Simuler l'ajout d'une étape à la liste
-        const addStepToList = document.getElementById('addStepToList');
-        const stepsList = document.getElementById('stepsList');
+            // Gestion des événements pour le bouton d'ajout d'étape
+            if (addStepToList) {
+                addStepToList.addEventListener('click', function() {
+                    const stepDescription = document.getElementById('stepDescription').value;
 
-        addStepToList.addEventListener('click', () => {
-            const description = document.getElementById('stepDescription').value;
-
-            if (description) {
-                const li = document.createElement('li');
-                li.className = 'step-item flex justify-between items-center p-2 rounded-md bg-white';
-                li.innerHTML = `
-                    <span>${description}</span>
+                    if (stepDescription) {
+                        // Créer un nouvel élément de liste pour l'étape
+                        const li = document.createElement('li');
+                        li.className =
+                        'step-item flex justify-between items-center p-2 rounded-md bg-white';
+                        li.innerHTML = `
+                    <span>${stepDescription}</span>
                     <button type="button" class="text-red-500 hover:text-red-700">
                         <i class="fas fa-times"></i>
                     </button>
                 `;
 
-                // Ajouter l'événement de suppression
-                li.querySelector('button').addEventListener('click', () => {
-                    li.remove();
+                        // Ajouter l'événement de suppression
+                        const deleteButton = li.querySelector('button');
+                        deleteButton.addEventListener('click', function() {
+                            li.remove();
+                        });
+
+                        // Ajouter l'étape à la liste
+                        document.getElementById('stepsList').appendChild(li);
+
+                        // Réinitialiser le champ d'étape
+                        document.getElementById('stepDescription').value = '';
+                    }
                 });
-
-                stepsList.appendChild(li);
-
-                // Réinitialiser le champ
-                document.getElementById('stepDescription').value = '';
             }
-        });
 
-        // Simuler l'enregistrement d'une recette
-        saveRecipeBtn.addEventListener('click', () => {
-            // Vérifier la validité du formulaire
-            if (recipeForm.checkValidity()) {
-                // Dans une application réelle, vous enverriez les données à une API
-                alert('Recette enregistrée avec succès !');
-                recipeModal.classList.remove('active');
+            // Gestion des événements pour les boutons de suppression d'ingrédients existants
+            document.querySelectorAll('#ingredientsList button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.ingredient-item').remove();
+                });
+            });
 
-                // Simuler un rechargement de la page ou mise à jour du tableau
-                // Dans une application réelle, vous mettriez à jour le DOM ou rechargeriez les données
-            } else {
-                // Déclencher la validation native du formulaire
-                recipeForm.reportValidity();
+            // Gestion des événements pour les boutons de suppression d'étapes existantes
+            document.querySelectorAll('#stepsList button').forEach(button => {
+                button.addEventListener('click', function() {
+                    this.closest('.step-item').remove();
+                });
+            });
+
+            // Gestion des événements pour les boutons de suppression de recette
+            deleteRecipeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const recipeId = this.getAttribute('data-id');
+                    // Stocker l'ID de la recette pour l'utiliser lors de la confirmation
+                    confirmDeleteBtn.setAttribute('data-id', recipeId);
+                    openModal(deleteConfirmModal);
+                });
+            });
+
+            // Gestion des événements pour le bouton de confirmation de suppression
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    const recipeId = this.getAttribute('data-id');
+                    console.log('Suppression de la recette ID:', recipeId);
+                    // Ici, vous pouvez ajouter le code pour supprimer la recette
+                    closeModal(deleteConfirmModal);
+                });
             }
+
+            // Gestion des événements pour le bouton d'annulation de suppression
+            if (cancelDeleteBtn) {
+                cancelDeleteBtn.addEventListener('click', function() {
+                    closeModal(deleteConfirmModal);
+                });
+            }
+
+            // Gestion des événements pour les boutons de visualisation de recette
+            viewRecipeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const recipeId = this.getAttribute('data-id');
+                    console.log('Voir la recette ID:', recipeId);
+                    // Ici, vous pouvez ajouter le code pour charger les détails de la recette
+                    openModal(viewRecipeModal);
+                });
+            });
+
+            // Gestion des événements pour le bouton de fermeture de visualisation de recette
+            if (closeViewRecipeBtn) {
+                closeViewRecipeBtn.addEventListener('click', function() {
+                    closeModal(viewRecipeModal);
+                });
+            }
+
+            // Gestion des événements pour les boutons d'édition de recette
+            editRecipeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const recipeId = this.getAttribute('data-id');
+                    console.log('Édition de la recette ID:', recipeId);
+                    // Ici, vous pouvez ajouter le code pour charger les données de la recette dans le formulaire
+                    document.getElementById('recipeId').value = recipeId;
+                    openModal(recipeModal);
+                    showTab('info'); // Afficher le premier onglet
+                });
+            });
+
+            // Fermer les modales lorsque l'utilisateur clique en dehors
+            window.addEventListener('click', function(event) {
+                if (event.target === recipeModal) {
+                    closeModal(recipeModal);
+                }
+                if (event.target === deleteConfirmModal) {
+                    closeModal(deleteConfirmModal);
+                }
+                if (event.target === viewRecipeModal) {
+                    closeModal(viewRecipeModal);
+                }
+            });
+
+            // Fermer les modales avec la touche Echap
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeModal(recipeModal);
+                    closeModal(deleteConfirmModal);
+                    closeModal(viewRecipeModal);
+                }
+            });
+
+            // Initialiser l'affichage du premier onglet
+            showTab('info');
         });
     </script>
 </body>
+
 </html>

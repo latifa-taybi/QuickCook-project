@@ -17,13 +17,13 @@
         <div class="p-4 border-b border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0 relative">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User"
+                    <img src="" alt="User"
                         class="h-10 w-10 rounded-full object-cover">
                     <span
                         class="absolute bottom-0 right-0 h-3 w-3 rounded-full bg-green-500 border-2 border-dark"></span>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium text-white">John Doe</p>
+                    <p class="text-sm font-medium text-white">Latifa Taybi</p>
                     <p class="text-xs text-gray-400">Administrateur</p>
                 </div>
             </div>
@@ -45,13 +45,13 @@
                 <i class="fas fa-utensils mr-3 text-brand-400"></i>
                 Gestion des recettes
             </a>
-            <a href="{{route('gestionIngredients')}}"
-                class="nav-item flex items-center {{request()->routeIs('gestionIngredients') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('ingredients.index')}}"
+                class="nav-item flex items-center {{request()->routeIs('ingredients.index') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-carrot mr-3 text-brand-400"></i>
                 Gestion des ingrédients
             </a>
-            <a href="{{route('gestionCategories')}}"
-                class="nav-item flex items-center {{request()->routeIs('gestionCategories') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('categories.index')}}"
+                class="nav-item flex items-center {{request()->routeIs('categories.index') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-tags mr-3 text-brand-400"></i>
                 Catégories d'ingrédients
             </a>

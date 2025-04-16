@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ asset('js/app.js') }}"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 </head>
 
 <body class="bg-light text-dark min-h-screen flex flex-col">
@@ -184,14 +185,14 @@
                                                 <label for="recipeName"
                                                     class="block text-sm font-semibold text-gray-700">Nom de la
                                                     recette</label>
-                                                <input type="text" name="recipeName" id="recipeName"
+                                                <input type="text" name="name" id="recipeName"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     required>
                                             </div>
                                             <div>
                                                 <label for="recipeCategory"
                                                     class="block text-sm font-semibold text-gray-700">Catégorie</label>
-                                                <select id="recipeCategory" name="recipeCategory"
+                                                <select id="recipeCategory" name="category"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                     required>
                                                     <option value="">Sélectionner une catégorie</option>
@@ -232,7 +233,7 @@
                                         <div>
                                             <label for="recipeDescription"
                                                 class="block text-sm font-semibold text-gray-700">Description</label>
-                                            <textarea id="recipeDescription" name="recipeDescription" rows="4"
+                                            <textarea id="recipeDescription" name="description" rows="4"
                                                 class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
                                                 required></textarea>
                                         </div>
@@ -242,30 +243,12 @@
                                             <label class="block text-sm font-semibold text-gray-700">Régimes
                                                 alimentaires</label>
                                             <div class="mt-3 flex flex-wrap gap-4">
-                                                <label class="inline-flex items-center">
+                                                @foreach ($regimes as $regime)
                                                     <input type="checkbox"
                                                         class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
-                                                        name="diet" value="vegetarien">
-                                                    <span class="ml-2 text-sm text-gray-700">Végétarien</span>
-                                                </label>
-                                                <label class="inline-flex items-center">
-                                                    <input type="checkbox"
-                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
-                                                        name="diet" value="vegan">
-                                                    <span class="ml-2 text-sm text-gray-700">Vegan</span>
-                                                </label>
-                                                <label class="inline-flex items-center">
-                                                    <input type="checkbox"
-                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
-                                                        name="diet" value="sans-gluten">
-                                                    <span class="ml-2 text-sm text-gray-700">Sans gluten</span>
-                                                </label>
-                                                <label class="inline-flex items-center">
-                                                    <input type="checkbox"
-                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
-                                                        name="diet" value="sans-lactose">
-                                                    <span class="ml-2 text-sm text-gray-700">Sans lactose</span>
-                                                </label>
+                                                        name="regimes[]" value={{ $regime->id }}>
+                                                    <span class="ml-2 text-sm text-gray-700">{{ $regime->name }}</span>
+                                                @endforeach
                                             </div>
                                         </div>
                                     </div>
@@ -278,31 +261,32 @@
                                             <div class="flex-1">
                                                 <label for="ingredientName"
                                                     class="block text-sm font-semibold text-gray-700">Ingrédient</label>
-                                                <input type="text" id="ingredientName"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    placeholder="Nom de l'ingrédient">
-                                            </div>
-                                            <div class="w-24">
-                                                <label for="ingredientQuantity"
-                                                    class="block text-sm font-semibold text-gray-700">Quantité</label>
-                                                <input type="number" id="ingredientQuantity" min="0"
-                                                    step="0.01"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    placeholder="Quantité">
+                                                <select id="ingredient" name="ingredients[]"
+                                                    placeholder="Commence à taper...">
+                                                    @foreach ($ingredients as $ingredient)
+                                                        <option value="{{ $ingredient->id }}">{{ $ingredient->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div class="w-24">
                                                 <label for="ingredientUnit"
                                                     class="block text-sm font-semibold text-gray-700">Unité</label>
-                                                <select id="ingredientUnit"
+                                                <select id="ingredientUnit" name="unite"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm">
-                                                    <option value="g">g</option>
-                                                    <option value="kg">kg</option>
-                                                    <option value="ml">ml</option>
-                                                    <option value="l">l</option>
-                                                    <option value="c. à soupe">c. à soupe</option>
-                                                    <option value="c. à café">c. à café</option>
-                                                    <option value="pièce">pièce(s)</option>
+                                                    @foreach ($unites as $unite)
+                                                        <option value="{{ $unite->id }}">{{ $unite->symbol }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
+                                            </div>
+                                            <div class="w-24">
+                                                <label for="ingredientQuantity"
+                                                    class="block text-sm font-semibold text-gray-700">Quantité</label>
+                                                <input type="number" id="ingredientQuantity" name="quantite"
+                                                    min="0" step="0.01"
+                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
+                                                    placeholder="Quantité">
                                             </div>
                                             <div class="pt-4">
                                                 <button type="button" id="addIngredientToList"
@@ -313,32 +297,30 @@
                                         </div>
 
                                         <!-- Ingredients List -->
-                                        <div class="bg-gray-50 rounded-lg p-4">
-                                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Liste des ingrédients
-                                            </h4>
-                                            <ul id="ingredientsList" class="space-y-3">
-                                                <li
-                                                    class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
-                                                    <span class="text-sm text-gray-800">200g de farine</span>
-                                                    <button type="button" class="text-red-500 hover:text-red-700">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </li>
-                                                <li
-                                                    class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
-                                                    <span class="text-sm text-gray-800">3 œufs</span>
-                                                    <button type="button" class="text-red-500 hover:text-red-700">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </li>
-                                                <li
-                                                    class="ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100">
-                                                    <span class="text-sm text-gray-800">100g de sucre</span>
-                                                    <button type="button" class="text-red-500 hover:text-red-700">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </li>
-                                            </ul>
+                                        <div class="bg-white rounded-lg shadow-sm p-4">
+                                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Ingrédients</h4>
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
+                                                            Nom</th>
+                                                        <th
+                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
+                                                            Quantité</th>
+                                                        <th
+                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
+                                                            Unité</th>
+                                                        <th
+                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
+                                                            Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ingredientsTable"
+                                                    class="bg-white divide-y divide-gray-200">
+                                                    <!-- Les ingrédients seront ajoutés ici dynamiquement -->
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
 
@@ -349,7 +331,7 @@
                                                 <label for="stepDescription"
                                                     class="block text-sm font-medium text-gray-700">Description de
                                                     l'étape</label>
-                                                <textarea id="stepDescription" rows="2"
+                                                <textarea id="stepDescription" rows="2" name="etape"
                                                     class="mt-3 w-full px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"></textarea>
                                             </div>
                                             <div class="pt-6">
@@ -393,7 +375,7 @@
                                                         <label for="file-upload"
                                                             class="relative cursor-pointer bg-white rounded-md font-medium text-brand-600 hover:text-brand-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-brand-500">
                                                             <span>Télécharger une image</span>
-                                                            <input id="file-upload" name="file-upload" type="file"
+                                                            <input id="file-upload" name="image" type="file"
                                                                 class="sr-only" accept="image/*">
                                                         </label>
                                                         <p class="pl-1">ou glisser-déposer</p>
@@ -413,21 +395,26 @@
                                                 placeholder="https://www.youtube.com/watch?v=...">
                                         </div>
                                     </div>
+                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                        <button type="button" id="saveRecipeBtn"
+                                            class="w-full hidden inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                            Enregistrer
+                                        </button>
+                                        <button type="button" id="nextRecipeBtn"
+                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                            suivant
+                                        </button>
+                                        <button type="button" id="previousBtn"
+                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                            Précédent
+                                        </button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="saveRecipeBtn"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        suivant
-                    </button>
-                    <button type="button" id="previousBtn"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Précédent
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
@@ -616,11 +603,7 @@
                         <div class="mt-8 flex justify-end space-x-3">
                             <button type="button"
                                 class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                                <i class="fas fa-print mr-2"></i> Imprimer
-                            </button>
-                            <button type="button"
-                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                                <i class="fas fa-share-alt mr-2"></i> Partager
+                                <i class="fas fa-print mr-2"></i> Modifier
                             </button>
                         </div>
                     </div>
@@ -635,6 +618,7 @@
             const recipeModal = document.getElementById('recipeModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const saveRecipeBtn = document.getElementById('saveRecipeBtn');
+            const nextRecipeBtn = document.getElementById('nextRecipeBtn');
             const previousBtn = document.getElementById('previousBtn');
             const deleteConfirmModal = document.getElementById('deleteConfirmModal');
             const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
@@ -692,12 +676,12 @@
                 }
 
                 // Mettre à jour le texte du bouton "suivant/enregistrer" selon l'onglet
-                if (saveRecipeBtn) {
-                    if (currentTabIndex === totalTabs - 1) {
-                        saveRecipeBtn.textContent = 'Enregistrer';
-                    } else {
-                        saveRecipeBtn.textContent = 'Suivant';
-                    }
+                if (currentTabIndex === totalTabs - 1) {
+                    nextRecipeBtn.classList.add('hidden');
+                    saveRecipeBtn.classList.remove('hidden');
+                } else {
+                    nextRecipeBtn.classList.remove('hidden');
+                    saveRecipeBtn.classList.add('hidden');
                 }
 
                 // Afficher/masquer le bouton Précédent
@@ -736,8 +720,8 @@
             });
 
             // Gestion des événements pour le bouton suivant/enregistrer
-            if (saveRecipeBtn) {
-                saveRecipeBtn.addEventListener('click', function() {
+            if (nextRecipeBtn) {
+                nextRecipeBtn.addEventListener('click', function() {
                     if (currentTabIndex < totalTabs - 1) {
                         // Passer à l'onglet suivant
                         const nextTabButton = tabButtons[currentTabIndex + 1];
@@ -766,43 +750,38 @@
                 });
             }
 
-            // Gestion des événements pour le bouton d'ajout d'ingrédient
-            if (addIngredientToList) {
-                addIngredientToList.addEventListener('click', function() {
-                    const ingredientName = document.getElementById('ingredientName').value;
-                    const ingredientQuantity = document.getElementById('ingredientQuantity').value;
-                    const ingredientUnit = document.getElementById('ingredientUnit').value;
 
-                    if (ingredientName && ingredientQuantity) {
-                        const ingredientText =
-                        `${ingredientQuantity}${ingredientUnit} de ${ingredientName}`;
+            document.getElementById('addIngredientToList').addEventListener('click', function() {
+                const ingredientSelect = document.getElementById('ingredient');
+                const quantityInput = document.getElementById('ingredientQuantity');
+                const unitInput = document.getElementById('ingredientUnit');
 
-                        // Créer un nouvel élément de liste pour l'ingrédient
-                        const li = document.createElement('li');
-                        li.className =
-                            'ingredient-item flex justify-between items-center p-3 rounded-lg bg-white shadow-sm hover:bg-gray-100';
-                        li.innerHTML = `
-                    <span class="text-sm text-gray-800">${ingredientText}</span>
-                    <button type="button" class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
+                const tableBody = document.getElementById('ingredientsTable');
+                const newRow = document.createElement('tr');
+                newRow.className = 'ingredient-row';
+                newRow.innerHTML = `
+                                    <td class="px-4 py-2">${ingredientSelect.value}</td>
+                                    <td class="px-4 py-2">${quantityInput.value}</td>
+                                    <td class="px-4 py-2">${unitInput.value}</td>
+                                    <td class="px-4 py-2">
+                                        <button class="text-red-500 hover:text-red-700 remove-ingredient">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </td>
+                                `;
 
-                        // Ajouter l'événement de suppression
-                        const deleteButton = li.querySelector('button');
-                        deleteButton.addEventListener('click', function() {
-                            li.remove();
-                        });
-
-                        // Ajouter l'ingrédient à la liste
-                        document.getElementById('ingredientsList').appendChild(li);
-
-                        // Réinitialiser les champs d'ingrédient
-                        document.getElementById('ingredientName').value = '';
-                        document.getElementById('ingredientQuantity').value = '';
-                    }
+                const deleteButton = newRow.querySelector('.remove-ingredient');
+                deleteButton.addEventListener('click', function() {
+                    newRow.remove();
                 });
-            }
+
+                tableBody.appendChild(newRow);  
+                // Réinitialiser les champs
+                quantityInput.value = '';
+
+            });
+
+
 
             // Gestion des événements pour le bouton d'ajout d'étape
             if (addStepToList) {
@@ -813,13 +792,13 @@
                         // Créer un nouvel élément de liste pour l'étape
                         const li = document.createElement('li');
                         li.className =
-                        'step-item flex justify-between items-center p-2 rounded-md bg-white';
+                            'step-item flex justify-between items-center p-2 rounded-md bg-white';
                         li.innerHTML = `
-                    <span>${stepDescription}</span>
-                    <button type="button" class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
+                                        <span>${stepDescription}</span>
+                                        <button type="button" class="text-red-500 hover:text-red-700">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    `;
 
                         // Ajouter l'événement de suppression
                         const deleteButton = li.querySelector('button');
@@ -835,20 +814,6 @@
                     }
                 });
             }
-
-            // Gestion des événements pour les boutons de suppression d'ingrédients existants
-            document.querySelectorAll('#ingredientsList button').forEach(button => {
-                button.addEventListener('click', function() {
-                    this.closest('.ingredient-item').remove();
-                });
-            });
-
-            // Gestion des événements pour les boutons de suppression d'étapes existantes
-            document.querySelectorAll('#stepsList button').forEach(button => {
-                button.addEventListener('click', function() {
-                    this.closest('.step-item').remove();
-                });
-            });
 
             // Gestion des événements pour les boutons de suppression de recette
             deleteRecipeButtons.forEach(button => {
@@ -906,30 +871,17 @@
                 });
             });
 
-            // Fermer les modales lorsque l'utilisateur clique en dehors
-            window.addEventListener('click', function(event) {
-                if (event.target === recipeModal) {
-                    closeModal(recipeModal);
-                }
-                if (event.target === deleteConfirmModal) {
-                    closeModal(deleteConfirmModal);
-                }
-                if (event.target === viewRecipeModal) {
-                    closeModal(viewRecipeModal);
-                }
-            });
-
-            // Fermer les modales avec la touche Echap
-            document.addEventListener('keydown', function(event) {
-                if (event.key === 'Escape') {
-                    closeModal(recipeModal);
-                    closeModal(deleteConfirmModal);
-                    closeModal(viewRecipeModal);
-                }
-            });
-
             // Initialiser l'affichage du premier onglet
             showTab('info');
+        });
+
+        new TomSelect("#ingredient", {
+            create: true, // permet d'ajouter un nouvel ingrédient
+            sortField: {
+                field: "text",
+                direction: "asc"
+            },
+            placeholder: "Choisir ou ajouter un ingrédient",
         });
     </script>
 </body>

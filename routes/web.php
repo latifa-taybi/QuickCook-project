@@ -2,13 +2,9 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IngredientController;
+use App\Http\Controllers\RecetteController;
 use Illuminate\Support\Facades\Route;
 
-
-
-Route::get('/gestionRecettes', function () {
-    return view('admin.recettes.gestionRecettes');
-})->name('gestionRecettes');
 
 Route::get('/dashboard', function () {
     return view('admin.dashboard');
@@ -34,7 +30,13 @@ Route::put('/categories',[CategoryController::class,'update'])->name('categories
 Route::post('/categories/destroy',[CategoryController::class,'destroy'])->name('categories.destroy');
 
 
+
 Route::get('/ingredients',[IngredientController::class,'index'])->name('ingredients.index');
 Route::post('/ingredients',[IngredientController::class,'store'])->name('ingredients.store');
 Route::put('/ingredients',[IngredientController::class,'update'])->name('ingredients.update');
 Route::post('/ingredients/destroy',[IngredientController::class,'destroy'])->name('ingredients.destroy');
+
+Route::get('/recettes',[RecetteController::class,'index'])->name('recettes.index');
+Route::post('/recettes',[RecetteController::class,'store'])->name('recettes.store');
+Route::put('/recettes',[RecetteController::class,'update'])->name('recettes.update');
+Route::post('/recettes/destroy',[RecetteController::class,'destroy'])->name('recettes.destroy');

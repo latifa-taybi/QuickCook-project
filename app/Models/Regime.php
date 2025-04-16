@@ -15,5 +15,10 @@ class Regime extends Model
         'description',
     ];
 
+    public function recettes()
+    {
+        return $this->belongsToMany(Recette::class, 'recette_regimes');
+    }
+
     
 }

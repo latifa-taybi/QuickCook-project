@@ -41,7 +41,7 @@
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administration</p>
             </div>
 
-            <a href="{{route('gestionRecettes')}}" class="nav-item flex items-center {{request()->routeIs('gestionRecettes') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('recettes.index')}}" class="nav-item flex items-center {{request()->routeIs('gestionRecettes') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-utensils mr-3 text-brand-400"></i>
                 Gestion des recettes
             </a>

@@ -11,7 +11,7 @@ class UpdateRecetteRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,15 @@ class UpdateRecetteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            // 'prepTime' => 'required|integer',
+            // 'difficulty' => 'required|in:facile,moyen,difficile',
+            // 'category' => 'required|in:entree,plat,dessert,boisson,aperitif',
+            // 'image' => 'nullable|image|max:10240',
+            // 'videoUrl' => 'nullable|url',
+            // 'regimes' => 'array',
+            // 'regimes.*' => 'exists:regimes,id'
         ];
     }
 }

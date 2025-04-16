@@ -174,7 +174,8 @@
                                     </nav>
                                 </div>
 
-                                <form id="recipeForm" class="mt-4">
+                                <form id="recipeForm" class="mt-4" action="{{ route('recettes.store') }}" method="POST">
+                                    @csrf
                                     <input type="hidden" id="recipeId" value="">
 
                                     <!-- Tab 1: Informations générales -->
@@ -261,7 +262,7 @@
                                             <div class="flex-1">
                                                 <label for="ingredientName"
                                                     class="block text-sm font-semibold text-gray-700">Ingrédient</label>
-                                                <select id="ingredient" name="ingredients[]"
+                                                <select id="ingredient" name="ingredients"
                                                     placeholder="Commence à taper...">
                                                     @foreach ($ingredients as $ingredient)
                                                         <option value="{{ $ingredient->id }}">{{ $ingredient->name }}
@@ -269,15 +270,17 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div class="w-24">
+                                            <div>
                                                 <label for="ingredientUnit"
                                                     class="block text-sm font-semibold text-gray-700">Unité</label>
-                                                <select id="ingredientUnit" name="unite"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm">
-                                                    @foreach ($unites as $unite)
-                                                        <option value="{{ $unite->id }}">{{ $unite->symbol }}
-                                                        </option>
-                                                    @endforeach
+                                                <select id="ingredientUnit" name="unit"
+                                                    class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
+                                                    required>
+                                                        <option value="gramme">g</option>
+                                                        <option value="litre">l</option>
+                                                        <option value="pieces">pc</option>
+                                                        <option value="tasse">tasse</option>
+
                                                 </select>
                                             </div>
                                             <div class="w-24">
@@ -396,7 +399,7 @@
                                         </div>
                                     </div>
                                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="button" id="saveRecipeBtn"
+                                        <button type="submit" id="saveRecipeBtn"
                                             class="w-full hidden inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
                                             Enregistrer
                                         </button>

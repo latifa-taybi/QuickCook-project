@@ -30,4 +30,10 @@ class Recette extends Model
     {
         return $this->belongsToMany(Regime::class, 'recette_regimes');
     }
+
+    public function etapes()
+    { 
+        return $this->hasMany(Etape::class);
+    }
+
 }

@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateRecetteRequest;
 use App\Models\Ingredient;
 use App\Models\Regime;
 use App\Models\Unite;
+use Illuminate\Http\Request;
 
 class RecetteController extends Controller
 {
@@ -16,10 +17,10 @@ class RecetteController extends Controller
      */
     public function index()
     {
+        $recettes = Recette::with(['ingredients', 'regimes', 'unites'])->get();
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
-        $unites = Unite::all();
-        return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients', 'unites'));
+        return view('admin.recettes.gestionRecettes', compact('recettes','regimes', 'ingredients'));
     }
 
     /**
@@ -33,22 +34,36 @@ class RecetteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+        
     public function store(StoreRecetteRequest $request)
     {
-        $validatedData = $request->validated();
+        $validated = $request->validated();
+        $recette = new Recette();
+        $recette->name = $validated['name'];
+        $recette->description = $validated['description'];
+        $recette->prepTime = $validated['prepTime'];
+        $recette->difficulty = $validated['difficulty'];
+        $recette->category = $validated['category'];
+        $recette->videoUrl = $validated['videoUrl'] ?? null;
+        
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/recettes');
+            $recette->image = str_replace('public/', 'storage/', $path);
+        }
+        
+        $recette->save();
+        
+        if (isset($validated['regimes'])) {
+            $recette->regimes()->sync($validated['regimes']);
+        }
+        
+        dd($recette->name);
 
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'category' => 'required|in:entree,plat,dessert,boisson,aperitif',
-            'prepTime' => 'required|integer|min:0',
-            'difficulty' => 'required|in:facile,moyen,difficile',
-            'description' => 'required|string',
-            
-            
-            
-        ]);
 
+        // return redirect()->route('recettes.index')->with('success', 'Recette créée avec succès');
     }
+
+    
 
     /**
      * Display the specified resource.

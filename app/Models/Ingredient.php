@@ -17,11 +17,6 @@ class Ingredient extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function unite()
-    {
-        return $this->belongsTo(Unite::class);
-    }
-
     public function recettes()
     {
         return $this->belongsToMany(Recette::class, 'recette_ingredient');

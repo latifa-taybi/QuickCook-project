@@ -170,19 +170,6 @@
                                             required>
                                     </div>
 
-                                    <!-- Ingredient Unit -->
-                                    <div>
-                                        <label for="ingredientUnit"
-                                            class="block text-sm font-semibold text-gray-700">Unité</label>
-                                        <select id="ingredientUnit" name="unit"
-                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
-                                            required>
-                                            @foreach($unites as $unite)
-                                                <option value="{{$unite->id}}">{{$unite->symbol}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-
                                     <!-- Ingredient Image Upload -->
                                     <div>
                                         <label for="ingredientImage"

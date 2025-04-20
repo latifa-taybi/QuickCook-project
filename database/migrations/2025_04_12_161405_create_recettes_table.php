@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('prepTime')->nullable();
             $table->string('difficulty')->nullable();
             $table->text('description')->nullable();
-            $table->text('etape')->nullable();
+            // $table->text('etape')->nullable();
             $table->string('image')->nullable();
             $table->string('videoUrl')->nullable();
             $table->timestamps();

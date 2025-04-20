@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Recette;
 use App\Http\Requests\StoreRecetteRequest;
 use App\Http\Requests\UpdateRecetteRequest;
+use App\Models\Etape;
 use App\Models\Ingredient;
 use App\Models\Regime;
 use App\Models\Unite;
@@ -17,10 +18,10 @@ class RecetteController extends Controller
      */
     public function index()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'unites'])->get();
+        // $recettes = Recette::with(['ingredients', 'regimes'])->get();
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
-        return view('admin.recettes.gestionRecettes', compact('recettes','regimes', 'ingredients'));
+        return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients'));
     }
 
     /**
@@ -37,30 +38,43 @@ class RecetteController extends Controller
         
     public function store(StoreRecetteRequest $request)
     {
-        $validated = $request->validated();
-        $recette = new Recette();
-        $recette->name = $validated['name'];
-        $recette->description = $validated['description'];
-        $recette->prepTime = $validated['prepTime'];
-        $recette->difficulty = $validated['difficulty'];
-        $recette->category = $validated['category'];
-        $recette->videoUrl = $validated['videoUrl'] ?? null;
-        
-        if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/recettes');
-            $recette->image = str_replace('public/', 'storage/', $path);
-        }
-        
-        $recette->save();
-        
-        if (isset($validated['regimes'])) {
-            $recette->regimes()->sync($validated['regimes']);
-        }
-        
-        dd($recette->name);
+
+        $recette = Recette::create([
+            'name' => $request->name,
+            'category' => $request->category,
+            'prepTime' => $request->prepTime,
+            'difficulty' => $request->difficulty,
+            'description' => $request->description,
+            'image' => $request->hasFile('image') ? $request->file('image')->store('photos', 'public') : null,
+            'videoUrl' => $request->videoUrl
+        ]);
 
 
-        // return redirect()->route('recettes.index')->with('success', 'Recette créée avec succès');
+        $recette->regimes()->attach($request->regimes);
+
+
+        foreach ($request->ingredients as $item) {
+            $ingredient = Ingredient::firstOrCreate([
+                'name' => $item['name']
+            ]);
+
+            $recette->ingredients()->attach($ingredient->id, [
+                'quantity' => $item['quantity'],
+                'unite' => $item['unite'],
+            ]);
+
+        }
+
+
+        foreach ($request->etapes as $item) {
+            Etape::create([
+                'description' => $item['desc'],
+                'numero_etape' => $item['order'],
+                'recette_id' => $recette->id
+
+            ]);
+        }
+        return redirect()->route('recettes.index');
     }
 
     

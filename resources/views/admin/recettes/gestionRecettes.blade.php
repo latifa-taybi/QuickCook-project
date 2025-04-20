@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -174,7 +175,8 @@
                                     </nav>
                                 </div>
 
-                                <form id="recipeForm" class="mt-4" action="{{ route('recettes.store') }}" method="POST">
+                                <form id="recipeForm" class="mt-4" action="{{ route('recettes.store') }}"
+                                    method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <input type="hidden" id="recipeId" value="">
 
@@ -270,16 +272,16 @@
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            <div>
+                                            <div class="w-24">
                                                 <label for="ingredientUnit"
                                                     class="block text-sm font-semibold text-gray-700">Unité</label>
                                                 <select id="ingredientUnit" name="unit"
                                                     class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
                                                     required>
-                                                        <option value="gramme">g</option>
-                                                        <option value="litre">l</option>
-                                                        <option value="pieces">pc</option>
-                                                        <option value="tasse">tasse</option>
+                                                    <option value="gramme">g</option>
+                                                    <option value="litre">l</option>
+                                                    <option value="pieces">pc</option>
+                                                    <option value="tasse">tasse</option>
 
                                                 </select>
                                             </div>
@@ -344,51 +346,38 @@
                                                 </button>
                                             </div>
                                         </div>
-
                                         <div class="bg-gray-50 rounded-lg p-4">
                                             <h4 class="text-sm font-medium text-gray-700 mb-2">Liste des étapes</h4>
                                             <ol id="stepsList" class="space-y-2 list-decimal list-inside">
-                                                <li
-                                                    class="step-item flex justify-between items-center p-2 rounded-md bg-white">
-                                                    <span>Préchauffer le four à 180°C.</span>
-                                                    <button type="button" class="text-red-500 hover:text-red-700">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </li>
+                                                <!-- Les étapes seront ajoutées ici dynamiquement -->
                                             </ol>
                                         </div>
                                     </div>
 
                                     <!-- Tab 4: Médias -->
                                     <div id="tab-media" class="tab-content space-y-4">
-                                        <div>
-                                            <label class="block text-sm font-medium text-gray-700">Photo
-                                                principale</label>
-                                            <div
-                                                class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                                                <div class="space-y-1 text-center">
-                                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor"
-                                                        fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                        <path
-                                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                    <div class="flex text-sm text-gray-600">
-                                                        <label for="file-upload"
-                                                            class="relative cursor-pointer bg-white rounded-md font-medium text-brand-600 hover:text-brand-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-brand-500">
-                                                            <span>Télécharger une image</span>
-                                                            <input id="file-upload" name="image" type="file"
-                                                                class="sr-only" accept="image/*">
-                                                        </label>
-                                                        <p class="pl-1">ou glisser-déposer</p>
-                                                    </div>
-                                                    <p class="text-xs text-gray-500">
-                                                        PNG, JPG, GIF jusqu'à 10MB
-                                                    </p>
-                                                </div>
+                                        <div class="mb-4">
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Photo principale</label>
+                                            
+                                            <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
+                                              <!-- Icône SVG simplifiée -->
+                                              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                              </svg>
+                                              
+                                              <div class="mt-2">
+                                                <!-- Bouton d'upload stylisé -->
+                                                <label class="bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
+                                                  <span>Télécharger une image</span>
+                                                  <input type="file" name="image" accept="image/*" >
+                                                </label>
+                                                
+                                                <p class="text-xs text-gray-500 mt-1">
+                                                  Formats acceptés : PNG, JPG, GIF (max 10MB)
+                                                </p>
+                                              </div>
                                             </div>
-                                        </div>
+                                          </div>
 
                                         <div>
                                             <label for="videoUrl" class="block text-sm font-medium text-gray-700">URL
@@ -755,21 +744,31 @@
 
 
             document.getElementById('addIngredientToList').addEventListener('click', function() {
-                const ingredientSelect = document.getElementById('ingredient');
-                const quantityInput = document.getElementById('ingredientQuantity');
-                const unitInput = document.getElementById('ingredientUnit');
+                const selectElement = document.getElementById('ingredient');
+                const tomSelect = selectElement.tomselect;
+                const selectedId = tomSelect.items[0];
+                const selectedOption = tomSelect.options[selectedId];
+
+                const ingredientName = selectedOption.text;
+                const unitInput = document.getElementById('ingredientUnit').value;
+                const quantityInput = document.getElementById('ingredientQuantity').value;
 
                 const tableBody = document.getElementById('ingredientsTable');
                 const newRow = document.createElement('tr');
                 newRow.className = 'ingredient-row';
                 newRow.innerHTML = `
-                                    <td class="px-4 py-2">${ingredientSelect.value}</td>
-                                    <td class="px-4 py-2">${quantityInput.value}</td>
-                                    <td class="px-4 py-2">${unitInput.value}</td>
+                                    <td class="px-4 py-2">${ingredientName}</td>
+                                    <td class="px-4 py-2">${quantityInput}</td>
+                                    <td class="px-4 py-2">${unitInput}</td>
                                     <td class="px-4 py-2">
                                         <button class="text-red-500 hover:text-red-700 remove-ingredient">
                                             <i class="fas fa-times"></i>
                                         </button>
+                                         <input type="hidden" name="ingredients[${selectedId}][id]" value="${selectedId}">
+                                        <input type="hidden" name="ingredients[${selectedId}][name]" value="${ingredientName}">
+                                        <input type="hidden" name="ingredients[${selectedId}][unite]" value="${unitInput}">
+                                        <input type="hidden" name="ingredients[${selectedId}][quantity]" value="${quantityInput}">
+                                        
                                     </td>
                                 `;
 
@@ -778,7 +777,7 @@
                     newRow.remove();
                 });
 
-                tableBody.appendChild(newRow);  
+                tableBody.appendChild(newRow);
                 // Réinitialiser les champs
                 quantityInput.value = '';
 
@@ -786,34 +785,44 @@
 
 
 
-            // Gestion des événements pour le bouton d'ajout d'étape
-            if (addStepToList) {
-                addStepToList.addEventListener('click', function() {
-                    const stepDescription = document.getElementById('stepDescription').value;
 
-                    if (stepDescription) {
-                        // Créer un nouvel élément de liste pour l'étape
+
+            // Gestion des événements pour le bouton d'ajout d'étape
+
+            if (addStepToList) {
+                const stepsList = document.getElementById('stepsList');
+                const stepInput = document.getElementById('stepDescription');
+
+                addStepToList.addEventListener('click', () => {
+                    const description = stepInput.value.trim();
+
+                    if (description) {
+                        const position = stepsList.children.length + 1;
                         const li = document.createElement('li');
                         li.className =
-                            'step-item flex justify-between items-center p-2 rounded-md bg-white';
-                        li.innerHTML = `
-                                        <span>${stepDescription}</span>
-                                        <button type="button" class="text-red-500 hover:text-red-700">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    `;
+                            "step-item flex justify-between items-center p-2 rounded-md bg-white shadow-sm border border-gray-200";
 
-                        // Ajouter l'événement de suppression
-                        const deleteButton = li.querySelector('button');
-                        deleteButton.addEventListener('click', function() {
+                        li.innerHTML = `
+                <span>${position}. ${description}</span>
+                <input type="hidden" name="etapes[${position}][desc]" value="${description}">
+                <input type="hidden" name="etapes[${position}][order]" value="${position}">
+                <button type="button" class="remove-step text-red-500 hover:text-red-700">
+                    ×
+                </button>
+            `;
+
+                        li.querySelector('.remove-step').addEventListener('click', () => {
                             li.remove();
+                            // Met à jour les positions des étapes restantes
+                            Array.from(stepsList.children).forEach((step, index) => {
+                                step.querySelector('span').textContent =
+                                    `${index + 1}. ${step.querySelector('input').value}`;
+                                step.querySelectorAll('input')[1].value = index + 1;
+                            });
                         });
 
-                        // Ajouter l'étape à la liste
-                        document.getElementById('stepsList').appendChild(li);
-
-                        // Réinitialiser le champ d'étape
-                        document.getElementById('stepDescription').value = '';
+                        stepsList.appendChild(li);
+                        stepInput.value = '';
                     }
                 });
             }

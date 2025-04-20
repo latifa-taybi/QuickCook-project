@@ -22,14 +22,14 @@ class StoreRecetteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'prepTime' => 'required|integer|min:1',
-            'difficulty' => 'required|string|in:facile,moyen,defficile',
-            'description' => 'required|string',
-            'etape' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'videoUrl' => 'nullable|url',
+            // 'name' => 'required|string|max:255',
+            // 'category' => 'required|string|max:255',
+            // 'prepTime' => 'required|integer|min:1',
+            // 'difficulty' => 'required|string|in:facile,moyen,difficile',
+            // 'description' => 'required|string',
+            // 'etape' => 'required|string',
+            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // 'videoUrl' => 'nullable|url',
         ];
     }
 }

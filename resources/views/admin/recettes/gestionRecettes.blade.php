@@ -201,7 +201,7 @@
                                             </div>
                                         </div>
                                     
-                                        <!-- Prep Time, Cook Time, and Servings -->
+                                        <!-- Prep Time, Cook Time -->
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
                                                 <label for="prepTime" class="block text-sm font-semibold text-gray-700">Temps de préparation (min)</label>
@@ -210,6 +210,7 @@
                                                     required>
                                             </div>
                                             <div>
+
                                                 <label for="difficulty" class="block text-sm font-semibold text-gray-700">Niveau de difficulté</label>
                                                 <select id="difficulty" name="difficulty"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"

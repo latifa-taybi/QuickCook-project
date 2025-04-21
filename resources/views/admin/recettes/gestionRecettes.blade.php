@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Gestion des recettes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <script src="{{ asset('js/app.js') }}"></script>
-</head>
+@include('layouts.header')
 
 <body class="bg-light text-dark min-h-screen flex flex-col">
     @section('title', 'Gestion des recettes')
@@ -31,11 +20,11 @@
                         <p class="mt-1 text-sm text-gray-500">Gérez toutes vos recettes en un seul endroit</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <button id="addRecipeBtn"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                            <i class="fas fa-plus mr-2"></i>
-                            Ajouter une recette
-                        </button>
+                        <a href="{{ route('recettes.create') }}"><button id="addRecipeBtn"
+                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                                <i class="fas fa-plus mr-2"></i>
+                                Ajouter une recette
+                            </button></a>
                     </div>
                 </div>
 
@@ -58,9 +47,6 @@
                                 class="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-brand-500 focus:border-brand-500 rounded-lg shadow-sm">
                                 <option value="">Tous les régimes</option>
                                 <option value="vegetarien">Végétarien</option>
-                                <option value="vegan">Vegan</option>
-                                <option value="sans-gluten">Sans gluten</option>
-                                <option value="sans-lactose">Sans lactose</option>
                             </select>
                         </div>
 
@@ -68,8 +54,6 @@
                         <div>
                             <select id="sortRecipes"
                                 class="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-brand-500 focus:border-brand-500 rounded-lg shadow-sm">
-                                <option value="recent">Plus récentes</option>
-                                <option value="popular">Plus populaires</option>
                                 <option value="time-asc">Temps (croissant)</option>
                                 <option value="time-desc">Temps (décroissant)</option>
                                 <option value="name-asc">Nom (A-Z)</option>
@@ -80,54 +64,58 @@
 
                 <!-- Recipes grid -->
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8">
-                    <!-- Recipe card 1 -->
-                    <div class="recipe-card bg-white rounded-lg shadow overflow-hidden">
-                        <div class="relative">
-                            <img class="h-48 w-full object-cover"
-                                src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c"
-                                alt="Salade fraîcheur">
-                            <div class="absolute top-0 right-0 m-2">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <i class="fas fa-leaf mr-1"></i> Végétarien
-                                </span>
-                            </div>
-                            <div
-                                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                                <h3 class="text-lg font-medium text-white">Salade fraîcheur</h3>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex items-center text-sm text-gray-500 mb-2">
-                                <i class="fas fa-clock mr-1"></i> 15 min
-                                <span class="mx-2">•</span>
-                                <i class="fas fa-utensils mr-1"></i> Facile
-                            </div>
-                            <p class="text-sm text-gray-600 mb-4 line-clamp-2">Une salade légère et rafraîchissante
-                                parfaite pour l'été, avec des légumes croquants et une vinaigrette citronnée.</p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex -space-x-2">
-                                    <img class="h-6 w-6 rounded-full ring-2 ring-white"
-                                        src="https://randomuser.me/api/portraits/women/32.jpg" alt="Utilisateur">
-                                    <img class="h-6 w-6 rounded-full ring-2 ring-white"
-                                        src="https://randomuser.me/api/portraits/men/44.jpg" alt="Utilisateur">
-                                    <img class="h-6 w-6 rounded-full ring-2 ring-white"
-                                        src="https://randomuser.me/api/portraits/women/55.jpg" alt="Utilisateur">
+                    @foreach ($recettes as $recette)
+                        <!-- Recipe card 1 -->
+                        <div class="recipe-card bg-white rounded-lg shadow overflow-hidden">
+                            <div class="relative">
+                                <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $recette->image) }}"
+                                    alt="{{ $recette->name }}">
+                                <div class="absolute top-0 right-0 m-2">
+                                    @foreach ($recette->regimes as $regime)
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            {{ $regime->name }}
+                                        </span>
+                                    @endforeach
                                 </div>
-                                <div class="flex space-x-1">
-                                    <button class="text-gray-400 hover:text-brand-500 view-recipe" data-id="1">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-brand-500 edit-recipe" data-id="1">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-500 delete-recipe" data-id="1">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                    <h3 class="text-lg font-medium text-white">{{ $recette->name }}</h3>
                                 </div>
                             </div>
+                            <div class="p-4">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-clock mr-1"></i> {{ $recette->prepTime }}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-utensils mr-1"></i> {{ $recette->difficulty }}
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ $recette->description }}</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        <img class="h-6 w-6 rounded-full ring-2 ring-white"
+                                            src="https://randomuser.me/api/portraits/women/32.jpg" alt="Utilisateur">
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <a href="{{ route('recettes.show', $recette->id) }}"><button
+                                                class="text-gray-400 hover:text-brand-500 view-recipe">
+                                                <i class="fas fa-eye"></i>
+                                            </button></a>
+                                        <a href="{{ route('recettes.edit', $recette->id) }}">
+                                            <button class="text-gray-400 hover:text-brand-500 edit-recipe">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </a>
+                                        <button class="text-gray-400 hover:text-red-500 delete-recipe"
+                                            onclick="deleteModal({{ $recette->id }})">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
+                </div>
+                <!-- Pagination -->
             </main>
         </div>
     </div>
@@ -201,7 +189,7 @@
                                             </div>
                                         </div>
                                     
-                                        <!-- Prep Time, Cook Time -->
+                                        <!-- Prep Time, Cook Time, and Servings -->
                                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                             <div>
                                                 <label for="prepTime" class="block text-sm font-semibold text-gray-700">Temps de préparation (min)</label>
@@ -210,7 +198,6 @@
                                                     required>
                                             </div>
                                             <div>
-
                                                 <label for="difficulty" class="block text-sm font-semibold text-gray-700">Niveau de difficulté</label>
                                                 <select id="difficulty" name="difficulty"
                                                     class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
@@ -458,7 +445,7 @@
     </div>
 
     <!-- Modal de confirmation de suppression -->
-    <div id="deleteConfirmModal" class="modal fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
         role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -477,18 +464,24 @@
                             </h3>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-500">
-                                    Êtes-vous sûr de vouloir supprimer cette recette ? Cette action est irréversible.
+                                    Êtes-vous sûr de vouloir supprimer cette recette ? Cette action
+                                    est irréversible.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="confirmDeleteBtn"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Supprimer
-                    </button>
-                    <button type="button" id="cancelDeleteBtn"
+                    <form action="" method="POST" id="deleteRecipeForm">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" id="confirmDeleteBtn"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Supprimer
+                        </button>
+                    </form>
+
+                    <button type="button" id="cancelDeleteBtn" onclick="closeModal()"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Annuler
                     </button>
@@ -497,345 +490,30 @@
         </div>
     </div>
 
-    <!-- Modal de visualisation de recette -->
-    <div id="viewRecipeModal" class="modal fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
-                <div class="bg-white">
-                    <div class="relative">
-                        <img class="w-full h-64 object-cover"
-                            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salade fraîcheur"
-                            id="viewRecipeImage">
-                        <button type="button" id="closeViewRecipeBtn"
-                            class="absolute top-2 right-2 bg-white rounded-full p-2 shadow-md text-gray-500 hover:text-gray-700">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                    <div class="px-4 py-5 sm:p-6">
-                        <h3 class="text-2xl font-bold text-gray-900 mb-2" id="viewRecipeTitle">Salade fraîcheur</h3>
-
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <i class="fas fa-leaf mr-1"></i> Végétarien
-                            </span>
-                            <span
-                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                <i class="fas fa-utensils mr-1"></i> Entrée
-                            </span>
-                        </div>
-
-                        <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <div class="flex items-center mr-4">
-                                <i class="fas fa-clock mr-1"></i>
-                                <span id="viewRecipeTime">15 min</span>
-                            </div>
-                            <div class="flex items-center mr-4">
-                                <i class="fas fa-utensils mr-1"></i>
-                                <span id="viewRecipeDifficulty">Facile</span>
-                            </div>
-                            <div class="flex items-center mr-4">
-                                <i class="fas fa-users mr-1"></i>
-                                <span id="viewRecipeServings">4 personnes</span>
-                            </div>
-                        </div>
-
-                        <p class="text-gray-600 mb-6" id="viewRecipeDescription">Une salade légère et rafraîchissante
-                            parfaite pour l'été, avec des légumes croquants et une vinaigrette citronnée.</p>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <div>
-                                <h4 class="text-lg font-medium text-gray-900 mb-3">Ingrédients</h4>
-                                <ul class="space-y-2" id="viewRecipeIngredients">
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>200g de laitue</span>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>2 tomates</span>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>1 concombre</span>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>1 poivron rouge</span>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>2 c. à soupe d'huile d'olive</span>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>1 c. à soupe de jus de citron</span>
-                                    </li>
-                                    <li class="flex items-center">
-                                        <i class="fas fa-circle text-xs text-brand-500 mr-2"></i>
-                                        <span>Sel et poivre</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div>
-                                <h4 class="text-lg font-medium text-gray-900 mb-3">Préparation</h4>
-                                <ol class="space-y-3 list-decimal list-inside" id="viewRecipeSteps">
-                                    <li class="pl-2">
-                                        <span>Laver et couper tous les légumes.</span>
-                                    </li>
-                                    <li class="pl-2">
-                                        <span>Mélanger l'huile d'olive, le jus de citron, le sel et le poivre pour faire
-                                            la vinaigrette.</span>
-                                    </li>
-                                    <li class="pl-2">
-                                        <span>Disposer les légumes dans un saladier.</span>
-                                    </li>
-                                    <li class="pl-2">
-                                        <span>Verser la vinaigrette sur la salade et mélanger délicatement.</span>
-                                    </li>
-                                    <li class="pl-2">
-                                        <span>Servir immédiatement.</span>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
-        // Gestion du sidebar mobile
-        const sidebar = document.getElementById('sidebar');
-        const openSidebarBtn = document.getElementById('openSidebarBtn');
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-
-        openSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.add('open');
-        });
-
-        closeSidebarBtn.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-        });
-
-        // Gestion du menu utilisateur
-        const userMenuBtn = document.getElementById('userMenuBtn');
-        const userDropdown = document.getElementById('userDropdown');
-
-        userMenuBtn.addEventListener('click', () => {
-            userDropdown.classList.toggle('hidden');
-        });
-
-        // Fermer le dropdown quand on clique ailleurs
-        document.addEventListener('click', (event) => {
-            if (!userMenuBtn.contains(event.target) && !userDropdown.contains(event.target)) {
-                userDropdown.classList.add('hidden');
-            }
-        });
-
-        // Gestion des onglets dans le modal de recette
-        const tabButtons = document.querySelectorAll('.tab-button');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const tabId = button.getAttribute('data-tab');
-
-                // Désactiver tous les onglets
-                tabButtons.forEach(btn => btn.classList.remove('active', 'text-brand-600',
-                    'border-brand-500'));
-                tabButtons.forEach(btn => btn.classList.add('text-gray-500', 'border-transparent'));
-                tabContents.forEach(content => content.classList.remove('active'));
-
-                // Activer l'onglet sélectionné
-                button.classList.add('active', 'text-brand-600', 'border-brand-500');
-                button.classList.remove('text-gray-500', 'border-transparent');
-                document.getElementById(`tab-${tabId}`).classList.add('active');
-            });
-        });
-
-        // Gestion des modals
-        const recipeModal = document.getElementById('recipeModal');
         const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-        const viewRecipeModal = document.getElementById('viewRecipeModal');
-        const addRecipeBtn = document.getElementById('addRecipeBtn');
-        const cancelRecipeBtn = document.getElementById('cancelRecipeBtn');
-        const saveRecipeBtn = document.getElementById('saveRecipeBtn');
-        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-        const closeViewRecipeBtn = document.getElementById('closeViewRecipeBtn');
-        const recipeForm = document.getElementById('recipeForm');
-        const modalTitle = document.getElementById('modal-title');
+        function deleteModal(id) {
+            deleteConfirmModal.classList.remove('hidden');
+            let form = document.getElementById('deleteRecipeForm'); 
+            form.action = `{{ route('recettes.destroy', ':id') }}`.replace(':id', id);
+        }
 
-        let currentRecipeId = null;
+        function closeModal() {
+            deleteConfirmModal.classList.add('hidden');
+        }
 
-        // Ouvrir le modal d'ajout de recette
-        addRecipeBtn.addEventListener('click', () => {
-            modalTitle.textContent = 'Ajouter une recette';
-            recipeForm.reset();
-            document.getElementById('recipeId').value = '';
-            recipeModal.classList.add('active');
-        });
 
-        // Fermer le modal de recette
-        cancelRecipeBtn.addEventListener('click', () => {
-            recipeModal.classList.remove('active');
-        });
 
-        // Fermer le modal de confirmation de suppression
-        cancelDeleteBtn.addEventListener('click', () => {
-            deleteConfirmModal.classList.remove('active');
-        });
 
-        // Fermer le modal de visualisation de recette
-        closeViewRecipeBtn.addEventListener('click', () => {
-            viewRecipeModal.classList.remove('active');
-        });
-
-        // Gérer les boutons d'édition
-        document.querySelectorAll('.edit-recipe').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-                modalTitle.textContent = 'Modifier la recette';
-
-                // Simuler le chargement des données de la recette
-                // Dans une application réelle, vous feriez un appel API ici
-                const mockData = getMockRecipeData(id);
-
-                // Remplir le formulaire avec les données
-                document.getElementById('recipeId').value = id;
-                document.getElementById('recipeName').value = mockData.name;
-                document.getElementById('recipeCategory').value = mockData.category;
-                document.getElementById('prepTime').value = mockData.prepTime;
-                document.getElementById('cookTime').value = mockData.cookTime;
-                document.getElementById('servings').value = mockData.servings;
-                document.getElementById('difficulty').value = mockData.difficulty;
-                document.getElementById('recipeDescription').value = mockData.description;
-
-                // Réinitialiser les onglets
-                tabButtons[0].click();
-
-                recipeModal.classList.add('active');
-            });
-        });
-
-        view-recipe = document.querySelectorAll('.view-recipe');
-        view-recipe.addEventListener('click', () => {
-            viewRecipeModal.classList.add('active');
-        })
-        // Gérer les boutons de visualisation
-        document.querySelectorAll('.view-recipe').forEach(button => {
-            button.addEventListener('click', () => {
-                const id = button.getAttribute('data-id');
-
-                // Simuler le chargement des données de la recette
-                // Dans une application réelle, vous feriez un appel API ici
-                const mockData = getMockRecipeData(id);
-
-                // Remplir le modal avec les données
-                document.getElementById('viewRecipeTitle').textContent = mockData.name;
-                document.getElementById('viewRecipeTime').textContent =
-                    `${parseInt(mockData.prepTime) + parseInt(mockData.cookTime)} min`;
-                document.getElementById('viewRecipeDifficulty').textContent = mockData.difficulty ===
-                    'facile' ? 'Facile' : mockData.difficulty === 'moyen' ? 'Moyen' : 'Difficile';
-                document.getElementById('viewRecipeServings').textContent =
-                    `${mockData.servings} personne${mockData.servings > 1 ? 's' : ''}`;
-                document.getElementById('viewRecipeDescription').textContent = mockData.description;
-
-                
-            });
-        });
-
-        // Gérer les boutons de suppression
-        document.querySelectorAll('.delete-recipe').forEach(button => {
-            button.addEventListener('click', () => {
-                currentRecipeId = button.getAttribute('data-id');
-                deleteConfirmModal.classList.add('active');
-            });
-        });
-
-        // Simuler l'ajout d'un ingrédient à la liste
-        const addIngredientToList = document.getElementById('addIngredientToList');
-        const ingredientsList = document.getElementById('ingredientsList');
-
-        addIngredientToList.addEventListener('click', () => {
-            const name = document.getElementById('ingredientName').value;
-            const quantity = document.getElementById('ingredientQuantity').value;
-            const unit = document.getElementById('ingredientUnit').value;
-
-            if (name && quantity) {
-                const li = document.createElement('li');
-                li.className = 'ingredient-item flex justify-between items-center p-2 rounded-md bg-white';
-                li.innerHTML = `
-                    <span>${quantity}${unit} de ${name}</span>
-                    <button type="button" class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-
-                // Ajouter l'événement de suppression
-                li.querySelector('button').addEventListener('click', () => {
-                    li.remove();
-                });
-
-                ingredientsList.appendChild(li);
-
-                // Réinitialiser les champs
-                document.getElementById('ingredientName').value = '';
-                document.getElementById('ingredientQuantity').value = '';
-            }
-        });
-
-        // Simuler l'ajout d'une étape à la liste
-        const addStepToList = document.getElementById('addStepToList');
-        const stepsList = document.getElementById('stepsList');
-
-        addStepToList.addEventListener('click', () => {
-            const description = document.getElementById('stepDescription').value;
-
-            if (description) {
-                const li = document.createElement('li');
-                li.className = 'step-item flex justify-between items-center p-2 rounded-md bg-white';
-                li.innerHTML = `
-                    <span>${description}</span>
-                    <button type="button" class="text-red-500 hover:text-red-700">
-                        <i class="fas fa-times"></i>
-                    </button>
-                `;
-
-                // Ajouter l'événement de suppression
-                li.querySelector('button').addEventListener('click', () => {
-                    li.remove();
-                });
-
-                stepsList.appendChild(li);
-
-                // Réinitialiser le champ
-                document.getElementById('stepDescription').value = '';
-            }
-        });
-
-        // Simuler l'enregistrement d'une recette
-        saveRecipeBtn.addEventListener('click', () => {
-            // Vérifier la validité du formulaire
-            if (recipeForm.checkValidity()) {
-                // Dans une application réelle, vous enverriez les données à une API
-                alert('Recette enregistrée avec succès !');
-                recipeModal.classList.remove('active');
-
-                // Simuler un rechargement de la page ou mise à jour du tableau
-                // Dans une application réelle, vous mettriez à jour le DOM ou rechargeriez les données
-            } else {
-                // Déclencher la validation native du formulaire
-                recipeForm.reportValidity();
+        new TomSelect("#ingredient", {
+            create: true,
+            sortField: {
+                field: "text",
+                direction: "asc"
             }
         });
     </script>
 </body>
+
 </html>

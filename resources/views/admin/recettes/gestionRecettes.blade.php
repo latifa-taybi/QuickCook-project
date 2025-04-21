@@ -1,17 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Gestion des recettes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <script src="{{ asset('js/app.js') }}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-</head>
+@include('layouts.header')
 
 <body class="bg-light text-dark min-h-screen flex flex-col">
     @section('title', 'Gestion des recettes')
@@ -33,11 +20,11 @@
                         <p class="mt-1 text-sm text-gray-500">Gérez toutes vos recettes en un seul endroit</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <button id="addRecipeBtn"
+                        <a href="{{route('recettes.create')}}"><button id="addRecipeBtn"
                             class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
                             <i class="fas fa-plus mr-2"></i>
                             Ajouter une recette
-                        </button>
+                        </button></a>
                     </div>
                 </div>
 
@@ -77,339 +64,63 @@
 
                 <!-- Recipes grid -->
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mb-8">
-                    <!-- Recipe card 1 -->
-                    <div class="recipe-card bg-white rounded-lg shadow overflow-hidden">
-                        <div class="relative">
-                            <img class="h-48 w-full object-cover"
-                                src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salade fraîcheur">
-                            <div class="absolute top-0 right-0 m-2">
-                                <span
-                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                    <i class="fas fa-leaf mr-1"></i> Végétarien
-                                </span>
-                            </div>
-                            <div
-                                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
-                                <h3 class="text-lg font-medium text-white">Salade fraîcheur</h3>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <div class="flex items-center text-sm text-gray-500 mb-2">
-                                <i class="fas fa-clock mr-1"></i> 15 min
-                                <span class="mx-2">•</span>
-                                <i class="fas fa-utensils mr-1"></i> Facile
-                            </div>
-                            <p class="text-sm text-gray-600 mb-4 line-clamp-2">Une salade légère et rafraîchissante
-                                parfaite pour l'été, avec des légumes croquants et une vinaigrette citronnée.</p>
-                            <div class="flex justify-between items-center">
-                                <div class="flex -space-x-2">
-                                    <img class="h-6 w-6 rounded-full ring-2 ring-white"
-                                        src="https://randomuser.me/api/portraits/women/32.jpg" alt="Utilisateur">
-                                    <img class="h-6 w-6 rounded-full ring-2 ring-white"
-                                        src="https://randomuser.me/api/portraits/men/44.jpg" alt="Utilisateur">
-                                    <img class="h-6 w-6 rounded-full ring-2 ring-white"
-                                        src="https://randomuser.me/api/portraits/women/55.jpg" alt="Utilisateur">
+                    @foreach ($recettes as $recette)
+                        <!-- Recipe card 1 -->
+                        <div class="recipe-card bg-white rounded-lg shadow overflow-hidden">
+                            <div class="relative">
+                                <img class="h-48 w-full object-cover" src="{{ asset('storage/' . $recette->image) }}"
+                                    alt="{{ $recette->name }}">
+                                <div class="absolute top-0 right-0 m-2">
+                                    @foreach ($recette->regimes as $regime)
+                                        <span
+                                            class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            {{ $regime->name }}
+                                        </span>
+                                    @endforeach
                                 </div>
-                                <div class="flex space-x-1">
-                                    <button class="text-gray-400 hover:text-brand-500 view-recipe" data-id="1">
-                                        <i class="fas fa-eye"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-brand-500 edit-recipe" data-id="1">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="text-gray-400 hover:text-red-500 delete-recipe" data-id="1">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                                    <h3 class="text-lg font-medium text-white">{{ $recette->name }}</h3>
                                 </div>
                             </div>
+                            <div class="p-4">
+                                <div class="flex items-center text-sm text-gray-500 mb-2">
+                                    <i class="fas fa-clock mr-1"></i> {{ $recette->prepTime }}
+                                    <span class="mx-2">•</span>
+                                    <i class="fas fa-utensils mr-1"></i> {{ $recette->difficulty }}
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ $recette->description }}</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        <img class="h-6 w-6 rounded-full ring-2 ring-white"
+                                            src="https://randomuser.me/api/portraits/women/32.jpg" alt="Utilisateur">
+                                    </div>
+                                    <div class="flex space-x-1">
+                                        <a href="{{ route('recettes.show', $recette->id)}}"><button class="text-gray-400 hover:text-brand-500 view-recipe">
+                                            <i class="fas fa-eye"></i>
+                                        </button></a>
+                                        <a href="{{ route('recettes.edit', $recette->id) }}">
+                                            <button class="text-gray-400 hover:text-brand-500 edit-recipe">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                        </a>
+                                        <button class="text-gray-400 hover:text-red-500 delete-recipe"
+                                            data-id="{{ $recette->id }}">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endforeach
+                </div>
+                <!-- Pagination -->
             </main>
         </div>
     </div>
 
-    <!-- Modal pour ajouter une recette -->
-    <div id="recipeModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <div class="flex justify-between items-start">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                    Ajouter une recette
-                                </h3>
-                                <button type="button" id="closeModalBtn"
-                                    class="text-gray-400 hover:text-gray-500 focus:outline-none">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            <div class="mt-4">
-                                <!-- Tabs -->
-                                <div class="border-b border-gray-200">
-                                    <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                                        <button
-                                            class="tab-button active whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm"
-                                            data-tab="info">
-                                            Informations générales
-                                        </button>
-                                        <button
-                                            class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500"
-                                            data-tab="ingredients">
-                                            Ingrédients
-                                        </button>
-                                        <button
-                                            class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500"
-                                            data-tab="steps">
-                                            Étapes de préparation
-                                        </button>
-                                        <button
-                                            class="tab-button whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-gray-500"
-                                            data-tab="media">
-                                            Médias
-                                        </button>
-                                    </nav>
-                                </div>
-
-                                <form id="recipeForm" class="mt-4" action="{{ route('recettes.store') }}"
-                                    method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" id="recipeId" value="">
-
-                                    <!-- Tab 1: Informations générales -->
-                                    <div id="tab-info" class="tab-content active space-y-6 bg-white ">
-                                        <!-- Recipe Name and Category -->
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div>
-                                                <label for="recipeName"
-                                                    class="block text-sm font-semibold text-gray-700">Nom de la
-                                                    recette</label>
-                                                <input type="text" name="name" id="recipeName"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    required>
-                                            </div>
-                                            <div>
-                                                <label for="recipeCategory"
-                                                    class="block text-sm font-semibold text-gray-700">Catégorie</label>
-                                                <select id="recipeCategory" name="category"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    required>
-                                                    <option value="">Sélectionner une catégorie</option>
-                                                    <option value="entree">Entrée</option>
-                                                    <option value="plat">Plat principal</option>
-                                                    <option value="dessert">Dessert</option>
-                                                    <option value="boisson">Boisson</option>
-                                                    <option value="aperitif">Apéritif</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Prep Time, Cook Time, and Servings -->
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div>
-                                                <label for="prepTime"
-                                                    class="block text-sm font-semibold text-gray-700">Temps de
-                                                    préparation (min)</label>
-                                                <input type="number" name="prepTime" id="prepTime" min="0"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    required>
-                                            </div>
-                                            <div>
-                                                <label for="difficulty"
-                                                    class="block text-sm font-semibold text-gray-700">Niveau de
-                                                    difficulté</label>
-                                                <select id="difficulty" name="difficulty"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    required>
-                                                    <option value="facile">Facile</option>
-                                                    <option value="moyen">Moyen</option>
-                                                    <option value="difficile">Difficile</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <!-- Recipe Description -->
-                                        <div>
-                                            <label for="recipeDescription"
-                                                class="block text-sm font-semibold text-gray-700">Description</label>
-                                            <textarea id="recipeDescription" name="description" rows="4"
-                                                class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                required></textarea>
-                                        </div>
-
-                                        <!-- Dietary Restrictions -->
-                                        <div>
-                                            <label class="block text-sm font-semibold text-gray-700">Régimes
-                                                alimentaires</label>
-                                            <div class="mt-3 flex flex-wrap gap-4">
-                                                @foreach ($regimes as $regime)
-                                                    <input type="checkbox"
-                                                        class="rounded border-gray-300 text-brand-600 shadow-sm focus:ring-brand-200"
-                                                        name="regimes[]" value={{ $regime->id }}>
-                                                    <span class="ml-2 text-sm text-gray-700">{{ $regime->name }}</span>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
 
 
-                                    <!-- Tab 2: Ingrédients -->
-                                    <div id="tab-ingredients" class="tab-content space-y-6 bg-white">
-                                        <!-- Add Ingredient Form -->
-                                        <div class="flex items-center space-x-6">
-                                            <div class="flex-1">
-                                                <label for="ingredientName"
-                                                    class="block text-sm font-semibold text-gray-700">Ingrédient</label>
-                                                <select id="ingredient" name="ingredients"
-                                                    placeholder="Commence à taper...">
-                                                    @foreach ($ingredients as $ingredient)
-                                                        <option value="{{ $ingredient->id }}">{{ $ingredient->name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="w-24">
-                                                <label for="ingredientUnit"
-                                                    class="block text-sm font-semibold text-gray-700">Unité</label>
-                                                <select id="ingredientUnit" name="unit"
-                                                    class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
-                                                    required>
-                                                    <option value="gramme">g</option>
-                                                    <option value="litre">l</option>
-                                                    <option value="pieces">pc</option>
-                                                    <option value="tasse">tasse</option>
-
-                                                </select>
-                                            </div>
-                                            <div class="w-24">
-                                                <label for="ingredientQuantity"
-                                                    class="block text-sm font-semibold text-gray-700">Quantité</label>
-                                                <input type="number" id="ingredientQuantity" name="quantite"
-                                                    min="0" step="0.01"
-                                                    class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                    placeholder="Quantité">
-                                            </div>
-                                            <div class="pt-4">
-                                                <button type="button" id="addIngredientToList"
-                                                    class="inline-flex items-center px-4 mt-2 py-3 text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Ingredients List -->
-                                        <div class="bg-white rounded-lg shadow-sm p-4">
-                                            <h4 class="text-sm font-semibold text-gray-700 mb-3">Ingrédients</h4>
-                                            <table class="min-w-full divide-y divide-gray-200">
-                                                <thead>
-                                                    <tr>
-                                                        <th
-                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                                                            Nom</th>
-                                                        <th
-                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                                                            Quantité</th>
-                                                        <th
-                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                                                            Unité</th>
-                                                        <th
-                                                            class="px-4 py-2 text-left text-xs font-medium text-gray-500">
-                                                            Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="ingredientsTable"
-                                                    class="bg-white divide-y divide-gray-200">
-                                                    <!-- Les ingrédients seront ajoutés ici dynamiquement -->
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tab 3: Étapes de préparation -->
-                                    <div id="tab-steps" class="tab-content space-y-4">
-                                        <div class="flex items-start space-x-2">
-                                            <div class="flex-1">
-                                                <label for="stepDescription"
-                                                    class="block text-sm font-medium text-gray-700">Description de
-                                                    l'étape</label>
-                                                <textarea id="stepDescription" rows="2" name="etape"
-                                                    class="mt-3 w-full px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"></textarea>
-                                            </div>
-                                            <div class="pt-6">
-                                                <button type="button" id="addStepToList"
-                                                    class="inline-flex items-center px-3 mt-2 py-3 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                                                    <i class="fas fa-plus"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div class="bg-gray-50 rounded-lg p-4">
-                                            <h4 class="text-sm font-medium text-gray-700 mb-2">Liste des étapes</h4>
-                                            <ol id="stepsList" class="space-y-2 list-decimal list-inside">
-                                                <!-- Les étapes seront ajoutées ici dynamiquement -->
-                                            </ol>
-                                        </div>
-                                    </div>
-
-                                    <!-- Tab 4: Médias -->
-                                    <div id="tab-media" class="tab-content space-y-4">
-                                        <div class="mb-4">
-                                            <label class="block text-sm font-medium text-gray-700 mb-1">Photo principale</label>
-                                            
-                                            <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
-                                              <!-- Icône SVG simplifiée -->
-                                              <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                              </svg>
-                                              
-                                              <div class="mt-2">
-                                                <!-- Bouton d'upload stylisé -->
-                                                <label class="bg-white rounded-md font-medium text-blue-600 hover:text-blue-500">
-                                                  <span>Télécharger une image</span>
-                                                  <input type="file" name="image" accept="image/*" >
-                                                </label>
-                                                
-                                                <p class="text-xs text-gray-500 mt-1">
-                                                  Formats acceptés : PNG, JPG, GIF (max 10MB)
-                                                </p>
-                                              </div>
-                                            </div>
-                                          </div>
-
-                                        <div>
-                                            <label for="videoUrl" class="block text-sm font-medium text-gray-700">URL
-                                                de vidéo (YouTube, Vimeo)</label>
-                                            <input type="url" id="videoUrl" name="videoUrl"
-                                                class="mt-2 w-full py-2 px-4 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                                placeholder="https://www.youtube.com/watch?v=...">
-                                        </div>
-                                    </div>
-                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="submit" id="saveRecipeBtn"
-                                            class="w-full hidden inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                            Enregistrer
-                                        </button>
-                                        <button type="button" id="nextRecipeBtn"
-                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                            suivant
-                                        </button>
-                                        <button type="button" id="previousBtn"
-                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                            Précédent
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
 
     <!-- Modal de confirmation de suppression -->
     <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto"
@@ -452,161 +163,11 @@
     </div>
 
     <!-- Modal de visualisation de recette -->
-    <div id="viewRecipeModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-middle bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl w-full">
-                <!-- En-tête avec bouton fermer -->
-                <div class="absolute top-4 right-4 z-10">
-                    <button type="button" id="closeViewRecipeBtn"
-                        class="rounded-full bg-white p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                        <i class="fas fa-times text-lg"></i>
-                    </button>
-                </div>
-
-                <!-- Contenu principal -->
-                <div class="bg-white">
-                    <!-- Image avec overlay -->
-                    <div class="relative h-72 w-full overflow-hidden">
-                        <img class="w-full h-full object-cover"
-                            src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c" alt="Salade fraîcheur"
-                            id="viewRecipeImage">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div class="absolute bottom-0 left-0 right-0 p-6">
-                            <div class="flex flex-wrap gap-2 mb-2">
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-brand-600 shadow-sm">
-                                    <i class="fas fa-leaf mr-1"></i> Végétarien
-                                </span>
-                                <span
-                                    class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/90 text-purple-600 shadow-sm">
-                                    <i class="fas fa-utensils mr-1"></i> Entrée
-                                </span>
-                            </div>
-                            <h3 class="text-3xl font-bold text-white" id="viewRecipeTitle">Salade fraîcheur</h3>
-                        </div>
-                    </div>
-
-                    <!-- Détails de la recette -->
-                    <div class="px-6 py-5">
-                        <!-- Métadonnées -->
-                        <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-6">
-                            <div class="flex items-center">
-                                <i class="fas fa-clock mr-2 text-brand-500"></i>
-                                <span id="viewRecipeTime">15 min</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-utensils mr-2 text-brand-500"></i>
-                                <span id="viewRecipeDifficulty">Facile</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-users mr-2 text-brand-500"></i>
-                                <span id="viewRecipeServings">4 personnes</span>
-                            </div>
-                        </div>
-
-                        <!-- Description -->
-                        <div class="prose prose-sm max-w-none text-gray-600 mb-8" id="viewRecipeDescription">
-                            <p>Une salade légère et rafraîchissante parfaite pour l'été, avec des légumes croquants et
-                                une vinaigrette citronnée.</p>
-                        </div>
-
-                        <!-- Grille ingrédients/préparation -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            <!-- Ingrédients -->
-                            <div class="bg-gray-50 rounded-xl p-5">
-                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                    <i class="fas fa-shopping-basket mr-2 text-brand-500"></i>
-                                    Ingrédients
-                                </h4>
-                                <ul class="space-y-3" id="viewRecipeIngredients">
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">200g de laitue</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">2 tomates</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">1 concombre</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">1 poivron rouge</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">2 c. à soupe d'huile d'olive</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">1 c. à soupe de jus de citron</span>
-                                    </li>
-                                    <li class="flex items-start">
-                                        <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                        <span class="flex-1">Sel et poivre</span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <!-- Préparation -->
-                            <div class="bg-gray-50 rounded-xl p-5">
-                                <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                                    <i class="fas fa-list-ol mr-2 text-brand-500"></i>
-                                    Préparation
-                                </h4>
-                                <ol class="space-y-4" id="viewRecipeSteps">
-                                    <li class="flex">
-                                        <span
-                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">1</span>
-                                        <span>Laver et couper tous les légumes.</span>
-                                    </li>
-                                    <li class="flex">
-                                        <span
-                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">2</span>
-                                        <span>Mélanger l'huile d'olive, le jus de citron, le sel et le poivre pour faire
-                                            la vinaigrette.</span>
-                                    </li>
-                                    <li class="flex">
-                                        <span
-                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">3</span>
-                                        <span>Disposer les légumes dans un saladier.</span>
-                                    </li>
-                                    <li class="flex">
-                                        <span
-                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">4</span>
-                                        <span>Verser la vinaigrette sur la salade et mélanger délicatement.</span>
-                                    </li>
-                                    <li class="flex">
-                                        <span
-                                            class="flex-shrink-0 flex items-center justify-center bg-brand-100 text-brand-800 rounded-full w-6 h-6 mr-3 mt-0.5 text-sm font-medium">5</span>
-                                        <span>Servir immédiatement.</span>
-                                    </li>
-                                </ol>
-                            </div>
-                        </div>
-
-                        <!-- Boutons d'action -->
-                        <div class="mt-8 flex justify-end space-x-3">
-                            <button type="button"
-                                class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                                <i class="fas fa-print mr-2"></i> Modifier
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Sélection des éléments du DOM
-            const addRecipeBtn = document.getElementById('addRecipeBtn');
+            
             const recipeModal = document.getElementById('recipeModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const saveRecipeBtn = document.getElementById('saveRecipeBtn');
@@ -686,13 +247,7 @@
                 }
             }
 
-            // Gestion des événements pour le bouton d'ajout de recette
-            if (addRecipeBtn) {
-                addRecipeBtn.addEventListener('click', function() {
-                    openModal(recipeModal);
-                    showTab('info'); // Afficher le premier onglet par défaut
-                });
-            }
+            
 
             // Gestion des événements pour le bouton de fermeture de la modal
             if (closeModalBtn) {
@@ -765,10 +320,9 @@
                                             <i class="fas fa-times"></i>
                                         </button>
                                          <input type="hidden" name="ingredients[${selectedId}][id]" value="${selectedId}">
-                                        <input type="hidden" name="ingredients[${selectedId}][name]" value="${ingredientName}">
-                                        <input type="hidden" name="ingredients[${selectedId}][unite]" value="${unitInput}">
-                                        <input type="hidden" name="ingredients[${selectedId}][quantity]" value="${quantityInput}">
-                                        
+                                        <input type="hidden" name="ingredients[${ingredientName}][name]" value="${ingredientName}">
+                                        <input type="hidden" name="ingredients[${unitInput}][unite]" value="${unitInput}">
+                                        <input type="hidden" name="ingredients[${quantityInput}][quantity]" value="${quantityInput}">
                                     </td>
                                 `;
 
@@ -871,29 +425,42 @@
                 });
             }
 
+
             // Gestion des événements pour les boutons d'édition de recette
-            editRecipeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const recipeId = this.getAttribute('data-id');
-                    console.log('Édition de la recette ID:', recipeId);
-                    // Ici, vous pouvez ajouter le code pour charger les données de la recette dans le formulaire
-                    document.getElementById('recipeId').value = recipeId;
-                    openModal(recipeModal);
-                    showTab('info'); // Afficher le premier onglet
-                });
-            });
+            // editRecipeButtons.forEach(button => {
+            //     button.addEventListener('click', function() {
+            //         const recipeId = this.getAttribute('data-id');
+            //         const editrecipeForm = document.getElementById("editrecipeModal-"+recipeId);
+            //         // console.log('Édition de la recette ID:', recipeId);
+            //         // Ici, vous pouvez ajouter le code pour charger les données de la recette dans le formulaire
+            //         // document.getElementById('recipeId').value = recipeId;
+            //         editrecipeForm.classList.remove('hidden');
+            //         // openModal(recipeModal);
+            //         // showTab('info'); // Afficher le premier onglet
+
+            //     });
+            // });
 
             // Initialiser l'affichage du premier onglet
             showTab('info');
         });
 
-        new TomSelect("#ingredient", {
-            create: true, // permet d'ajouter un nouvel ingrédient
+        //recuperer l'id de recette lorsque je clique sur view-recipe
+
+        viewRecipeButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const recipeId = this.getAttribute('data-id');
+                // console.log('ID de la recette sélectionnée:', recipeId);
+                // Vous pouvez utiliser l'ID pour effectuer une requête AJAX ou mettre à jour l'interface utilisateur
+            });
+        });
+
+        new TomSelect("#ingredient",{
+            create: true,
             sortField: {
                 field: "text",
                 direction: "asc"
-            },
-            placeholder: "Choisir ou ajouter un ingrédient",
+            }
         });
     </script>
 </body>

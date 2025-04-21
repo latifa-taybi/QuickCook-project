@@ -18,10 +18,12 @@ class RecetteController extends Controller
      */
     public function index()
     {
-        // $recettes = Recette::with(['ingredients', 'regimes'])->get();
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->get();
+        // dd($recettes);
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
-        return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients'));
+        $etapes = Etape::all();
+        return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients', 'etapes', 'recettes'));
     }
 
     /**
@@ -29,13 +31,15 @@ class RecetteController extends Controller
      */
     public function create()
     {
-
+        $regimes = Regime::all();
+        $ingredients = Ingredient::all();
+        return view('admin.recettes.ajoutRecette', compact('regimes', 'ingredients'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-        
+
     public function store(StoreRecetteRequest $request)
     {
 
@@ -52,8 +56,14 @@ class RecetteController extends Controller
 
         $recette->regimes()->attach($request->regimes);
 
+        // dd($request->ingredients);
 
         foreach ($request->ingredients as $item) {
+
+            // dd($item['name']);
+            // dd($item);
+            // dd($item['unite']);
+
             $ingredient = Ingredient::firstOrCreate([
                 'name' => $item['name']
             ]);
@@ -62,7 +72,6 @@ class RecetteController extends Controller
                 'quantity' => $item['quantity'],
                 'unite' => $item['unite'],
             ]);
-
         }
 
 
@@ -77,14 +86,15 @@ class RecetteController extends Controller
         return redirect()->route('recettes.index');
     }
 
-    
+
 
     /**
      * Display the specified resource.
      */
-    public function show(Recette $recette)
+    public function show(Recette $recette) 
     {
-        //
+        $recette = Recette::with(['ingredients', 'regimes', 'etapes'])->find($recette->id);
+        return view('admin.recettes.visualiserRecette', compact('recette'));
     }
 
     /**
@@ -92,7 +102,10 @@ class RecetteController extends Controller
      */
     public function edit(Recette $recette)
     {
-        //
+        $regimes = Regime::all();
+        $ingredients = Ingredient::all();
+        $recetteIngredients = $recette->ingredients()->get();
+        return view('admin.recettes.modifierRecette', compact('recette', 'regimes', 'ingredients', 'recetteIngredients'));
     }
 
     /**
@@ -100,7 +113,76 @@ class RecetteController extends Controller
      */
     public function update(UpdateRecetteRequest $request, Recette $recette)
     {
-        //
+        // dd($recette->id);
+
+        $recette->etapes()->delete();
+        // $recette->ingredients()->detach();
+
+        $recette->update([
+            'name' => $request->name,
+            'category' => $request->category,
+            'prepTime' => $request->prepTime,
+            'difficulty' => $request->difficulty,
+            'description' => $request->description,
+            'image' => $request->hasFile('image') ? $request->file('image')->store('photos', 'public') : $recette->image,
+            'videoUrl' => $request->videoUrl 
+        ]);
+
+        
+    
+
+        foreach ($request->etapes as $item) {
+            Etape::create([
+                'description' => $item['desc'],
+                'numero_etape' => $item['order'],
+                'recette_id' => $recette->id
+            ]);
+        }
+
+        
+        dd($recette->ingredients);
+        foreach ($request->ingredients as $item) {
+            $ingredient = Ingredient::firstOrCreate([
+                'name' => $item['name']
+            ]);
+            
+            $recette->ingredients()->attach($ingredient->id, [
+                'quantity' => $item['quantity'],
+                'unite' => $item['unite'],
+            ]);
+        }
+        dd($recette->regimes);
+        dd($recette->etapes);
+        dd($recette->videoUrl);
+        dd($recette->image);
+        dd($recette->description);
+        dd($recette->difficulty);
+        dd($recette->prepTime);
+        dd($recette->category);
+        dd($recette->name);
+
+
+        // $recette->regimes()->sync($request->regimes);
+
+        // $recette->ingredients()->detach();
+        // foreach ($request->ingredients as $item) {
+        //     $ingredient = Ingredient::firstOrCreate([
+        //         'name' => $item['name']
+        //     ]);
+
+        //     $recette->ingredients()->attach($ingredient->id, [
+        //         'quantity' => $item['quantity'],
+        //         'unite' => $item['unite'],
+        //     ]);
+        // }
+
+        
+
+
+        // dd($recette->ingredients);
+        // dd($recette->regimes);
+
+        // return redirect()->route('recettes.index');
     }
 
     /**

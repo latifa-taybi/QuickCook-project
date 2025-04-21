@@ -24,11 +24,11 @@ Route::get('/search', function () {
 
 
 
+
 Route::get('/categories',[CategoryController::class,'index'])->name('categories.index');
 Route::post('/categories',[CategoryController::class,'store'])->name('categories.store');
 Route::put('/categories',[CategoryController::class,'update'])->name('categories.update');
 Route::post('/categories/destroy',[CategoryController::class,'destroy'])->name('categories.destroy');
-
 
 
 Route::get('/ingredients',[IngredientController::class,'index'])->name('ingredients.index');
@@ -37,6 +37,9 @@ Route::put('/ingredients',[IngredientController::class,'update'])->name('ingredi
 Route::post('/ingredients/destroy',[IngredientController::class,'destroy'])->name('ingredients.destroy');
 
 Route::get('/recettes',[RecetteController::class,'index'])->name('recettes.index');
+Route::get('/recettes/create',[RecetteController::class,'create'])->name('recettes.create');
 Route::post('/recettes',[RecetteController::class,'store'])->name('recettes.store');
-Route::put('/recettes',[RecetteController::class,'update'])->name('recettes.update');
-Route::post('/recettes/destroy',[RecetteController::class,'destroy'])->name('recettes.destroy');
+Route::get('/recettes/{recette}',[RecetteController::class,'show'])->name('recettes.show');
+Route::get('/recettes/edit/{recette}',[RecetteController::class,'edit'])->name('recettes.edit');
+Route::put('/recettes/update/{recette}',[RecetteController::class,'update'])->name('recettes.update');
+Route::post('/recettes/destroy/{recette}',[RecetteController::class,'destroy'])->name('recettes.destroy');

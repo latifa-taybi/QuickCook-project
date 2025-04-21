@@ -252,6 +252,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Ingredients management
+            
             const addIngredientBtn = document.getElementById('addIngredientToList');
             const ingredientsTable = document.getElementById('ingredientsTable');
 

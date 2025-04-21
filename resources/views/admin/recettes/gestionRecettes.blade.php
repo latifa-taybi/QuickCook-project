@@ -153,13 +153,13 @@
                     <form action="" method="POST" id="deleteRecipeForm">
                         @csrf
                         @method('DELETE')
-                        <button type="button" id="confirmDeleteBtn"
+                        <button type="submit" id="confirmDeleteBtn"
                             class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
                             Supprimer
                         </button>
                     </form>
 
-                    <button type="button" id="cancelDeleteBtn"
+                    <button type="button" id="cancelDeleteBtn" onclick="closeModal()"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Annuler
                     </button>
@@ -169,169 +169,20 @@
     </div>
 
 
-
-
-
-    <!-- Modal de visualisation de recette -->
-
     <script>
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
         function deleteModal(id) {
-            alert(id);
-            const deleteConfirmModal = document.getElementById('deleteConfirmModal');
             deleteConfirmModal.classList.remove('hidden');
             let form = document.getElementById('deleteRecipeForm'); 
             form.action = `{{ route('recettes.destroy', ':id') }}`.replace(':id', id);
         }
 
-
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Sélection des éléments du DOM
-
-            const recipeModal = document.getElementById('recipeModal');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const deleteConfirmModal = document.getElementById('deleteConfirmModal');
-            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
-            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-            const addIngredientToList = document.getElementById('addIngredientToList');
-            const addStepToList = document.getElementById('addStepToList');
-            const deleteRecipeButtons = document.querySelectorAll('.delete-recipe');
-            const viewRecipeButtons = document.querySelectorAll('.view-recipe');
-            const editRecipeButtons = document.querySelectorAll('.edit-recipe');
-
-
-            document.getElementById('addIngredientToList').addEventListener('click', function() {
-                const selectElement = document.getElementById('ingredient');
-                const tomSelect = selectElement.tomselect;
-                const selectedId = tomSelect.items[0];
-                const selectedOption = tomSelect.options[selectedId];
-
-                const ingredientName = selectedOption.text;
-                const unitInput = document.getElementById('ingredientUnit').value;
-                const quantityInput = document.getElementById('ingredientQuantity').value;
-
-                const tableBody = document.getElementById('ingredientsTable');
-                const newRow = document.createElement('tr');
-                newRow.className = 'ingredient-row';
-                newRow.innerHTML = `
-                                    <td class="px-4 py-2">${ingredientName}</td>
-                                    <td class="px-4 py-2">${quantityInput}</td>
-                                    <td class="px-4 py-2">${unitInput}</td>
-                                    <td class="px-4 py-2">
-                                        <button class="text-red-500 hover:text-red-700 remove-ingredient">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                         <input type="hidden" name="ingredients[${selectedId}][id]" value="${selectedId}">
-                                        <input type="hidden" name="ingredients[${ingredientName}][name]" value="${ingredientName}">
-                                        <input type="hidden" name="ingredients[${unitInput}][unite]" value="${unitInput}">
-                                        <input type="hidden" name="ingredients[${quantityInput}][quantity]" value="${quantityInput}">
-                                    </td>
-                                `;
-
-                const deleteButton = newRow.querySelector('.remove-ingredient');
-                deleteButton.addEventListener('click', function() {
-                    newRow.remove();
-                });
-
-                tableBody.appendChild(newRow);
-                // Réinitialiser les champs
-                quantityInput.value = '';
-
-            });
-
-            // Gestion des événements pour le bouton d'ajout d'étape
-
-            if (addStepToList) {
-                const stepsList = document.getElementById('stepsList');
-                const stepInput = document.getElementById('stepDescription');
-
-                addStepToList.addEventListener('click', () => {
-                    const description = stepInput.value.trim();
-
-                    if (description) {
-                        const position = stepsList.children.length + 1;
-                        const li = document.createElement('li');
-                        li.className =
-                            "step-item flex justify-between items-center p-2 rounded-md bg-white shadow-sm border border-gray-200";
-
-                        li.innerHTML = `
-                <span>${position}. ${description}</span>
-                <input type="hidden" name="etapes[${position}][desc]" value="${description}">
-                <input type="hidden" name="etapes[${position}][order]" value="${position}">
-                <button type="button" class="remove-step text-red-500 hover:text-red-700">
-                    ×
-                </button>
-            `;
-
-                        li.querySelector('.remove-step').addEventListener('click', () => {
-                            li.remove();
-                            // Met à jour les positions des étapes restantes
-                            Array.from(stepsList.children).forEach((step, index) => {
-                                step.querySelector('span').textContent =
-                                    `${index + 1}. ${step.querySelector('input').value}`;
-                                step.querySelectorAll('input')[1].value = index + 1;
-                            });
-                        });
-
-                        stepsList.appendChild(li);
-                        stepInput.value = '';
-                    }
-                });
-            }
+        function closeModal() {
+            deleteConfirmModal.classList.add('hidden');
+        }
 
 
 
-            // Gestion des événements pour les boutons de suppression de recette
-            // deleteRecipeButtons.forEach(button => {
-            //     button.addEventListener('click', function() {
-            //         deleteConfirmModal.classList.remove('hidden');
-            //     });
-            // });
-
-            // Gestion des événements pour le bouton d'annulation de suppression
-            // if (cancelDeleteBtn) {
-            //     cancelDeleteBtn.addEventListener('click', function() {
-            //         closeModal(deleteConfirmModal);
-            //     });
-            // }
-
-
-            // Gestion des événements pour le bouton de fermeture de visualisation de recette
-            if (closeViewRecipeBtn) {
-                closeViewRecipeBtn.addEventListener('click', function() {
-                    closeModal(viewRecipeModal);
-                });
-            }
-
-
-            // Gestion des événements pour les boutons d'édition de recette
-            // editRecipeButtons.forEach(button => {
-            //     button.addEventListener('click', function() {
-            //         const recipeId = this.getAttribute('data-id');
-            //         const editrecipeForm = document.getElementById("editrecipeModal-"+recipeId);
-            //         // console.log('Édition de la recette ID:', recipeId);
-            //         // Ici, vous pouvez ajouter le code pour charger les données de la recette dans le formulaire
-            //         // document.getElementById('recipeId').value = recipeId;
-            //         editrecipeForm.classList.remove('hidden');
-            //         // openModal(recipeModal);
-            //         // showTab('info'); // Afficher le premier onglet
-
-            //     });
-            // });
-
-            // Initialiser l'affichage du premier onglet
-            showTab('info');
-        });
-
-        //recuperer l'id de recette lorsque je clique sur view-recipe
-
-        viewRecipeButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const recipeId = this.getAttribute('data-id');
-                // console.log('ID de la recette sélectionnée:', recipeId);
-                // Vous pouvez utiliser l'ID pour effectuer une requête AJAX ou mettre à jour l'interface utilisateur
-            });
-        });
 
         new TomSelect("#ingredient", {
             create: true,

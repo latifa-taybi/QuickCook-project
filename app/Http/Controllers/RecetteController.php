@@ -104,8 +104,7 @@ class RecetteController extends Controller
     {
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
-        $recetteIngredients = $recette->ingredients()->get();
-        return view('admin.recettes.modifierRecette', compact('recette', 'regimes', 'ingredients', 'recetteIngredients'));
+        return view('admin.recettes.modifierRecette', compact('recette', 'regimes', 'ingredients'));
     }
 
     /**
@@ -113,10 +112,8 @@ class RecetteController extends Controller
      */
     public function update(UpdateRecetteRequest $request, Recette $recette)
     {
-        // dd($recette->id);
 
         $recette->etapes()->delete();
-        // $recette->ingredients()->detach();
 
         $recette->update([
             'name' => $request->name,
@@ -128,9 +125,6 @@ class RecetteController extends Controller
             'videoUrl' => $request->videoUrl 
         ]);
 
-        
-    
-
         foreach ($request->etapes as $item) {
             Etape::create([
                 'description' => $item['desc'],
@@ -140,7 +134,6 @@ class RecetteController extends Controller
         }
 
         
-        dd($recette->ingredients);
         foreach ($request->ingredients as $item) {
             $ingredient = Ingredient::firstOrCreate([
                 'name' => $item['name']
@@ -177,6 +170,11 @@ class RecetteController extends Controller
      */
     public function destroy(Recette $recette)
     {
-        //
+        $recette->ingredients()->detach();
+        $recette->regimes()->detach();
+        $recette->etapes()->delete();
+        $recette->delete();
+
+        return redirect()->route('recettes.index');
     }
 }

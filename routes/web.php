@@ -42,4 +42,4 @@ Route::post('/recettes',[RecetteController::class,'store'])->name('recettes.stor
 Route::get('/recettes/{recette}',[RecetteController::class,'show'])->name('recettes.show');
 Route::get('/recettes/edit/{recette}',[RecetteController::class,'edit'])->name('recettes.edit');
 Route::put('/recettes/update/{recette}',[RecetteController::class,'update'])->name('recettes.update');
-Route::post('/recettes/destroy/{recette}',[RecetteController::class,'destroy'])->name('recettes.destroy');
+Route::delete('/recettes/destroy/{recette}',[RecetteController::class,'destroy'])->name('recettes.destroy');

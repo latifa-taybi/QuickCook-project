@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Unite;
+use App\Models\Recette;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class UnitePolicy
+class RecettePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class UnitePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Unite $unite): bool
+    public function view(User $user, Recette $recette): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class UnitePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Unite $unite): bool
+    public function update(User $user, Recette $recette): bool
     {
         return false;
     }
@@ -43,7 +43,7 @@ class UnitePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Unite $unite): bool
+    public function delete(User $user, Recette $recette): bool
     {
         return false;
     }
@@ -51,7 +51,7 @@ class UnitePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Unite $unite): bool
+    public function restore(User $user, Recette $recette): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class UnitePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Unite $unite): bool
+    public function forceDelete(User $user, Recette $recette): bool
     {
         return false;
     }

@@ -18,8 +18,7 @@ class IngredientController extends Controller
     {
         $ingredients = Ingredient::with('category')->get();
         $categories = Category::all();
-        $unites = Unite::all();
-        return view('admin.ingredients.gestionIngredients', compact('ingredients','unites', 'categories'));
+        return view('admin.ingredients.gestionIngredients', compact('ingredients', 'categories'));
     }
 
     /**

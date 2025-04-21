@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Unite;
-use App\Http\Requests\StoreUniteRequest;
-use App\Http\Requests\UpdateUniteRequest;
+use App\Models\Regime;
+use App\Http\Requests\StoreRegimeRequest;
+use App\Http\Requests\UpdateRegimeRequest;
 
-class UniteController extends Controller
+class RegimeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        
     }
 
     /**
@@ -27,7 +27,7 @@ class UniteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUniteRequest $request)
+    public function store(StoreRegimeRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class UniteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Unite $unite)
+    public function show(Regime $regime)
     {
         //
     }
@@ -43,7 +43,7 @@ class UniteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Unite $unite)
+    public function edit(Regime $regime)
     {
         //
     }
@@ -51,7 +51,7 @@ class UniteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUniteRequest $request, Unite $unite)
+    public function update(UpdateRegimeRequest $request, Regime $regime)
     {
         //
     }
@@ -59,7 +59,7 @@ class UniteController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Unite $unite)
+    public function destroy(Regime $regime)
     {
         //
     }

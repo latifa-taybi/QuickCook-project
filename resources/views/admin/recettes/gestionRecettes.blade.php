@@ -20,11 +20,11 @@
                         <p class="mt-1 text-sm text-gray-500">Gérez toutes vos recettes en un seul endroit</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <a href="{{route('recettes.create')}}"><button id="addRecipeBtn"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
-                            <i class="fas fa-plus mr-2"></i>
-                            Ajouter une recette
-                        </button></a>
+                        <a href="{{ route('recettes.create') }}"><button id="addRecipeBtn"
+                                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                                <i class="fas fa-plus mr-2"></i>
+                                Ajouter une recette
+                            </button></a>
                     </div>
                 </div>
 
@@ -96,16 +96,17 @@
                                             src="https://randomuser.me/api/portraits/women/32.jpg" alt="Utilisateur">
                                     </div>
                                     <div class="flex space-x-1">
-                                        <a href="{{ route('recettes.show', $recette->id)}}"><button class="text-gray-400 hover:text-brand-500 view-recipe">
-                                            <i class="fas fa-eye"></i>
-                                        </button></a>
+                                        <a href="{{ route('recettes.show', $recette->id) }}"><button
+                                                class="text-gray-400 hover:text-brand-500 view-recipe">
+                                                <i class="fas fa-eye"></i>
+                                            </button></a>
                                         <a href="{{ route('recettes.edit', $recette->id) }}">
                                             <button class="text-gray-400 hover:text-brand-500 edit-recipe">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                         </a>
                                         <button class="text-gray-400 hover:text-red-500 delete-recipe"
-                                            data-id="{{ $recette->id }}">
+                                            onclick="deleteModal({{ $recette->id }})">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </div>
@@ -121,10 +122,9 @@
 
 
 
-
     <!-- Modal de confirmation de suppression -->
-    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto"
-        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
+        role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -142,17 +142,23 @@
                             </h3>
                             <div class="mt-2">
                                 <p class="text-sm text-gray-500">
-                                    Êtes-vous sûr de vouloir supprimer cette recette ? Cette action est irréversible.
+                                    Êtes-vous sûr de vouloir supprimer cette recette ? Cette action
+                                    est irréversible.
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="confirmDeleteBtn"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Supprimer
-                    </button>
+                    <form action="" method="POST" id="deleteRecipeForm">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" id="confirmDeleteBtn"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Supprimer
+                        </button>
+                    </form>
+
                     <button type="button" id="cancelDeleteBtn"
                         class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                         Annuler
@@ -162,140 +168,36 @@
         </div>
     </div>
 
+
+
+
+
     <!-- Modal de visualisation de recette -->
-    
+
     <script>
+        function deleteModal(id) {
+            alert(id);
+            const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+            deleteConfirmModal.classList.remove('hidden');
+            let form = document.getElementById('deleteRecipeForm'); 
+            form.action = `{{ route('recettes.destroy', ':id') }}`.replace(':id', id);
+        }
+
+
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Sélection des éléments du DOM
-            
+
             const recipeModal = document.getElementById('recipeModal');
             const closeModalBtn = document.getElementById('closeModalBtn');
-            const saveRecipeBtn = document.getElementById('saveRecipeBtn');
-            const nextRecipeBtn = document.getElementById('nextRecipeBtn');
-            const previousBtn = document.getElementById('previousBtn');
             const deleteConfirmModal = document.getElementById('deleteConfirmModal');
             const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
             const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
-            const viewRecipeModal = document.getElementById('viewRecipeModal');
-            const closeViewRecipeBtn = document.getElementById('closeViewRecipeBtn');
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const tabContents = document.querySelectorAll('.tab-content');
             const addIngredientToList = document.getElementById('addIngredientToList');
             const addStepToList = document.getElementById('addStepToList');
             const deleteRecipeButtons = document.querySelectorAll('.delete-recipe');
             const viewRecipeButtons = document.querySelectorAll('.view-recipe');
             const editRecipeButtons = document.querySelectorAll('.edit-recipe');
-
-            // Variables pour suivre la navigation dans les onglets
-            let currentTabIndex = 0;
-            const totalTabs = tabButtons.length;
-
-            // Fonctions pour la gestion des modales
-            function openModal(modal) {
-                modal.classList.remove('hidden');
-            }
-
-            function closeModal(modal) {
-                modal.classList.add('hidden');
-            }
-
-            // Fonctions pour la gestion des onglets
-            function showTab(tabId) {
-                // Cacher tous les contenus d'onglets
-                tabContents.forEach(content => {
-                    content.classList.remove('active');
-                });
-
-                // Supprimer la classe active de tous les boutons d'onglets
-                tabButtons.forEach(button => {
-                    button.classList.remove('active', 'border-brand-500', 'text-brand-600');
-                    button.classList.add('text-gray-500', 'border-transparent');
-                });
-
-                // Afficher le contenu de l'onglet sélectionné
-                const selectedTab = document.getElementById('tab-' + tabId);
-                if (selectedTab) {
-                    selectedTab.classList.add('active');
-                }
-
-                // Mettre en évidence le bouton d'onglet sélectionné
-                const selectedButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-                if (selectedButton) {
-                    selectedButton.classList.remove('text-gray-500', 'border-transparent');
-                    selectedButton.classList.add('active', 'border-brand-500', 'text-brand-600');
-
-                    // Mettre à jour l'index de l'onglet actuel
-                    currentTabIndex = Array.from(tabButtons).indexOf(selectedButton);
-                }
-
-                // Mettre à jour le texte du bouton "suivant/enregistrer" selon l'onglet
-                if (currentTabIndex === totalTabs - 1) {
-                    nextRecipeBtn.classList.add('hidden');
-                    saveRecipeBtn.classList.remove('hidden');
-                } else {
-                    nextRecipeBtn.classList.remove('hidden');
-                    saveRecipeBtn.classList.add('hidden');
-                }
-
-                // Afficher/masquer le bouton Précédent
-                if (previousBtn) {
-                    if (currentTabIndex === 0) {
-                        previousBtn.style.display = 'none';
-                    } else {
-                        previousBtn.style.display = 'inline-flex';
-                    }
-                }
-            }
-
-            
-
-            // Gestion des événements pour le bouton de fermeture de la modal
-            if (closeModalBtn) {
-                closeModalBtn.addEventListener('click', function() {
-                    closeModal(recipeModal);
-                    // Réinitialiser le formulaire si nécessaire
-                    document.getElementById('recipeForm').reset();
-                });
-            }
-
-            // Gestion des événements pour les boutons d'onglets
-            tabButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    showTab(tabId);
-                });
-            });
-
-            // Gestion des événements pour le bouton suivant/enregistrer
-            if (nextRecipeBtn) {
-                nextRecipeBtn.addEventListener('click', function() {
-                    if (currentTabIndex < totalTabs - 1) {
-                        // Passer à l'onglet suivant
-                        const nextTabButton = tabButtons[currentTabIndex + 1];
-                        const nextTabId = nextTabButton.getAttribute('data-tab');
-                        showTab(nextTabId);
-                    } else {
-                        // Sur le dernier onglet, enregistrer la recette
-                        // Ici, vous pouvez ajouter le code pour enregistrer la recette
-                        console.log('Enregistrement de la recette...');
-                        closeModal(recipeModal);
-                        // Réinitialiser le formulaire après l'enregistrement
-                        document.getElementById('recipeForm').reset();
-                    }
-                });
-            }
-
-            // Gestion des événements pour le bouton précédent
-            if (previousBtn) {
-                previousBtn.addEventListener('click', function() {
-                    if (currentTabIndex > 0) {
-                        // Revenir à l'onglet précédent
-                        const prevTabButton = tabButtons[currentTabIndex - 1];
-                        const prevTabId = prevTabButton.getAttribute('data-tab');
-                        showTab(prevTabId);
-                    }
-                });
-            }
 
 
             document.getElementById('addIngredientToList').addEventListener('click', function() {
@@ -337,10 +239,6 @@
 
             });
 
-
-
-
-
             // Gestion des événements pour le bouton d'ajout d'étape
 
             if (addStepToList) {
@@ -381,42 +279,22 @@
                 });
             }
 
-            // Gestion des événements pour les boutons de suppression de recette
-            deleteRecipeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const recipeId = this.getAttribute('data-id');
-                    // Stocker l'ID de la recette pour l'utiliser lors de la confirmation
-                    confirmDeleteBtn.setAttribute('data-id', recipeId);
-                    openModal(deleteConfirmModal);
-                });
-            });
 
-            // Gestion des événements pour le bouton de confirmation de suppression
-            if (confirmDeleteBtn) {
-                confirmDeleteBtn.addEventListener('click', function() {
-                    const recipeId = this.getAttribute('data-id');
-                    console.log('Suppression de la recette ID:', recipeId);
-                    // Ici, vous pouvez ajouter le code pour supprimer la recette
-                    closeModal(deleteConfirmModal);
-                });
-            }
+
+            // Gestion des événements pour les boutons de suppression de recette
+            // deleteRecipeButtons.forEach(button => {
+            //     button.addEventListener('click', function() {
+            //         deleteConfirmModal.classList.remove('hidden');
+            //     });
+            // });
 
             // Gestion des événements pour le bouton d'annulation de suppression
-            if (cancelDeleteBtn) {
-                cancelDeleteBtn.addEventListener('click', function() {
-                    closeModal(deleteConfirmModal);
-                });
-            }
+            // if (cancelDeleteBtn) {
+            //     cancelDeleteBtn.addEventListener('click', function() {
+            //         closeModal(deleteConfirmModal);
+            //     });
+            // }
 
-            // Gestion des événements pour les boutons de visualisation de recette
-            viewRecipeButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const recipeId = this.getAttribute('data-id');
-                    console.log('Voir la recette ID:', recipeId);
-                    // Ici, vous pouvez ajouter le code pour charger les détails de la recette
-                    openModal(viewRecipeModal);
-                });
-            });
 
             // Gestion des événements pour le bouton de fermeture de visualisation de recette
             if (closeViewRecipeBtn) {
@@ -455,7 +333,7 @@
             });
         });
 
-        new TomSelect("#ingredient",{
+        new TomSelect("#ingredient", {
             create: true,
             sortField: {
                 field: "text",

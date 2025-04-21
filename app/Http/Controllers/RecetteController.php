@@ -151,15 +151,6 @@ class RecetteController extends Controller
                 'unite' => $item['unite'],
             ]);
         }
-        dd($recette->regimes);
-        dd($recette->etapes);
-        dd($recette->videoUrl);
-        dd($recette->image);
-        dd($recette->description);
-        dd($recette->difficulty);
-        dd($recette->prepTime);
-        dd($recette->category);
-        dd($recette->name);
 
 
         // $recette->regimes()->sync($request->regimes);
@@ -177,10 +168,6 @@ class RecetteController extends Controller
         // }
 
         
-
-
-        // dd($recette->ingredients);
-        // dd($recette->regimes);
 
         // return redirect()->route('recettes.index');
     }

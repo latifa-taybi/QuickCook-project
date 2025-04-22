@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RecetteController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -43,3 +44,6 @@ Route::get('/recettes/{recette}',[RecetteController::class,'show'])->name('recet
 Route::get('/recettes/edit/{recette}',[RecetteController::class,'edit'])->name('recettes.edit');
 Route::put('/recettes/update/{recette}',[RecetteController::class,'update'])->name('recettes.update');
 Route::delete('/recettes/destroy/{recette}',[RecetteController::class,'destroy'])->name('recettes.destroy');
+
+Route::post('/register',[AuthController::class,'register'])->name('register');
+Route::post('/login',[AuthController::class,'login'])->name('login');

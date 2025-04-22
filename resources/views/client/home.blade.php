@@ -84,7 +84,7 @@
                         </span>
                     </div>
                     <div class="hidden md:ml-10 md:flex md:space-x-8">
-                        <a href="#"
+                        <a href="{{route ('home')}}"
                             class="menu-item active text-brand-600 inline-flex items-center px-1 pt-1 text-sm font-medium">
                             Accueil
                         </a>
@@ -130,13 +130,9 @@
             <!-- Mobile menu -->
             <div class="bg-white md:hidden hidden" id="mobileMenu">
                 <div class="pt-2 pb-3 space-y-1">
-                    <a href="index.html"
+                    <a href="{{route ('home')}}"
                         class="bg-brand-50 border-l-4 border-brand-500 text-brand-700 block pl-3 pr-4 py-2 text-base font-medium">
                         Accueil
-                    </a>
-                    <a href="#"
-                        class="border-l-4 border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 text-base font-medium">
-                        À propos
                     </a>
                 </div>
                 <div class="pt-4 pb-3 border-t border-gray-200">
@@ -167,12 +163,12 @@
                         vous. Réduisez le gaspillage alimentaire et découvrez de nouvelles recettes.
                     </p>
                     <div class="mt-10 flex flex-col sm:flex-row gap-4 fade-in-delay-2">
-                        <a href="ingredients.html"
+                        <button id="startBtn"
                             class="btn-hover inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-full shadow-lg text-white bg-accent-600 hover:bg-accent-700 transition-all duration-300">
                             Commencer maintenant
                             <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                        <a href="#how-it-works"
+                        </button>
+                        <a href="#processus"
                             class="inline-flex items-center justify-center px-8 py-3 border border-white/30 text-base font-medium rounded-full shadow-lg text-white hover:bg-white/10 transition-all duration-300">
                             Comment ça marche
                             <i class="fas fa-question-circle ml-2"></i>
@@ -688,18 +684,18 @@
                     <div>
                         <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Navigation</h3>
                         <ul class="mt-4 space-y-4">
-                            <li><a href="index.html"
+                            <li><a href="{{route('home')}}"
                                     class="text-base text-gray-300 hover:text-white transition-colors duration-300">Accueil</a>
                             </li>
-                            <li><a href="ingredients.html"
-                                    class="text-base text-gray-300 hover:text-white transition-colors duration-300">Ingrédients</a>
+                            <li><a href="#Processus"
+                                    class="text-base text-gray-300 hover:text-white transition-colors duration-300">Processus</a>
                             </li>
-                            <li><a href="#"
+                            <li><a href="#Services"
+                                    class="text-base text-gray-300 hover:text-white transition-colors duration-300">Services</a>
+                            </li>
+                            <li><a href="#Recettes"
                                     class="text-base text-gray-300 hover:text-white transition-colors duration-300">Recettes</a>
                             </li>
-                            <li><a href="#"
-                                    class="text-base text-gray-300 hover:text-white transition-colors duration-300">À
-                                    propos</a></li>
                         </ul>
                     </div>
                     <div>
@@ -741,7 +737,8 @@
                                     Connexion
                                 </h3>
                                 <div class="mt-2">
-                                    <form id="loginForm" class="space-y-6">
+                                    <form id="loginForm" action="{{route('login')}}" method="POST" class="space-y-6">
+                                        @csrf
                                         <div>
                                             <label for="email" class="block text-sm font-medium text-gray-300">
                                                 Email
@@ -765,14 +762,6 @@
                                         </div>
 
                                         <div class="flex items-center justify-between">
-                                            <div class="flex items-center">
-                                                <input id="remember-me" name="remember-me" type="checkbox"
-                                                    class="h-4 w-4 text-brand-600 focus:ring-brand-500 border-gray-600 rounded bg-dark/50">
-                                                <label for="remember-me" class="ml-2 block text-sm text-gray-300">
-                                                    Se souvenir de moi
-                                                </label>
-                                            </div>
-
                                             <div class="text-sm">
                                                 <a href="#"
                                                     class="font-medium text-brand-400 hover:text-brand-300">
@@ -826,10 +815,10 @@
                                     <div class="text-sm text-center mt-6">
                                         <p class="text-gray-400">
                                             Pas encore de compte?
-                                            <a href="#" id="showRegisterForm"
+                                            <button id="showRegisterForm"
                                                 class="font-medium text-brand-400 hover:text-brand-300">
                                                 S'inscrire
-                                            </a>
+                                            </button>
                                         </p>
                                     </div>
                                 </div>
@@ -862,7 +851,8 @@
                                     Inscription
                                 </h3>
                                 <div class="mt-2">
-                                    <form id="registerForm" class="space-y-6">
+                                    <form id="registerForm" action="{{ route('register') }}" method="POST" class="space-y-6">
+                                        @csrf
                                         <div class="grid grid-cols-2 gap-4">
                                             <div>
                                                 <label for="firstName"
@@ -908,17 +898,6 @@
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label for="confirmPassword"
-                                                class="block text-sm font-medium text-gray-300">
-                                                Confirmer le mot de passe
-                                            </label>
-                                            <div class="mt-1">
-                                                <input id="confirmPassword" name="confirmPassword" type="password"
-                                                    required
-                                                    class="appearance-none block w-full px-3 py-2 bg-dark/50 border border-gray-600 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-brand-500 focus:border-brand-500 sm:text-sm text-white">
-                                            </div>
-                                        </div>
 
                                         <div class="flex items-center">
                                             <input id="terms" name="terms" type="checkbox" required
@@ -940,10 +919,10 @@
                                     <div class="text-sm text-center mt-6">
                                         <p class="text-gray-400">
                                             Déjà inscrit?
-                                            <a href="#" id="showLoginForm"
+                                            <button id="showLoginForm"
                                                 class="font-medium text-brand-400 hover:text-brand-300">
                                                 Se connecter
-                                            </a>
+                                            </button>
                                         </p>
                                     </div>
                                 </div>
@@ -1024,6 +1003,9 @@
             const loginModal = document.getElementById('loginModal');
             const closeLoginModal = document.getElementById('closeLoginModal');
             const showRegisterForm = document.getElementById('showRegisterForm');
+            const startBtn = document.getElementById('startBtn');
+
+            startBtn.addEventListener('click', openLoginModal);
 
             function openLoginModal() {
                 loginModal.classList.remove('hidden');
@@ -1060,62 +1042,9 @@
 
             // Login form submission
             const loginForm = document.getElementById('loginForm');
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
+           
 
-                // Simulate login
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-
-                // In a real app, you would send this to your server
-                console.log('Login attempt:', {
-                    email,
-                    password
-                });
-
-                // For demo purposes, we'll just simulate a successful login
-                document.getElementById('loginBtn').classList.add('hidden');
-                document.getElementById('userMenu').classList.remove('hidden');
-
-                if (document.getElementById('mobileLoginBtn')) {
-                    document.getElementById('mobileLoginBtn').classList.add('hidden');
-                    document.getElementById('mobileUserLoggedIn').classList.remove('hidden');
-                }
-
-                closeLoginModalFn();
-            });
-
-            // Register form submission
-            const registerForm = document.getElementById('registerForm');
-            registerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-
-                // Simulate registration
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const email = document.getElementById('registerEmail').value;
-                const password = document.getElementById('registerPassword').value;
-                const confirmPassword = document.getElementById('confirmPassword').value;
-
-                // In a real app, you would validate and send this to your server
-                console.log('Registration attempt:', {
-                    firstName,
-                    lastName,
-                    email,
-                    password
-                });
-
-                // For demo purposes, we'll just simulate a successful registration and login
-                document.getElementById('loginBtn').classList.add('hidden');
-                document.getElementById('userMenu').classList.remove('hidden');
-
-                if (document.getElementById('mobileLoginBtn')) {
-                    document.getElementById('mobileLoginBtn').classList.add('hidden');
-                    document.getElementById('mobileUserLoggedIn').classList.remove('hidden');
-                }
-
-                closeRegisterModalFn();
-            });
+            
 
             // Logout functionality
             const logoutBtn = document.getElementById('logoutBtn');

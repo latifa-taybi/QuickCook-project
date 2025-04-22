@@ -31,8 +31,8 @@
 
         <!-- Navigation -->
         <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
-            <a href="{{route('dashboard')}}"
-                class="nav-item flex items-center {{request()->routeIs('dashboard') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('statistique')}}"
+                class="nav-item flex items-center {{request()->routeIs('statistique') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-tachometer-alt mr-3 text-brand-400"></i>
                 Tableau de bord
             </a>

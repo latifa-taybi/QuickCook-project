@@ -9,6 +9,7 @@ use App\Models\Etape;
 use App\Models\Ingredient;
 use App\Models\Regime;
 use App\Models\Unite;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RecetteController extends Controller
@@ -177,4 +178,44 @@ class RecetteController extends Controller
 
         return redirect()->route('recettes.index');
     }
+
+    public function home(){
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->inRandomOrder()->limit(3)->get();
+        $regimes = Regime::all();
+        $ingredients = Ingredient::all();
+        return view('client.home', compact('regimes', 'ingredients', 'recettes'));
+    }
+
+    public function statistique()
+    {
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->get();
+        $regimes = Regime::all();
+        $ingredients = Ingredient::all();
+        $users = User::all();
+        return view('admin.dashboard', compact('regimes', 'ingredients', 'users', 'recettes'));
+    }
+
+
+
+    public function indexSearch(){
+        $ingredients = Ingredient::all();
+        return view('client.search', compact('ingredients'));
+    }
+
+    /**
+     * Search for a recipe based on ingredients.
+     */
+
+    public function search(Request $request)
+    {
+
+        $ingredients = $request->ingredients;
+
+        $recettes = Recette::whereHas('ingredients', function ($query) use ($ingredients) {
+            $query->whereIn('name', $ingredients);
+        })->with(['ingredients', 'regimes', 'etapes'])->get();
+
+        // dd($recettes);
+
+        return view('client.search', compact('recettes'));}
 }

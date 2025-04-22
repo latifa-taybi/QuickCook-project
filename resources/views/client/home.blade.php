@@ -439,30 +439,28 @@
                 <div class="swiper-container recipe-swiper">
                     <div class="swiper-wrapper pb-5">
                         <!-- Recipe 1 -->
+                        @foreach($recettes as $recette)
                         <div class="swiper-slide p-4">
                             <div class="card-hover bg-white rounded-xl shadow-lg overflow-hidden">
                                 <div class="relative overflow-hidden h-48">
-                                    <img src="https://images.unsplash.com/photo-1598103442097-8b74394b95c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                                        alt="Poulet rôti aux herbes"
+                                    <img src="{{ asset('storage/' . $recette->image) }}"
+                                        alt="{{$recette->name}}"
                                         class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                                     <div
                                         class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                                         <div class="p-4 text-white">
                                             <div class="flex items-center text-sm">
-                                                <i class="fas fa-clock mr-1"></i> 60 min
+                                                <i class="fas fa-clock mr-1"></i> {{$recette->prepTime}}
                                                 <span class="mx-2">•</span>
-                                                <span>Facile</span>
+                                                <span>{{$recette->difficulty}}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <button
-                                        class="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full text-gray-600 hover:text-brand-500 focus:outline-none transition-all duration-300">
-                                        <i class="far fa-heart"></i>
-                                    </button>
+                                    
                                 </div>
                                 <div class="p-5">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Poulet rôti aux herbes</h3>
-                                    <div class="flex items-center mb-4">
+                                    <h3 class="text-lg font-bold text-gray-900 mb-2">{{$recette->name}}</h3>
+                                    {{-- <div class="flex items-center mb-4">
                                         <div class="flex text-accent-500">
                                             <i class="fas fa-star"></i>
                                             <i class="fas fa-star"></i>
@@ -471,16 +469,12 @@
                                             <i class="fas fa-star-half-alt"></i>
                                         </div>
                                         <span class="ml-1 text-sm text-gray-500">(4.5)</span>
-                                    </div>
+                                    </div> --}}
                                     <div class="flex flex-wrap gap-1 mb-4">
+                                        @foreach($recette->ingredients as $ingredient)
                                         <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Poulet</span>
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Thym</span>
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Ail</span>
-                                        <span
-                                            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">+3</span>
+                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">{{$ingredient->name}}</span>
+                                        @endforeach
                                     </div>
                                     <button
                                         class="w-full bg-brand-600 text-white py-2 px-4 rounded-lg hover:bg-brand-700 transition-all duration-300 flex items-center justify-center">
@@ -489,120 +483,10 @@
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Recipe 2 -->
-                        <div class="swiper-slide p-4">
-                            <div class="card-hover bg-white rounded-xl shadow-lg overflow-hidden">
-                                <div class="relative overflow-hidden h-48">
-                                    <img src="https://images.unsplash.com/photo-1612874742237-6526221588e3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1171&q=80"
-                                        alt="Pâtes à la carbonara"
-                                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                                        <div class="p-4 text-white">
-                                            <div class="flex items-center text-sm">
-                                                <i class="fas fa-clock mr-1"></i> 20 min
-                                                <span class="mx-2">•</span>
-                                                <span>Facile</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button
-                                        class="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full text-gray-600 hover:text-brand-500 focus:outline-none transition-all duration-300">
-                                        <i class="far fa-heart"></i>
-                                    </button>
-                                </div>
-                                <div class="p-5">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Pâtes à la carbonara</h3>
-                                    <div class="flex items-center mb-4">
-                                        <div class="flex text-accent-500">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                        </div>
-                                        <span class="ml-1 text-sm text-gray-500">(4.8)</span>
-                                    </div>
-                                    <div class="flex flex-wrap gap-1 mb-4">
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Pâtes</span>
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Œufs</span>
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Lardons</span>
-                                        <span
-                                            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">+2</span>
-                                    </div>
-                                    <button
-                                        class="w-full bg-brand-600 text-white py-2 px-4 rounded-lg hover:bg-brand-700 transition-all duration-300 flex items-center justify-center">
-                                        <i class="fas fa-eye mr-2"></i> Voir la recette
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Recipe 3 -->
-                        <div class="swiper-slide p-4">
-                            <div class="card-hover bg-white rounded-xl shadow-lg overflow-hidden">
-                                <div class="relative overflow-hidden h-48">
-                                    <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
-                                        alt="Salade de tomates et mozzarella"
-                                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
-                                        <div class="p-4 text-white">
-                                            <div class="flex items-center text-sm">
-                                                <i class="fas fa-clock mr-1"></i> 10 min
-                                                <span class="mx-2">•</span>
-                                                <span>Très facile</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button
-                                        class="absolute top-3 right-3 bg-white/80 backdrop-blur-sm p-2 rounded-full text-gray-600 hover:text-brand-500 focus:outline-none transition-all duration-300">
-                                        <i class="far fa-heart"></i>
-                                    </button>
-                                </div>
-                                <div class="p-5">
-                                    <h3 class="text-lg font-bold text-gray-900 mb-2">Salade de tomates et mozzarella
-                                    </h3>
-                                    <div class="flex items-center mb-4">
-                                        <div class="flex text-accent-500">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <span class="ml-1 text-sm text-gray-500">(4.2)</span>
-                                    </div>
-                                    <div class="flex flex-wrap gap-1 mb-4">
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Tomate</span>
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Mozzarella</span>
-                                        <span
-                                            class="bg-brand-50 text-brand-700 px-2 py-0.5 rounded-full text-xs">Basilic</span>
-                                        <span
-                                            class="bg-gray-100 text-gray-700 px-2 py-0.5 rounded-full text-xs">+4</span>
-                                    </div>
-                                    <button
-                                        class="w-full bg-brand-600 text-white py-2 px-4 rounded-lg hover:bg-brand-700 transition-all duration-300 flex items-center justify-center">
-                                        <i class="fas fa-eye mr-2"></i> Voir la recette
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
-                <div class="mt-8 text-center mb-5">
-                    <a href="#"
-                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full shadow-sm text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 transition-all duration-300 btn-hover">
-                        Voir toutes les recettes
-                        <i class="fas fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
+                
             </div>
         </div>
 

@@ -17,7 +17,6 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
                         <h2 class="text-2xl font-bold text-gray-800 mb-6">Modifier la recette</h2>
-
                         <!-- Form -->
                         <form id="recipeForm" class="mt-4 space-y-8" action="{{ route('recettes.update', $recette->id) }}"
                             method="POST" enctype="multipart/form-data">

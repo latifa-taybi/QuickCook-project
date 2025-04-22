@@ -46,7 +46,9 @@
                             <select id="dietFilter"
                                 class="block w-full pl-3 pr-10 py-2 text-sm border-gray-300 focus:outline-none focus:ring-brand-500 focus:border-brand-500 rounded-lg shadow-sm">
                                 <option value="">Tous les régimes</option>
-                                <option value="vegetarien">Végétarien</option>
+                                @foreach ($regimes as $regime)
+                                    <option value="{{ $regime->id }}">{{ $regime->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 

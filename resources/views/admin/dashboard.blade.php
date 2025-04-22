@@ -28,11 +28,11 @@
                         <p class="mt-1 text-sm text-gray-500">Gérez toutes vos recettes en un seul endroit</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <button id="addRecipeBtn"
+                        <a href="{{ route('recettes.create') }}"><button id="addRecipeBtn"
                             class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
                             <i class="fas fa-plus mr-2"></i>
                             Ajouter une recette
-                        </button>
+                        </button></a>
                     </div>
                 </div>
                 <!-- Stats cards -->
@@ -47,7 +47,7 @@
                                     <dl>
                                         <dt class="text-sm font-medium text-gray-500 truncate">Total des recettes</dt>
                                         <dd class="flex items-baseline">
-                                            <div class="text-2xl font-semibold text-gray-900">42</div>
+                                            <div class="text-2xl font-semibold text-gray-900">{{ $recettes->count() }}</div>
                                         </dd>
                                     </dl>
                                 </div>
@@ -63,10 +63,10 @@
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt class="text-sm font-medium text-gray-500 truncate">Recettes végétariennes
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Régimes alimentaires
                                         </dt>
                                         <dd class="flex items-baseline">
-                                            <div class="text-2xl font-semibold text-gray-900">15</div>
+                                            <div class="text-2xl font-semibold text-gray-900">{{$regimes->count()}}</div>
                                         </dd>
                                     </dl>
                                 </div>
@@ -82,9 +82,9 @@
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt class="text-sm font-medium text-gray-500 truncate">Recettes populaires</dt>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Ingrédients</dt>
                                         <dd class="flex items-baseline">
-                                            <div class="text-2xl font-semibold text-gray-900">8</div>
+                                            <div class="text-2xl font-semibold text-gray-900">{{$ingredients->count()}}</div>
                                         </dd>
                                     </dl>
                                 </div>
@@ -95,20 +95,22 @@
                     <div class="bg-white overflow-hidden shadow rounded-lg">
                         <div class="px-4 py-5 sm:p-6">
                             <div class="flex items-center">
-                                <div class="flex-shrink-0 bg-purple-100 rounded-md p-3">
-                                    <i class="fas fa-clock text-purple-600 text-xl"></i>
+                                <div class="flex-shrink-0 bg-accent-100 rounded-md p-3">
+                                    <i class="fas fa-star text-accent-600 text-xl"></i>
                                 </div>
                                 <div class="ml-5 w-0 flex-1">
                                     <dl>
-                                        <dt class="text-sm font-medium text-gray-500 truncate">Temps moyen</dt>
+                                        <dt class="text-sm font-medium text-gray-500 truncate">Users</dt>
                                         <dd class="flex items-baseline">
-                                            <div class="text-2xl font-semibold text-gray-900">35 min</div>
+                                            <div class="text-2xl font-semibold text-gray-900">{{$users->count()}}</div>
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    
                 </div>
             </main>
         </div>

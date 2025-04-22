@@ -7,24 +7,23 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->name('dashboard');
+
 
 Route::get('/gestionUtilisateurs', function () {
     return view('admin.utilisateurs.gestionUtilisateurs');
 })->name('gestionUtilisateurs');
 
-Route::get('/home', function () {
-    return view('client.home');
-})->name('home');
 
-Route::get('/search', function () {
-    return view('client.search');
-})->name('search');
+Route::get('/recette', function () {
+    return view('client.recettes');
+})->name('recette');
 
 
 
+
+
+Route::get('/', [RecetteController::class,'home'])->name('home');
+Route::get('/statistique', [RecetteController::class,'statistique'])->name('statistique');
 
 Route::get('/categories',[CategoryController::class,'index'])->name('categories.index');
 Route::post('/categories',[CategoryController::class,'store'])->name('categories.store');
@@ -47,3 +46,8 @@ Route::delete('/recettes/destroy/{recette}',[RecetteController::class,'destroy']
 
 Route::post('/register',[AuthController::class,'register'])->name('register');
 Route::post('/login',[AuthController::class,'login'])->name('login');
+
+
+Route::get('/search',[RecetteController::class,'indexSearch'])->name('recettes.search');
+Route::post('/search',[RecetteController::class,'search'])->name('recettes.search');
+

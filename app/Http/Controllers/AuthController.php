@@ -6,6 +6,7 @@ use App\Http\Requests\AuthRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -18,7 +19,11 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
         Auth::login($user);
-        return redirect()->route('search');
+        if(Gate::allows('is-admin')){
+            return redirect()->route('statistique');
+        }else{
+            return redirect()->route('search');
+        }
     }
 
     public function login(Request $request)
@@ -29,7 +34,11 @@ class AuthController extends Controller
         ]);
         if (Auth::attempt($loginData)) {
             $request->session()->regenerate();
-            return redirect()->route('search');
+            if(Gate::allows('is-admin')){
+                return redirect()->route('statistique');
+            }else{
+                return redirect()->route('search');
+            }
         }
     }
 

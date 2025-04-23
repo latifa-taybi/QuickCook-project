@@ -22,6 +22,8 @@ Route::get('/recette', function () {
 
 
 
+
+
 Route::get('/', [RecetteController::class,'home'])->name('home');
 Route::get('/statistique', [RecetteController::class,'statistique'])->name('statistique');
 
@@ -51,6 +53,7 @@ Route::post('/login',[AuthController::class,'login'])->name('login');
 Route::get('/search',[RecetteController::class,'indexSearch'])->name('recettes.search');
 Route::post('/search',[RecetteController::class,'search'])->name('recettes.search');
 
-Route::get('client/recettes/create',[RecetteController::class,'create'])->name('recettes.create');
+Route::get('/mesRecettes',[RecetteController::class,'index'])->name('mesRecettes');
+
 
 

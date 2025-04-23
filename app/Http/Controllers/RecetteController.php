@@ -10,6 +10,8 @@ use App\Models\Ingredient;
 use App\Models\Regime;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class RecetteController extends Controller
 {
@@ -18,12 +20,16 @@ class RecetteController extends Controller
      */
     public function index()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->get();
-        // dd($recettes);
-        $regimes = Regime::all();
-        $ingredients = Ingredient::all();
-        $etapes = Etape::all();
-        return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients', 'etapes', 'recettes'));
+        if(Gate::allows('is-admin')){
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->get();
+            $regimes = Regime::all();
+            $ingredients = Ingredient::all();
+            $etapes = Etape::all();
+            return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients', 'etapes', 'recettes'));
+        }else{
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->get();
+            return view('client.mesRecettes', compact('recettes'));
+        }
     }
 
     /**
@@ -33,7 +39,12 @@ class RecetteController extends Controller
     {
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
-        return view('admin.recettes.ajoutRecette', compact('regimes', 'ingredients'));
+
+        if(Gate::allows('is-admin')){
+            return view('admin.recettes.ajoutRecette', compact('regimes', 'ingredients'));
+        }else{
+            return view('client.ajoutRecette', compact('regimes', 'ingredients'));
+        }
     }
 
     /**
@@ -50,19 +61,13 @@ class RecetteController extends Controller
             'difficulty' => $request->difficulty,
             'description' => $request->description,
             'image' => $request->hasFile('image') ? $request->file('image')->store('photos', 'public') : null,
-            'videoUrl' => $request->videoUrl
+            'videoUrl' => $request->videoUrl,
+            'user_id' => Auth::user()->id
         ]);
-
 
         $recette->regimes()->attach($request->regimes);
 
-        // dd($request->ingredients);
-
         foreach ($request->ingredients as $item) {
-
-            // dd($item['name']);
-            // dd($item);
-            // dd($item['unite']);
 
             $ingredient = Ingredient::firstOrCreate([
                 'name' => $item['name']
@@ -74,18 +79,19 @@ class RecetteController extends Controller
             ]);
         }
 
-
         foreach ($request->etapes as $item) {
             Etape::create([
                 'description' => $item['desc'],
                 'numero_etape' => $item['order'],
                 'recette_id' => $recette->id
-
             ]);
         }
-        return redirect()->route('recettes.index');
+        if(Gate::allows('is-admin')){
+            return redirect()->route('recettes.index');
+        }else{
+            return redirect()->route('mesRecettes');
+        }
     }
-
 
 
     /**
@@ -94,7 +100,11 @@ class RecetteController extends Controller
     public function show(Recette $recette) 
     {
         $recette = Recette::with(['ingredients', 'regimes', 'etapes'])->find($recette->id);
-        return view('admin.recettes.visualiserRecette', compact('recette'));
+        if(Gate::allows('is-admin')){
+            return view('admin.recettes.visualiserRecette', compact('recette'));
+        }else{
+            return view('client.visualiserRecette', compact('recette'));
+        }
     }
 
     /**
@@ -104,7 +114,11 @@ class RecetteController extends Controller
     {
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
-        return view('admin.recettes.modifierRecette', compact('recette', 'regimes', 'ingredients'));
+        if(Gate::allows('is-admin')){
+            return view('admin.recettes.modifierRecette', compact('recette', 'regimes', 'ingredients'));}
+        else{
+            return view('client.modifierRecette', compact('recette', 'regimes', 'ingredients'));
+        }
     }
 
     /**
@@ -112,7 +126,6 @@ class RecetteController extends Controller
      */
     public function update(UpdateRecetteRequest $request, Recette $recette)
     {
-
         $recette->etapes()->delete();
 
         $recette->update([
@@ -122,7 +135,8 @@ class RecetteController extends Controller
             'difficulty' => $request->difficulty,
             'description' => $request->description,
             'image' => $request->hasFile('image') ? $request->file('image')->store('photos', 'public') : $recette->image,
-            'videoUrl' => $request->videoUrl 
+            'videoUrl' => $request->videoUrl,
+            'user_id' => Auth::user()->id
         ]);
 
         foreach ($request->etapes as $item) {
@@ -133,7 +147,6 @@ class RecetteController extends Controller
             ]);
         }
 
-        
         foreach ($request->ingredients as $item) {
             $ingredient = Ingredient::firstOrCreate([
                 'name' => $item['name']
@@ -145,24 +158,24 @@ class RecetteController extends Controller
             ]);
         }
 
+        $recette->regimes()->sync($request->regimes);
 
-        // $recette->regimes()->sync($request->regimes);
+        $recette->ingredients()->detach();
+        foreach ($request->ingredients as $item) {
+            $ingredient = Ingredient::firstOrCreate([
+                'name' => $item['name']
+            ]);
 
-        // $recette->ingredients()->detach();
-        // foreach ($request->ingredients as $item) {
-        //     $ingredient = Ingredient::firstOrCreate([
-        //         'name' => $item['name']
-        //     ]);
-
-        //     $recette->ingredients()->attach($ingredient->id, [
-        //         'quantity' => $item['quantity'],
-        //         'unite' => $item['unite'],
-        //     ]);
-        // }
-
-        
-
-        // return redirect()->route('recettes.index');
+            $recette->ingredients()->attach($ingredient->id, [
+                'quantity' => $item['quantity'],
+                'unite' => $item['unite'],
+            ]);
+        }
+        if(Gate::allows('is-admin')){
+            return redirect()->route('recettes.index');
+        }else{
+            return redirect()->route('mesRecettes');
+        }
     }
 
     /**
@@ -175,7 +188,11 @@ class RecetteController extends Controller
         $recette->etapes()->delete();
         $recette->delete();
 
-        return redirect()->route('recettes.index');
+        if(Gate::allows('is-admin')){
+            return redirect()->route('recettes.index');
+        }else{
+            return redirect()->route('mesRecettes');
+        }
     }
 
     public function home(){
@@ -194,8 +211,6 @@ class RecetteController extends Controller
         return view('admin.dashboard', compact('regimes', 'ingredients', 'users', 'recettes'));
     }
 
-
-
     public function indexSearch(){
         $allIngredients = Ingredient::all();
         return view('client.search', compact('allIngredients'));
@@ -208,16 +223,12 @@ class RecetteController extends Controller
     public function search(Request $request)
     {
         $allIngredients = Ingredient::all();
-
         $ingredients = $request->ingredients;
-        // dd($ingredients);
 
         $recettes = Recette::whereHas('ingredients', function ($query) use ($ingredients) {
             $query->whereIn('name', $ingredients);
         })->with(['ingredients', 'regimes', 'etapes'])->get();
 
-        // dd($recettes);
-
         return view('client.search', compact('recettes','allIngredients'));
-        }
+    }
 }

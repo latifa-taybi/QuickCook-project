@@ -8,7 +8,6 @@ use App\Http\Requests\UpdateRecetteRequest;
 use App\Models\Etape;
 use App\Models\Ingredient;
 use App\Models\Regime;
-use App\Models\Unite;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -198,8 +197,8 @@ class RecetteController extends Controller
 
 
     public function indexSearch(){
-        $ingredients = Ingredient::all();
-        return view('client.search', compact('ingredients'));
+        $allIngredients = Ingredient::all();
+        return view('client.search', compact('allIngredients'));
     }
 
     /**
@@ -208,8 +207,10 @@ class RecetteController extends Controller
 
     public function search(Request $request)
     {
+        $allIngredients = Ingredient::all();
 
         $ingredients = $request->ingredients;
+        // dd($ingredients);
 
         $recettes = Recette::whereHas('ingredients', function ($query) use ($ingredients) {
             $query->whereIn('name', $ingredients);
@@ -217,5 +218,6 @@ class RecetteController extends Controller
 
         // dd($recettes);
 
-        return view('client.search', compact('recettes'));}
+        return view('client.search', compact('recettes','allIngredients'));
+        }
 }

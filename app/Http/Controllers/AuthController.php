@@ -12,29 +12,32 @@ class AuthController extends Controller
 {
     public function register(AuthRequest $request)
     {
-
         $user = User::create([
             'name'     => $request->firstName . ' ' . $request->lastName,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
         ]);
-
         Auth::login($user);
-
         return redirect()->route('search');
     }
 
     public function login(Request $request)
     {
-
         $loginData = $request->validate([
             'email'    => 'required|email',
             'password' => 'required'
         ]);
-
         if (Auth::attempt($loginData)) {
             $request->session()->regenerate();
             return redirect()->route('search');
         }
     }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('home');
+    }
+
+    
 }

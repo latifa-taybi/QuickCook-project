@@ -2,18 +2,19 @@
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuickCook - Trouvez des recettes avec vos ingrédients</title>
-  <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-  
-  <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-  
-  <!-- Tailwind CSS CDN -->
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuickCook - Trouvez des recettes avec vos ingrédients</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
 
     <!-- Tailwind Config -->
     <script>
@@ -174,12 +175,19 @@
 
             <div class="flex flex-col md:flex-row gap-4 mb-6">
                 <div class="flex-1 relative">
-                    <input type="text" name="ingredient"
+                    {{-- <input type="text" name="ingredient"
                         class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition"
-                        placeholder="Ex: Tomate, Poulet, Pâtes">                       
-                    <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        placeholder="Ex: Tomate, Poulet, Pâtes"> --}}
+
+                    <select id="ingredient" name="ingredient" multiple placeholder="Entrer un ingrédient..."
+                        autocomplete="off"
+                        class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
+                        @foreach ($allIngredients as $ingredient)
+                            <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <button
+                <button id="add-ingredient-btn" type="button"
                     class="bg-gradient-brand text-white font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition btn-hover">
                     Ajouter
                 </button>
@@ -187,46 +195,13 @@
 
             <div class="mb-8">
                 <div class="text-sm text-gray-500 mb-3">Ingrédients sélectionnés:</div>
-                <div class="flex flex-wrap gap-2">
+                <div id="containerTag" class="flex flex-wrap gap-2">
 
 
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-gray-600 whitespace-nowrap">Temps:</span>
-                    <select
-                        class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                        <option>Tous</option>
-                        <option>Moins de 15 min</option>
-                        <option>Moins de 30 min</option>
-                        <option>Moins de 60 min</option>
-                    </select>
-                </div>
 
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-gray-600 whitespace-nowrap">Type:</span>
-                    <select
-                        class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                        <option>Tous</option>
-                        <option>Entrée</option>
-                        <option>Plat principal</option>
-                        <option>Dessert</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center gap-2">
-                    <span class="text-sm text-gray-600 whitespace-nowrap">Régime:</span>
-                    <select
-                        class="flex-1 px-3 py-2 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                        <option>Tous</option>
-                        <option>Végétarien</option>
-                        <option>Végan</option>
-                        <option>Sans gluten</option>
-                    </select>
-                </div>
-            </div>
 
             <button type="submit"
                 class="w-full bg-gradient-brand text-white font-semibold py-4 px-6 rounded-lg shadow-md hover:shadow-lg transition btn-hover">
@@ -241,75 +216,64 @@
             <div class="flex justify-between items-center mb-8 fade-in">
                 <h2 class="font-display font-semibold text-2xl md:text-3xl text-dark">
                     @if (isset($recettes) && $recettes->count() > 0)
-                      Résultats <span class="text-brand-500">({{ $recettes->count() }} recettes)</span>
+                        Résultats <span class="text-brand-500">({{ $recettes->count() }} recettes)</span>
                     @else
-                    Résultats <span class="text-brand-500">(0 recettes)</span>                    
+                        Résultats <span class="text-brand-500">(0 recettes)</span>
                     @endif
                 </h2>
-                <div class="flex items-center gap-2">
-                    <button
-                        class="flex items-center gap-1 bg-white text-gray-700 py-2 px-4 rounded-lg shadow-sm hover:shadow transition">
-                        <i class="fas fa-heart text-accent-500"></i>
-                        <span class="hidden sm:inline">Favoris</span>
-                    </button>
-                    <button
-                        class="flex items-center gap-1 bg-white text-gray-700 py-2 px-4 rounded-lg shadow-sm hover:shadow transition">
-                        <i class="fas fa-sort-amount-down text-brand-500"></i>
-                        <span class="hidden sm:inline">Trier par</span>
-                    </button>
-                </div>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
 
-              @if (isset($recettes) && $recettes->count() > 0)
-                @foreach ($recettes as $recette)
-                  <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover fade-in-delay-2">
-                    <div class="relative">
-                      <img src="{{ asset('storage/' . $recette->image) }}" alt="{{$recette->name}}"
-                        class="w-full h-48 object-cover">
-                      <div class="absolute top-3 right-3">
-                        <button
-                          class="bg-white bg-opacity-90 p-2 rounded-full shadow-md hover:bg-accent-100 hover:text-accent-600 transition">
-                          <i class="fas fa-heart text-accent-500"></i>
-                        </button>
-                      </div>
-                      <div
-                        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark to-transparent p-4">
-                        <span class="text-xs text-white bg-brand-500 py-1 px-2 rounded-full">Salade</span>
-                      </div>
-                    </div>
-                    <div class="p-5">
-                      <h3 class="font-display font-semibold text-xl mb-2">{{ $recette->name }}</h3>
-                      <div class="flex items-center text-sm text-gray-500 mb-3">
-                        <i class="fas fa-clock mr-1"></i>
-                        <span class="mr-4">{{ $recette->prepTime }}</span>
-                        <i class="fas fa-utensils mr-1"></i>
-                        <span>{{ $recette->difficulty }}</span>
-                      </div>
-                      <p class="text-gray-600 text-sm mb-4">{{ $recette->description }}</p>
-                      <div class="flex justify-between items-center">
-                        <div class="flex -space-x-2">
-                          <img src="https://randomuser.me/api/portraits/men/22.jpg"
-                            class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                @if (isset($recettes) && $recettes->count() > 0)
+                    @foreach ($recettes as $recette)
+                        <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover fade-in-delay-2">
+                            <div class="relative">
+                                <img src="{{ asset('storage/' . $recette->image) }}" alt="{{ $recette->name }}"
+                                    class="w-full h-48 object-cover">
+                                <div class="absolute top-3 right-3">
+                                    <button
+                                        class="bg-white bg-opacity-90 p-2 rounded-full shadow-md hover:bg-accent-100 hover:text-accent-600 transition">
+                                        <i class="fas fa-heart text-accent-500"></i>
+                                    </button>
+                                </div>
+                                <div
+                                    class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark to-transparent p-4">
+                                    <span class="text-xs text-white bg-brand-500 py-1 px-2 rounded-full">Salade</span>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-display font-semibold text-xl mb-2">{{ $recette->name }}</h3>
+                                <div class="flex items-center text-sm text-gray-500 mb-3">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    <span class="mr-4">{{ $recette->prepTime }}</span>
+                                    <i class="fas fa-utensils mr-1"></i>
+                                    <span>{{ $recette->difficulty }}</span>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-4">{{ $recette->description }}</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex -space-x-2">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg"
+                                            class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                                    </div>
+                                    <a href="#"
+                                        class="text-brand-500 hover:text-brand-700 font-medium text-sm">Voir
+                                        la
+                                        recette</a>
+                                </div>
+                            </div>
                         </div>
-                        <a href="#" class="text-brand-500 hover:text-brand-700 font-medium text-sm">Voir
-                          la
-                          recette</a>
-                      </div>
+                    @endforeach
+                @else
+                    <div class="bg-white rounded-2xl shadow-md overflow-hidden">
+                        <div class="p-5 text-center">
+                            <h3 class="font-display font-semibold text-xl mb-2">Aucune recette trouvée</h3>
+                            <p class="text-gray-600 text-sm">Essayez d'ajouter des ingrédients pour trouver des
+                                recettes
+                                adaptées.</p>
+                        </div>
                     </div>
-                  </div>
-                @endforeach
-              @else
-                <div class="bg-white rounded-2xl shadow-md overflow-hidden">
-                  <div class="p-5 text-center">
-                    <h3 class="font-display font-semibold text-xl mb-2">Aucune recette trouvée</h3>
-                    <p class="text-gray-600 text-sm">Essayez d'ajouter des ingrédients pour trouver des
-                      recettes
-                      adaptées.</p>
-                  </div>
-                </div>
-              @endif
+                @endif
     </section>
 
 
@@ -526,136 +490,183 @@
 
     <!-- Scripts -->
     <script>
-        // Mobile menu toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        const selectElement = document.querySelector('#ingredient');
+    
+        const ts = new TomSelect(selectElement, {
+            maxItems: 1,
         });
-
-
-
-
-        // Edit profile modal
-        const profileBtn = document.getElementById('profile-btn');
-        const editProfileModal = document.getElementById('edit-profile-modal');
-        const closeEditProfile = document.getElementById('close-edit-profile');
-        const cancelEditProfile = document.getElementById('cancel-edit-profile');
-
-        profileBtn.addEventListener('click', () => {
-            editProfileModal.classList.remove('hidden');
-        });
-
-        closeEditProfile.addEventListener('click', () => {
-            editProfileModal.classList.add('hidden');
-        });
-
-        cancelEditProfile.addEventListener('click', () => {
-            editProfileModal.classList.add('hidden');
-        });
-
-        // Back to top button
-        const backToTopBtn = document.getElementById('back-to-top');
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopBtn.classList.remove('opacity-0', 'invisible');
-                backToTopBtn.classList.add('opacity-100', 'visible');
-            } else {
-                backToTopBtn.classList.remove('opacity-100', 'visible');
-                backToTopBtn.classList.add('opacity-0', 'invisible');
-            }
-        });
-
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-
-        // Animation on scroll
-        const fadeElements = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3');
-
-        const fadeInOnScroll = () => {
-            fadeElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-
-                if (elementTop < windowHeight - 100) {
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }
-            });
-        };
-
-        // Initialize elements as invisible
-        fadeElements.forEach(element => {
-            element.style.opacity = '0';
-            element.style.transform = 'translateY(20px)';
-            element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-        });
-
-        window.addEventListener('scroll', fadeInOnScroll);
-        window.addEventListener('load', fadeInOnScroll);
-
-        // Ingredient tag removal
-        document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('fa-times') && e.target.closest('.ingredient-tag')) {
-                e.target.closest('.ingredient-tag').remove();
-            }
-        });
-
-        // Add ingredient functionality
-        const addIngredientInput = document.querySelector('#search-section input[type="text"]');
-        const addIngredientBtn = document.querySelector('#search-section button');
-        const ingredientsContainer = document.querySelector('#search-section .flex-wrap');
-
-        addIngredientBtn.addEventListener('click', (e) => {
+    
+        const addButton = document.querySelector('#add-ingredient-btn');
+        const tagContainer = document.querySelector('#containerTag');
+    
+        addButton.addEventListener('click', (e) => {
             e.preventDefault();
-            const ingredient = addIngredientInput.value.trim();
-
-            if (ingredient) {
-                const tag = document.createElement('span');
-                tag.className =
-                    'ingredient-tag bg-brand-100 text-brand-700 px-3 py-1.5 rounded-full flex items-center';
-                tag.innerHTML =
-                    `${ingredient} <i class="fas fa-times ml-2 cursor-pointer hover:text-brand-900"></i>
-                    <input type="hidden" name="ingredients[]" value="${ingredient}">`;
-                ingredientsContainer.appendChild(tag);
-                addIngredientInput.value = '';
+    
+            const selectedOptions = ts.getValue(); // IDs sélectionnés
+    
+            selectedOptions.forEach(id => {
+                // Vérifie si déjà ajouté
+                if (document.querySelector(`[data-id="${id}"]`)) return;
+    
+                const label = ts.options[id]?.text || '';
+    
+                // Générer le tag + input hidden
+                const html = `
+                    <div class="flex items-center gap-1 bg-brand-100 text-brand-700 px-3 py-1 rounded-full text-sm cursor-pointer transition hover:bg-brand-200" data-id="${id}">
+                        <span>${label}</span>
+                        <span class="ml-1 text-xs font-bold cursor-pointer remove-tag">❌</span>
+                        <input type="hidden" name="ingredients[]" value="${label}" data-id="${id}">
+                    </div>
+                `;
+    
+                tagContainer.innerHTML += html;
+            });
+    
+            ts.clear(); // Vide le select après ajout
+        });
+    
+        // Déléguation d'événement pour supprimer au clic sur ❌
+        tagContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-tag')) {
+                const parent = e.target.closest('[data-id]');
+                const id = parent.getAttribute('data-id');
+                parent.remove(); // Supprime le tag + input
+                ts.removeItem(id); // Supprime aussi dans TomSelect
             }
         });
+    
 
-        // Allow adding ingredient with Enter key
-        addIngredientInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addIngredientBtn.click();
-            }
-        });
 
-          new TomSelect("#ingredient",{
-            maxItems: 3
-          });
+
+
+        // Mobile menu toggle
+        // const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        // const mobileMenu = document.getElementById('mobile-menu');
+
+        // mobileMenuBtn.addEventListener('click', () => {
+        //     mobileMenu.classList.toggle('hidden');
+        // });
+
+
+
+
+        // // Edit profile modal
+        // const profileBtn = document.getElementById('profile-btn');
+        // const editProfileModal = document.getElementById('edit-profile-modal');
+        // const closeEditProfile = document.getElementById('close-edit-profile');
+        // const cancelEditProfile = document.getElementById('cancel-edit-profile');
+
+        // profileBtn.addEventListener('click', () => {
+        //     editProfileModal.classList.remove('hidden');
+        // });
+
+        // closeEditProfile.addEventListener('click', () => {
+        //     editProfileModal.classList.add('hidden');
+        // });
+
+        // cancelEditProfile.addEventListener('click', () => {
+        //     editProfileModal.classList.add('hidden');
+        // });
+
+        // // Back to top button
+        // const backToTopBtn = document.getElementById('back-to-top');
+
+        // window.addEventListener('scroll', () => {
+        //     if (window.pageYOffset > 300) {
+        //         backToTopBtn.classList.remove('opacity-0', 'invisible');
+        //         backToTopBtn.classList.add('opacity-100', 'visible');
+        //     } else {
+        //         backToTopBtn.classList.remove('opacity-100', 'visible');
+        //         backToTopBtn.classList.add('opacity-0', 'invisible');
+        //     }
+        // });
+
+        // backToTopBtn.addEventListener('click', () => {
+        //     window.scrollTo({
+        //         top: 0,
+        //         behavior: 'smooth'
+        //     });
+        // });
+
+        // // Smooth scrolling for anchor links
+        // document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        //     anchor.addEventListener('click', function(e) {
+        //         e.preventDefault();
+
+        //         const targetId = this.getAttribute('href');
+        //         if (targetId === '#') return;
+
+        //         const targetElement = document.querySelector(targetId);
+        //         if (targetElement) {
+        //             targetElement.scrollIntoView({
+        //                 behavior: 'smooth'
+        //             });
+        //         }
+        //     });
+        // });
+
+        // // Animation on scroll
+        // const fadeElements = document.querySelectorAll('.fade-in, .fade-in-delay-1, .fade-in-delay-2, .fade-in-delay-3');
+
+        // const fadeInOnScroll = () => {
+        //     fadeElements.forEach(element => {
+        //         const elementTop = element.getBoundingClientRect().top;
+        //         const windowHeight = window.innerHeight;
+
+        //         if (elementTop < windowHeight - 100) {
+        //             element.style.opacity = '1';
+        //             element.style.transform = 'translateY(0)';
+        //         }
+        //     });
+        // };
+
+        // // Initialize elements as invisible
+        // fadeElements.forEach(element => {
+        //     element.style.opacity = '0';
+        //     element.style.transform = 'translateY(20px)';
+        //     element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        // });
+
+        // window.addEventListener('scroll', fadeInOnScroll);
+        // window.addEventListener('load', fadeInOnScroll);
+
+        // // Ingredient tag removal
+        // document.addEventListener('click', (e) => {
+        //     if (e.target.classList.contains('fa-times') && e.target.closest('.ingredient-tag')) {
+        //         e.target.closest('.ingredient-tag').remove();
+        //     }
+        // });
+
+        // // Add ingredient functionality
+        // const addIngredientInput = document.querySelector('#search-section input[type="text"]');
+        // const addIngredientBtn = document.querySelector('#search-section button');
+        // const ingredientsContainer = document.querySelector('#search-section .flex-wrap');
+
+        // addIngredientBtn.addEventListener('click', (e) => {
+        //     e.preventDefault();
+        //     const ingredient = addIngredientInput.value.trim();
+
+        //     if (ingredient) {
+        //         const tag = document.createElement('span');
+        //         tag.className =
+        //             'ingredient-tag bg-brand-100 text-brand-700 px-3 py-1.5 rounded-full flex items-center';
+        //         tag.innerHTML =
+        //             `${ingredient} <i class="fas fa-times ml-2 cursor-pointer hover:text-brand-900"></i>
+    //             <input type="hidden" name="ingredients[]" value="${ingredient}">`;
+        //         ingredientsContainer.appendChild(tag);
+        //         addIngredientInput.value = '';
+        //     }
+        // });
+
+
+
+        // // Allow adding ingredient with Enter key
+        // addIngredientInput.addEventListener('keypress', (e) => {
+        //     if (e.key === 'Enter') {
+        //         e.preventDefault();
+        //         addIngredientBtn.click();
+        //     }
+        // });
     </script>
 </body>
 

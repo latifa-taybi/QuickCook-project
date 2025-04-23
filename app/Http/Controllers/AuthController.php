@@ -22,7 +22,7 @@ class AuthController extends Controller
         if(Gate::allows('is-admin')){
             return redirect()->route('statistique');
         }else{
-            return redirect()->route('search');
+            return redirect()->route('mesRecettes');
         }
     }
 
@@ -37,7 +37,7 @@ class AuthController extends Controller
             if(Gate::allows('is-admin')){
                 return redirect()->route('statistique');
             }else{
-                return redirect()->route('search');
+                return redirect()->route('mesRecettes');
             }
         }
     }

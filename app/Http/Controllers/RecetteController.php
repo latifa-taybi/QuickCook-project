@@ -9,26 +9,28 @@ use App\Models\Etape;
 use App\Models\Ingredient;
 use App\Models\Regime;
 use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class RecetteController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         if(Gate::allows('is-admin')){
-            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->get();
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->paginate(8);
             $regimes = Regime::all();
             $ingredients = Ingredient::all();
             $etapes = Etape::all();
             return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients', 'etapes', 'recettes'));
         }else{
-            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->get();
-            return view('client.mesRecettes', compact('recettes'));
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->paginate(8);
+            return view('client.recettes', compact('recettes'));
         }
     }
 
@@ -112,6 +114,7 @@ class RecetteController extends Controller
      */
     public function edit(Recette $recette)
     {
+        $this->authorize('update', $recette);
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         if(Gate::allows('is-admin')){
@@ -126,6 +129,8 @@ class RecetteController extends Controller
      */
     public function update(UpdateRecetteRequest $request, Recette $recette)
     {
+        $this->authorize('update', $recette);
+
         $recette->etapes()->delete();
 
         $recette->update([
@@ -204,7 +209,7 @@ class RecetteController extends Controller
 
     public function statistique()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->get();
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->paginate(8);
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         $users = User::all();
@@ -227,8 +232,15 @@ class RecetteController extends Controller
 
         $recettes = Recette::whereHas('ingredients', function ($query) use ($ingredients) {
             $query->whereIn('name', $ingredients);
-        })->with(['ingredients', 'regimes', 'etapes'])->get();
+        })->with(['ingredients', 'regimes', 'etapes'])->paginate(8);
 
         return view('client.search', compact('recettes','allIngredients'));
     }
+
+    public function mesRecettes()
+    {
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->paginate(8);
+        return view('client.mesRecettes', compact('recettes'));
+    }
 }
+

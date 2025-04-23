@@ -634,3 +634,50 @@
     animation: fadeIn 0.5s ease 0.3s forwards;
     opacity: 0;
   }
+
+  .bg-gradient-brand {
+    background: linear-gradient(to right, #00AAFF, #0099E6);
+}
+
+.text-gradient {
+    background: linear-gradient(to right, #00AAFF, #FF9800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.btn-hover {
+    transition: transform 0.2s ease;
+}
+
+.btn-hover:hover {
+    transform: translateY(-2px);
+}
+
+.grain-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    pointer-events: none;
+    background-image: url('https://www.transparenttextures.com/patterns/noise-pattern-with-subtle-cross-lines.png');
+    opacity: 0.03;
+    z-index: 1000;
+}
+
+.shadow-strong {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.modal {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}

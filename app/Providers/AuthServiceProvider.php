@@ -2,11 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Recette;
+use App\Policies\RecettePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
+    protected $policies = [
+        Recette::class => RecettePolicy::class
+    ];
+
     /**
      * Register services.
      */

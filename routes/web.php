@@ -50,10 +50,11 @@ Route::post('/register',[AuthController::class,'register'])->name('register');
 Route::post('/login',[AuthController::class,'login'])->name('login');
 
 
-Route::get('/search',[RecetteController::class,'indexSearch'])->name('recettes.search');
+Route::get('/search',[RecetteController::class,'indexSearch'])->name('recettes.indexSearch');
 Route::post('/search',[RecetteController::class,'search'])->name('recettes.search');
 
-Route::get('/mesRecettes',[RecetteController::class,'index'])->name('mesRecettes');
+Route::get('/mesRecettes',[RecetteController::class,'mesRecettes'])->name('mesRecettes');
+Route::get('/client/recettes',[RecetteController::class,'index'])->name('client.recettes');
 
 
 

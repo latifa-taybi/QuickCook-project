@@ -55,28 +55,27 @@
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Recipe Card 1 -->
+                @foreach($recettes as $recette)
                 <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80" 
-                            alt="Salade fraîcheur" class="w-full h-48 object-cover">
+                        <img src="{{ asset('storage/' . $recette->image) }}" alt="{{ $recette->name }}" class="w-full h-48 object-cover">
                         <div class="absolute top-3 right-3">
-                            <button class="bg-white bg-opacity-90 p-2 rounded-full shadow-md hover:bg-accent-100 hover:text-accent-600 transition">
-                                <i class="fas fa-heart text-accent-500"></i>
-                            </button>
-                        </div>
-                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark to-transparent p-4">
-                            <span class="text-xs text-white bg-brand-500 py-1 px-2 rounded-full">Salade</span>
+                            <form action="{{route('favories', $recette->id)}}" method="POST">
+                            @csrf
+                            <button class="bg-white bg-opacity-90 p-2 rounded-full shadow-md hover:bg-accent-100 hover:text-accent-600 transition favorite-btn" data-id="{{ $recette->id }}" data-user="{{ auth()->id() }}">
+                                <i class="{{ Auth::user()->favoritesRecette->contains($recette->id) ? 'fas' : 'far' }} fa-heart text-accent-500"></i>
+                            </button></form>
                         </div>
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display font-semibold text-xl mb-2">Salade fraîcheur estivale</h3>
+                        <h3 class="font-display font-semibold text-xl mb-2">{{$recette->name}}</h3>
                         <div class="flex items-center text-sm text-gray-500 mb-3">
                             <i class="fas fa-clock mr-1"></i>
-                            <span class="mr-4">15 min</span>
+                            <span class="mr-4">{{$recette->prepTime}}</span>
                             <i class="fas fa-utensils mr-1"></i>
-                            <span>Facile</span>
+                            <span>{{$recette->difficulty}}</span>
                         </div>
-                        <p class="text-gray-600 text-sm mb-4">Une salade légère et rafraîchissante parfaite pour l'été avec des légumes de saison.</p>
+                        <p class="text-gray-600 text-sm mb-4">{{$recette->description}}</p>
                         <div class="flex justify-between items-center">
                             <div class="flex -space-x-2">
                                 <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
@@ -85,6 +84,7 @@
                         </div>
                     </div>
                 </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -94,17 +94,7 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-center">
                 <nav class="flex items-center space-x-2">
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" class="px-4 py-2 rounded-lg bg-brand-500 text-white">1</a>
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">2</a>
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">3</a>
-                    <span class="px-2 text-gray-500">...</span>
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">10</a>
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
+                    {{$recettes->links()}}
                 </nav>
             </div>
         </div>

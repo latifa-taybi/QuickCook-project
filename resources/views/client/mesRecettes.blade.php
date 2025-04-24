@@ -12,14 +12,14 @@
                         Gérez vos créations culinaires personnelles
                     </p>
                 </div>
-                <button id="create-recipe-btn" class="mt-4 md:mt-0 flex items-center gap-2 bg-gradient-brand text-white py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition btn-hover">
+                <a href="{{route('recettes.create')}}"><button id="create-recipe-btn" class="mt-4 md:mt-0 flex items-center gap-2 bg-gradient-brand text-white py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition btn-hover">
                     <i class="fas fa-plus"></i>
                     <span>Créer une nouvelle recette</span>
-                </button>
+                </button></a>
             </div>
 
             <!-- Stats Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+            {{-- <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
                 <div class="bg-white rounded-xl shadow-md p-6 flex items-center">
                     <div class="rounded-full bg-brand-100 p-3 mr-4">
                         <i class="fas fa-utensils text-brand-500 text-xl"></i>
@@ -47,7 +47,7 @@
                         <p class="font-bold text-2xl">32</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </section>
 
@@ -93,49 +93,48 @@
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Recipe Card 1 -->
-                <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
+                @foreach($recettes as $recette)
+                 <div class="bg-white rounded-2xl shadow-md overflow-hidden card-hover">
                     <div class="relative">
-                        <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80" 
-                            alt="Salade fraîcheur" class="w-full h-48 object-cover">
+                        <img src="{{ asset('storage/' . $recette->image) }}" 
+                            alt="{{$recette->name}}" class="w-full h-48 object-cover">
                         <div class="absolute top-3 right-3 flex space-x-2">
-                            <button class="edit-recipe bg-white p-2 rounded-full shadow-md hover:bg-brand-100 hover:text-brand-600 transition" data-id="1">
+                            <a href="{{ route('recettes.edit', $recette->id) }}"><button type="button" class="bg-white p-2 rounded-full shadow-md hover:bg-brand-100 hover:text-brand-600 transition">
                                 <i class="fas fa-edit text-brand-500"></i>
-                            </button>
-                            <button class="delete-recipe bg-white p-2 rounded-full shadow-md hover:bg-red-100 hover:text-red-600 transition" data-id="1">
+                            </button></a>
+                            <button onclick="deleteModal({{ $recette->id }})" class="delete-recipe bg-white p-2 rounded-full shadow-md hover:bg-red-100 hover:text-red-600 transition" >
                                 <i class="fas fa-trash-alt text-red-500"></i>
                             </button>
                         </div>
                         <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-dark to-transparent p-4">
-                            <span class="text-xs text-white bg-brand-500 py-1 px-2 rounded-full">Salade</span>
                             <span class="text-xs text-white bg-green-500 py-1 px-2 rounded-full ml-2">Publiée</span>
                         </div>
                     </div>
                     <div class="p-5">
-                        <h3 class="font-display font-semibold text-xl mb-2">Salade fraîcheur estivale</h3>
+                        <h3 class="font-display font-semibold text-xl mb-2">{{$recette->name}}</h3>
                         <div class="flex items-center text-sm text-gray-500 mb-3">
                             <i class="fas fa-clock mr-1"></i>
-                            <span class="mr-4">15 min</span>
+                            <span class="mr-4">{{$recette->prepTime}} min</span>
                             <i class="fas fa-utensils mr-1"></i>
                             <span>Facile</span>
                         </div>
-                        <p class="text-gray-600 text-sm mb-4">Une salade légère et rafraîchissante parfaite pour l'été avec des légumes de saison.</p>
+                        <p class="text-gray-600 text-sm mb-4">{{$recette->description}}</p>
                         <div class="flex justify-between items-center">
-                            <div class="flex items-center">
-                                <span class="text-sm text-gray-500"><i class="fas fa-eye mr-1"></i> 245 vues</span>
-                            </div>
                             <a href="#" class="text-brand-500 hover:text-brand-700 font-medium text-sm">Voir la recette</a>
                         </div>
                     </div>
                 </div>
+                @endforeach
 
                 <!-- Recipe Card 8 - New Recipe Card -->
-                <div class="bg-white rounded-2xl border-2 border-dashed border-gray-300 overflow-hidden flex flex-col items-center justify-center p-8 hover:border-brand-400 transition cursor-pointer" id="new-recipe-card">
+                <a href="{{route('recettes.create')}}" class="h-full">
+                    <div class="bg-white rounded-2xl border-2 border-dashed border-gray-300 overflow-hidden flex flex-col items-center justify-center p-8 hover:border-brand-400 transition cursor-pointer h-full" id="new-recipe-card">
                     <div class="rounded-full bg-brand-100 p-4 mb-4">
                         <i class="fas fa-plus text-brand-500 text-2xl"></i>
                     </div>
                     <h3 class="font-display font-semibold text-xl mb-2 text-center">Ajouter une nouvelle recette</h3>
                     <p class="text-gray-500 text-sm text-center">Partagez votre créativité culinaire avec la communauté</p>
-                </div>
+                </div></a>
             </div>
         </div>
     </section>
@@ -145,22 +144,14 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-center">
                 <nav class="flex items-center space-x-2">
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-                        <i class="fas fa-chevron-left"></i>
-                    </a>
-                    <a href="#" class="px-4 py-2 rounded-lg bg-brand-500 text-white">1</a>
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">2</a>
-                    <span class="px-2 text-gray-500">...</span>
-                    <a href="#" class="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition">
-                        <i class="fas fa-chevron-right"></i>
-                    </a>
+                    {{ $recettes->links() }}
                 </nav>
             </div>
         </div>
     </section>
 
     <!-- Delete Confirmation Modal -->
-    <div id="delete-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden modal">
+    <div id="deleteConfirmModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden modal">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full p-6">
             <div class="text-center mb-6">
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-red-100 mb-4">
@@ -173,9 +164,13 @@
                 <button id="cancel-delete" class="flex-1 py-3 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-lg transition">
                     Annuler
                 </button>
-                <button id="confirm-delete" class="flex-1 py-3 px-4 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition">
-                    Supprimer
-                </button>
+                <form action="" method="POST" id="deleteRecipeForm">
+                    @csrf
+                    @method('DELETE')
+                    <button id="confirm-delete" class="flex-1 py-3 px-4 bg-red-500 hover:bg-red-600 text-white font-medium rounded-lg transition">
+                        Supprimer
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -298,152 +293,18 @@
             });
         });
 
-        // Delete recipe modal
-        const deleteButtons = document.querySelectorAll('.delete-recipe');
-        const deleteModal = document.getElementById('delete-modal');
-        const cancelDelete = document.getElementById('cancel-delete');
-        const confirmDelete = document.getElementById('confirm-delete');
-        let recipeToDelete = null;
+        const deleteConfirmModal = document.getElementById('deleteConfirmModal');
+        function deleteModal(id) {
+            deleteConfirmModal.classList.remove('hidden');
+            let form = document.getElementById('deleteRecipeForm'); 
+            form.action = `{{ route('recettes.destroy', ':id') }}`.replace(':id', id);
+        }
 
-        deleteButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                recipeToDelete = button.getAttribute('data-id');
-                deleteModal.classList.remove('hidden');
-            });
-        });
+        function closeModal() {
+            deleteConfirmModal.classList.add('hidden');
+        }
 
-        cancelDelete.addEventListener('click', () => {
-            deleteModal.classList.add('hidden');
-            recipeToDelete = null;
-        });
 
-        confirmDelete.addEventListener('click', () => {
-            // Ici, vous ajouteriez le code pour supprimer réellement la recette via une requête AJAX
-            console.log(`Recette ${recipeToDelete} supprimée`);
-            
-            // Simuler la suppression en masquant la carte
-            const recipeCard = document.querySelector(`.delete-recipe[data-id="${recipeToDelete}"]`).closest('.card-hover');
-            recipeCard.style.opacity = '0';
-            setTimeout(() => {
-                recipeCard.remove();
-            }, 300);
-            
-            deleteModal.classList.add('hidden');
-            recipeToDelete = null;
-        });
-
-        // Edit recipe modal
-        const editButtons = document.querySelectorAll('.edit-recipe');
-        const editModal = document.getElementById('edit-modal');
-        const closeEditButtons = document.querySelectorAll('#close-edit, #cancel-edit');
-        
-        editButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.preventDefault();
-                const recipeId = button.getAttribute('data-id');
-                // Ici, vous chargeriez les données de la recette via une requête AJAX
-                console.log(`Édition de la recette ${recipeId}`);
-                editModal.classList.remove('hidden');
-            });
-        });
-
-        closeEditButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                editModal.classList.add('hidden');
-            });
-        });
-
-        // Ajouter/supprimer des ingrédients
-        const addIngredientBtn = document.getElementById('add-ingredient');
-        const ingredientsContainer = document.getElementById('ingredients-container');
-
-        addIngredientBtn.addEventListener('click', () => {
-            const newIngredient = document.createElement('div');
-            newIngredient.className = 'flex items-center gap-2 mb-2';
-            newIngredient.innerHTML = `
-                <input type="text" name="ingredient[]" placeholder="Ingrédient" class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                <input type="text" name="quantity[]" placeholder="Quantité" class="w-24 px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                <button type="button" class="remove-ingredient px-3 py-3 bg-red-100 text-red-500 rounded-lg hover:bg-red-200 transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            ingredientsContainer.appendChild(newIngredient);
-        });
-
-        ingredientsContainer.addEventListener('click', (e) => {
-            if (e.target.closest('.remove-ingredient')) {
-                e.target.closest('.flex').remove();
-            }
-        });
-
-        // Ajouter/supprimer des instructions
-        const addInstructionBtn = document.getElementById('add-instruction');
-        const instructionsContainer = document.getElementById('instructions-container');
-
-        addInstructionBtn.addEventListener('click', () => {
-            const instructionCount = instructionsContainer.children.length + 1;
-            const newInstruction = document.createElement('div');
-            newInstruction.className = 'flex items-center gap-2 mb-2';
-            newInstruction.innerHTML = `
-                <span class="px-3 py-3 bg-gray-100 rounded-lg font-medium">${instructionCount}</span>
-                <input type="text" name="instruction[]" placeholder="Étape" class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                <button type="button" class="remove-instruction px-3 py-3 bg-red-100 text-red-500 rounded-lg hover:bg-red-200 transition">
-                    <i class="fas fa-times"></i>
-                </button>
-            `;
-            instructionsContainer.appendChild(newInstruction);
-        });
-
-        instructionsContainer.addEventListener('click', (e) => {
-            if (e.target.closest('.remove-instruction')) {
-                e.target.closest('.flex').remove();
-                
-                // Renuméroter les instructions
-                const instructions = instructionsContainer.querySelectorAll('.flex');
-                instructions.forEach((instruction, index) => {
-                    instruction.querySelector('span').textContent = index + 1;
-                });
-            }
-        });
-
-        // Nouvelle recette
-        const createRecipeBtn = document.getElementById('create-recipe-btn');
-        const newRecipeCard = document.getElementById('new-recipe-card');
-
-        [createRecipeBtn, newRecipeCard].forEach(element => {
-            element.addEventListener('click', () => {
-                // Réinitialiser le formulaire d'édition
-                document.getElementById('edit-recipe-form').reset();
-                
-                // Changer le titre du modal
-                document.querySelector('#edit-modal h3').textContent = 'Créer une nouvelle recette';
-                
-                // Vider les conteneurs d'ingrédients et d'instructions
-                ingredientsContainer.innerHTML = `
-                    <div class="flex items-center gap-2 mb-2">
-                        <input type="text" name="ingredient[]" placeholder="Ingrédient" class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                        <input type="text" name="quantity[]" placeholder="Quantité" class="w-24 px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                        <button type="button" class="remove-ingredient px-3 py-3 bg-red-100 text-red-500 rounded-lg hover:bg-red-200 transition">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-                
-                instructionsContainer.innerHTML = `
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="px-3 py-3 bg-gray-100 rounded-lg font-medium">1</span>
-                        <input type="text" name="instruction[]" placeholder="Étape" class="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
-                        <button type="button" class="remove-instruction px-3 py-3 bg-red-100 text-red-500 rounded-lg hover:bg-red-200 transition">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-                
-                // Afficher le modal
-                editModal.classList.remove('hidden');
-            });
-        });
 
         // Animation on scroll
         const fadeElements = document.querySelectorAll('.card-hover');

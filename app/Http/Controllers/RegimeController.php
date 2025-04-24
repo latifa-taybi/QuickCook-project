@@ -2,18 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\ApiResponseClass;
 use App\Models\Regime;
 use App\Http\Requests\StoreRegimeRequest;
 use App\Http\Requests\UpdateRegimeRequest;
+use App\Http\Resources\RegimeRessource;
+use App\Interfaces\RegimeRepositoryInterface;
+use Illuminate\Support\Facades\DB;
 
 class RegimeController extends Controller
 {
+    private RegimeRepositoryInterface $regimeRepositoryInterface;
+
+    public function __construct(RegimeRepositoryInterface $regimeRepositoryInterface)
+    {
+        $this->regimeRepositoryInterface = $regimeRepositoryInterface;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        
+        $data = $this->regimeRepositoryInterface->index();
     }
 
     /**
@@ -29,7 +39,14 @@ class RegimeController extends Controller
      */
     public function store(StoreRegimeRequest $request)
     {
-        //
+        $data =[
+            'name' => $request->name,
+            'description' => $request->description
+        ];
+        
+        $this->regimeRepositoryInterface->store($data);
+
+        return redirect()->route('regimes.index');
     }
 
     /**
@@ -37,7 +54,7 @@ class RegimeController extends Controller
      */
     public function show(Regime $regime)
     {
-        //
+        $regime = $this->regimeRepositoryInterface->getById($regime->id);
     }
 
     /**
@@ -53,7 +70,11 @@ class RegimeController extends Controller
      */
     public function update(UpdateRegimeRequest $request, Regime $regime)
     {
-        //
+        $updateData =[
+            'name' => $request->name,
+            'description' => $request->description
+        ];
+        
     }
 
     /**
@@ -61,6 +82,7 @@ class RegimeController extends Controller
      */
     public function destroy(Regime $regime)
     {
-        //
+        $this->regimeRepositoryInterface->delete($regime->id);
+
     }
 }

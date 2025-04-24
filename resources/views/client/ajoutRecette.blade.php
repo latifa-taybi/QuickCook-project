@@ -8,13 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
-
 <body class="bg-light text-dark min-h-screen flex flex-col">
-    @section('title', 'Gestion des utilisateurs')
-
     <div class="flex min-h-screen">
         <!-- Main content -->
         <div class="flex-1 flex flex-col">
@@ -118,11 +117,13 @@
                                     <div class="flex-1">
                                         <label for="ingredientName"
                                             class="block text-sm font-semibold text-gray-700">Ingrédient</label>
-                                        <select id="ingredient" name="name" placeholder="Commence à taper...">
-                                            @foreach ($ingredients as $ingredient)
-                                                <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
-                                            @endforeach
-                                        </select>
+                                            <select id="ingredient" name="nameIngredients" multiple placeholder="Entrer un ingrédient..."
+                                                autocomplete="off"
+                                                class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:border-brand-400 focus:ring-2 focus:ring-brand-200 outline-none transition">
+                                                @foreach ($ingredients as $ingredient)
+                                                    <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
+                                                @endforeach
+                                            </select>
                                     </div>
                                     <div class="w-24">
                                         <label for="ingredientUnit"
@@ -257,6 +258,9 @@
     </div>
 
     <script>
+        new TomSelect("#ingredient", {
+            maxItems: 1,
+        });
         document.addEventListener('DOMContentLoaded', function() {
             // Ingredients management
             
@@ -284,7 +288,7 @@
                             <button type="button" class="text-red-600 hover:text-red-800 delete-ingredient">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <input type="hidden" name="ingredients[${ingredientId}][name]" value="${ingredientName}">
+                            <input type="hidden" name="ingredients[${ingredientId}][nameIngredient]" value="${ingredientName}">
                             <input type="hidden" name="ingredients[${ingredientId}][quantity]" value="${quantity}">
                             <input type="hidden" name="ingredients[${ingredientId}][unite]" value="${unit}">
                         </td>
@@ -356,13 +360,7 @@
             });
         });
 
-        new TomSelect("#ingredient", {
-            create: true,
-            sortField: {
-                field: "text",
-                direction: "asc"
-            }
-        });
+        
     </script>
 </body>
 

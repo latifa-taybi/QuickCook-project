@@ -118,6 +118,15 @@
                     @endforeach
                 </div>
                 <!-- Pagination -->
+                <section class="py-8 bg-gray-50">
+                    <div class="container mx-auto px-4">
+                        <div class="flex justify-center">
+                            <nav class="flex items-center space-x-2">
+                                {{$recettes->links()}}
+                            </nav>
+                        </div>
+                    </div>
+                </section>
             </main>
         </div>
     </div>
@@ -182,9 +191,6 @@
         function closeModal() {
             deleteConfirmModal.classList.add('hidden');
         }
-
-
-
 
         new TomSelect("#ingredient", {
             create: true,

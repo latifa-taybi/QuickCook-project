@@ -111,7 +111,7 @@
                                     <div class="flex-1">
                                         <label for="ingredientName"
                                             class="block text-sm font-semibold text-gray-700">Ingrédient</label>
-                                        <select id="ingredient" name="name" placeholder="Commence à taper...">
+                                        <select id="ingredient" name="nameIngredients" placeholder="Commence à taper...">
                                             @foreach ($ingredients as $ingredient)
                                                 <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
                                             @endforeach
@@ -277,12 +277,11 @@
                             <button type="button" class="text-red-600 hover:text-red-800 delete-ingredient">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <input type="hidden" name="ingredients[${ingredientId}][name]" value="${ingredientName}">
+                            <input type="hidden" name="ingredients[${ingredientId}][nameIngredient]" value="${ingredientName}">
                             <input type="hidden" name="ingredients[${ingredientId}][quantity]" value="${quantity}">
                             <input type="hidden" name="ingredients[${ingredientId}][unite]" value="${unit}">
                         </td>
                     `;
-
                     ingredientsTable.appendChild(row);
 
                     // Clear inputs

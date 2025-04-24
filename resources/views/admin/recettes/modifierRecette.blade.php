@@ -183,27 +183,17 @@
                                             <!-- Les ingrédients seront ajoutés ici dynamiquement -->
                                             @foreach ($recette->ingredients as $ingredient)
                                                 <tr>
-                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">
-                                                        <input type="text" name="ingredients[{{$ingredient->id}}][name]"
-                                                            class="border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm p-1"
-                                                            value="{{ $ingredient->name }}">
-                                                    </td>
-                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">
-                                                        <input type="text" name="ingredients[{{$ingredient->id}}][quantity]"
-                                                            class="border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm p-1"
-                                                            value="{{ $ingredient->pivot->quantity }}">
-                                                    </td>
-                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">
-                                                        <input type="text" name="ingredients[{{$ingredient->id}}][unite]"
-                                                            class="border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm p-1"
-                                                            value="{{ $ingredient->pivot->unite }}">
-                                                    </td>
-                                                    <td class="px-4 py-2 whitespace-nowrap text-sm">
-                                                        <button type="button"
-                                                            class="text-red-600 hover:text-red-800 delete-ingredient">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </td>
+                                                    <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->name }}</td>
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->pivot->quantity }}</td>
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->pivot->unit }}</td>
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm">
+                                                    <button type="button" class="text-red-600 hover:text-red-800 delete-ingredient">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                    <input type="hidden" name="ingredients[{{ $ingredient->id }}][nameIngredient]" value="{{ $ingredient->name }}">
+                                                    <input type="hidden" name="ingredients[{{ $ingredient->id }}][quantity]" value="{{ $ingredient->pivot->quantity }}">
+                                                    <input type="hidden" name="ingredients[{{ $ingredient->id }}][unite]" value="{{ $ingredient->pivot->unit }}">
+                                                </td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -235,17 +225,8 @@
                                     <h4 class="text-sm font-medium text-gray-700 mb-2">Liste des étapes</h4>
                                     <ol id="stepsList" class="space-y-2 list-decimal list-inside">
                                         <!-- Les étapes seront ajoutées ici dynamiquement -->
-                                        @foreach ($recette->etapes as $etape)
+                                        @foreach ($recette->etapes->sortBy('numero_etape') as $etape)
                                             <li class="flex items-start existLi">
-                                                {{-- <span class="">{{$etape->numero_etape.'.'}} </span>
-                                                <input type="text" name="etape" class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm p-1"
-                                                        value="{{ $etape->description }}">
-                                                <div class="ml-2">
-                                                    <button type="button"
-                                                        class="remove-step text-red-600 hover:text-red-800 ">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </div> --}}
 
                                                 <div class="flex-1">{{ $etape->numero_etape . '.' }} 
                                                     {{ $etape->description }}</div>
@@ -275,6 +256,12 @@
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Photo
                                         principale</label>
                                     <div class="border-2 border-dashed border-gray-300 rounded-md p-4 text-center">
+                                        @if($recette->image_path)
+                                            <div class="mr-4">
+                                                <img src="{{ asset('storage/' . $recette->image_path) }}" alt="Image de la recette"
+                                                    class="h-24 w-24 object-cover rounded-md">
+                                            </div>
+                                        @endif
                                         <!-- Icône SVG simplifiée -->
                                         <svg class="mx-auto h-12 w-12 text-gray-400" fill="none"
                                             viewBox="0 0 24 24" stroke="currentColor">
@@ -347,7 +334,7 @@
                     <button type="button" class="text-red-600 hover:text-red-800 delete-ingredient">
                         <i class="fas fa-trash"></i>
                     </button>
-                    <input type="hidden" name="ingredients[${ingredientId}][name]" value="${ingredientName}">
+                    <input type="hidden" name="ingredients[${ingredientId}][nameIngredient]" value="${ingredientName}">
                     <input type="hidden" name="ingredients[${ingredientId}][quantity]" value="${quantity}">
                     <input type="hidden" name="ingredients[${ingredientId}][unite]" value="${unit}">
                 </td>

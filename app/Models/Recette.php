@@ -17,6 +17,7 @@ class Recette extends Model
         'difficulty',
         'description',
         'etape',
+        'user_id',
         'image',
         'videoUrl'
     ];
@@ -34,6 +35,11 @@ class Recette extends Model
     public function etapes()
     { 
         return $this->hasMany(Etape::class);
+    }
+
+    public function favoritesUsers()
+    {
+        return $this->belongsToMany(Recette::class, 'favorites')->withTimestamps();
     }
 
 }

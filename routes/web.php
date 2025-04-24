@@ -24,6 +24,7 @@ Route::get('/recette', function () {
 
 
 
+
 Route::get('/', [RecetteController::class,'home'])->name('home');
 Route::get('/statistique', [RecetteController::class,'statistique'])->name('statistique');
 
@@ -55,6 +56,7 @@ Route::post('/search',[RecetteController::class,'search'])->name('recettes.searc
 
 Route::get('/mesRecettes',[RecetteController::class,'mesRecettes'])->name('mesRecettes');
 Route::get('/client/recettes',[RecetteController::class,'index'])->name('client.recettes');
+Route::post('/favories/{id}',[RecetteController::class,'favories'])->name('favories');
 
 
 

@@ -25,13 +25,13 @@ class RecetteController extends Controller
     public function index()
     {
         if (Gate::allows('is-admin')) {
-            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->paginate(8);
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->paginate(8);
             $regimes = Regime::all();
             $ingredients = Ingredient::all();
             $etapes = Etape::all();
             return view('admin.recettes.gestionRecettes', compact('regimes', 'ingredients', 'etapes', 'recettes'));
         } else {
-            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->paginate(8);
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->paginate(8);
             return view('client.recettes', compact('recettes'));
         }
     }
@@ -63,6 +63,7 @@ class RecetteController extends Controller
             'prepTime' => $request->prepTime,
             'difficulty' => $request->difficulty,
             'description' => $request->description,
+            'status' => Gate::allows('is-admin') ? 'publiée' : 'en_attente',
             'user_id' => Auth::user()->id,
             'image' => $request->hasFile('image') ? $request->file('image')->store('photos', 'public') : null,
             'videoUrl' => $request->videoUrl,
@@ -150,6 +151,7 @@ class RecetteController extends Controller
             'prepTime' => $request->prepTime,
             'difficulty' => $request->difficulty,
             'description' => $request->description,
+            'status' => Gate::allows('is-admin') ? 'publiée' : 'en_attente',
             'user_id' => Auth::user()->id,
             'image' => $request->hasFile('image') ? $request->file('image')->store('photos', 'public') : $recette->image,
             'videoUrl' => $request->videoUrl,
@@ -194,7 +196,7 @@ class RecetteController extends Controller
 
     public function home()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->inRandomOrder()->limit(3)->get();
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->inRandomOrder()->limit(3)->get();
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         return view('client.home', compact('regimes', 'ingredients', 'recettes'));
@@ -202,7 +204,7 @@ class RecetteController extends Controller
 
     public function statistique()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->paginate(8);
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->paginate(8);
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         $users = User::all();
@@ -240,7 +242,6 @@ class RecetteController extends Controller
     public function favories($id)
     {
         $user = Auth::user();
-        // dd($user);
         if (!$user->favoritesRecette()->where('recette_id', $id)->exists()) {
             $user->favoritesRecette()->attach($id);
         }else{
@@ -248,5 +249,28 @@ class RecetteController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function approveRecette()
+    {
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'en_attente')->paginate(8);
+        $regimes = Regime::all();
+        $ingredients = Ingredient::all();
+        $etapes = Etape::all();
+        return view('admin.recettes.approveRecette', compact('regimes', 'ingredients', 'etapes', 'recettes'));
+    }
+
+    public function approve(Recette $recette)
+    {
+        $recette->update(['status' => 'publiée']);
+        return redirect()->route('approveRecette');
+    }
+    public function reject(Recette $recette)
+    {
+        $recette->ingredients()->detach();
+        $recette->regimes()->detach();
+        $recette->etapes()->delete();
+        $recette->delete();
+        return redirect()->route('approveRecette');
     }
 }

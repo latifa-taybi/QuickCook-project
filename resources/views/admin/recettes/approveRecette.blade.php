@@ -102,15 +102,21 @@
                                                 class="text-gray-400 hover:text-brand-500 view-recipe">
                                                 <i class="fas fa-eye"></i>
                                             </button></a>
-                                        <a href="{{ route('recettes.edit', $recette->id) }}">
-                                            <button class="text-gray-400 hover:text-brand-500 edit-recipe">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                        </a>
-                                        <button class="text-gray-400 hover:text-red-500 delete-recipe"
-                                            onclick="deleteModal({{ $recette->id }})">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
+                                            {{-- <span>{{$recette->status}}</span> --}}
+                                        @if($recette->status === 'en_attente')
+                                                <form action="{{ route('recettes.approve', $recette->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="text-white bg-green-600 hover:bg-green-700 px-4 py-1 rounded-lg text-sm">
+                                                        Accepter
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('recettes.reject', $recette->id) }}" method="POST">
+                                                    @csrf
+                                                    <button type="submit" class="text-white bg-red-600 hover:bg-red-700 px-4 py-1 rounded-lg text-sm">
+                                                        Refuser
+                                                    </button>
+                                                </form>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

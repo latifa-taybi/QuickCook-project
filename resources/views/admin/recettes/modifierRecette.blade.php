@@ -138,7 +138,7 @@
                                     <div class="w-24">
                                         <label for="ingredientUnit"
                                             class="block text-sm font-semibold text-gray-700">Unité</label>
-                                        <select id="ingredientUnit" name="unit"
+                                        <select id="ingredientUnit" name="unite"
                                             class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
                                             required>
                                             <option value="gramme">g</option>
@@ -185,14 +185,14 @@
                                                 <tr>
                                                     <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->name }}</td>
                                                 <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->pivot->quantity }}</td>
-                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->pivot->unit }}</td>
+                                                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">{{ $ingredient->pivot->unite }}</td>
                                                 <td class="px-4 py-2 whitespace-nowrap text-sm">
                                                     <button type="button" class="text-red-600 hover:text-red-800 delete-ingredient">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                     <input type="hidden" name="ingredients[{{ $ingredient->id }}][nameIngredient]" value="{{ $ingredient->name }}">
                                                     <input type="hidden" name="ingredients[{{ $ingredient->id }}][quantity]" value="{{ $ingredient->pivot->quantity }}">
-                                                    <input type="hidden" name="ingredients[{{ $ingredient->id }}][unite]" value="{{ $ingredient->pivot->unit }}">
+                                                    <input type="hidden" name="ingredients[{{ $ingredient->id }}][unite]" value="{{ $ingredient->pivot->unite }}">
                                                 </td>
                                                 </tr>
                                             @endforeach
@@ -329,14 +329,14 @@
                     row.innerHTML = `
                 <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">${ingredientName}</td>
                 <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">${quantity}</td>
-                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">${unit}</td>
+                <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">${unite}</td>
                 <td class="px-4 py-2 whitespace-nowrap text-sm">
                     <button type="button" class="text-red-600 hover:text-red-800 delete-ingredient">
                         <i class="fas fa-trash"></i>
                     </button>
                     <input type="hidden" name="ingredients[${ingredientId}][nameIngredient]" value="${ingredientName}">
                     <input type="hidden" name="ingredients[${ingredientId}][quantity]" value="${quantity}">
-                    <input type="hidden" name="ingredients[${ingredientId}][unite]" value="${unit}">
+                    <input type="hidden" name="ingredients[${ingredientId}][unite]" value="${unite}">
                 </td>
             `;
 

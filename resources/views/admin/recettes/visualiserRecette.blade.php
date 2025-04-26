@@ -79,7 +79,7 @@
                                     @foreach ($recette->ingredients as $ingredient)
                                         <li class="flex items-start">
                                             <i class="fas fa-circle text-[8px] text-brand-500 mt-2 mr-3"></i>
-                                            <span class="flex-1"> {{ $ingredient->quantity }} {{ $ingredient->unit }} de
+                                            <span class="flex-1"> {{ $ingredient->pivot->quantity }}{{ $ingredient->pivot->unite }} de
                                                 {{ $ingredient->name }}</span>
                                         </li>
                                     @endforeach

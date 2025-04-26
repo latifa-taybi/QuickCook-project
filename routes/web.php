@@ -5,23 +5,7 @@ use App\Http\Controllers\IngredientController;
 use App\Http\Controllers\RecetteController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-
-
-
-
-Route::get('/gestionUtilisateurs', function () {
-    return view('admin.utilisateurs.gestionUtilisateurs');
-})->name('gestionUtilisateurs');
-
-
-Route::get('/recette', function () {
-    return view('client.recettes');
-})->name('recette');
-
-
-
-
-
+use App\Http\Controllers\RegimeController;
 
 
 
@@ -57,6 +41,18 @@ Route::post('/search',[RecetteController::class,'search'])->name('recettes.searc
 Route::get('/mesRecettes',[RecetteController::class,'mesRecettes'])->name('mesRecettes');
 Route::get('/client/recettes',[RecetteController::class,'index'])->name('client.recettes');
 Route::post('/favories/{id}',[RecetteController::class,'favories'])->name('favories');
+
+Route::get('/regimes', [RegimeController::class, 'index'])->name('regimes.index');
+Route::post('/regimes', [RegimeController::class, 'store'])->name('regimes.store');
+Route::put('/regimes', [RegimeController::class, 'update'])->name('regimes.update');
+Route::delete('/regimes/destroy', [RegimeController::class, 'destroy'])->name('regimes.destroy');
+
+Route::get('/ingredients/filtrer', [IngredientController::class, 'filtrer']);
+
+Route::get('approveRecette', [RecetteController::class, 'approveRecette'])->name('approveRecette');
+
+Route::post('/recettes/approve/{recette}', [RecetteController::class, 'approve'])->name('recettes.approve');
+Route::post('/recettes/reject/{recette}', [RecetteController::class, 'reject'])->name('recettes.reject');
 
 
 

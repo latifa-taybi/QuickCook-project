@@ -16,6 +16,7 @@ class Recette extends Model
         'prepTime',
         'difficulty',
         'description',
+        'status',
         'etape',
         'user_id',
         'image',

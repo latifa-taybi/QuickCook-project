@@ -86,7 +86,14 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200" id="regimeTableBody">
                                 <!-- Exemple d'ingrédient -->
-                                @foreach ($rgimes as $regime)
+                                @if (isset($regimes) && $regimes->isEmpty())
+                                <tr class="table-row">
+                                    <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                                        Aucun regime trouvé
+                                    </td>
+                                </tr>
+                                @else
+                                @foreach ($regimes as $regime)
                                     <tr class="table-row">
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <div class="text-sm text-gray-500">{{ $regime->id }}</div>
@@ -108,6 +115,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -131,7 +139,7 @@
                                 Ajouter un regime
                             </h3>
                             <div class="mt-2">
-                                <form action="{{ route('rgimes.store') }}" method="POST" id="regimeForm"
+                                <form action="{{ route('regimes.store') }}" method="POST" id="regimeForm"
                                     class="space-y-5 bg-white rounded-xl">
                                     @csrf
                                     <!-- regime Name -->
@@ -186,7 +194,7 @@
                                 Modifier le regime
                             </h3>
                             <div class="mt-2">
-                                <form id="regimeEditForm" action="{{ route('rgimes.update') }}" method="POST"
+                                <form id="regimeEditForm" action="{{ route('regimes.update')}}" method="POST"
                                     class="space-y-5 bg-white rounded-xl">
                                     @csrf
                                     @method('PUT')
@@ -232,8 +240,9 @@
         aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
 
-        <form action="{{ route('rgimes.destroy') }}" method="POST">
+        <form action="{{ route('regimes.destroy') }}" method="POST">
             @csrf
+            @method('DELETE')
             <input type="hidden" name="id" id="deleteregimeId" value="">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>

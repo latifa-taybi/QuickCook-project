@@ -57,7 +57,9 @@
                             <select id="categoryFilter"
                                 class="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm">
                                 <option value="">Toutes les catégories</option>
-                                <option value="fruits">Fruits</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
                             </select>
                         </div>
 
@@ -106,35 +108,38 @@
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200" id="ingredientsTableBody">
                                 <!-- Exemple d'ingrédient -->
-                                @foreach($ingredients as $ingredient)
-                                <tr class="table-row">
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-gray-500">{{$ingredient->id}}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{$ingredient->name}}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <img src="{{ asset('storage/' . $ingredient->photo)}}" alt="{{ $ingredient->name }}" class="h-10 w-10 rounded-full object-cover">
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <span
-                                            class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800" >
-                                            {{$ingredient->category->name}}
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">{{$ingredient->description}}</div>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button class="text-brand-600 hover:text-brand-900 mr-3 edit-ingredient">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="text-red-600 hover:text-red-900 delete-ingredient">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                @foreach ($ingredients as $ingredient)
+                                    <tr class="table-row">
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm text-gray-500">{{ $ingredient->id }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">{{ $ingredient->name }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <img src="{{ asset('storage/' . $ingredient->photo) }}"
+                                                alt="{{ $ingredient->name }}"
+                                                class="h-10 w-10 rounded-full object-cover">
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span
+                                                class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                {{ $ingredient->category->name }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="text-sm font-medium text-gray-900">
+                                                {{ $ingredient->description }}</div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button class="text-brand-600 hover:text-brand-900 mr-3 edit-ingredient">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="text-red-600 hover:text-red-900 delete-ingredient">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -159,7 +164,8 @@
                                 Ajouter un ingrédient
                             </h3>
                             <div class="mt-2">
-                                <form action="{{ route('ingredients.store' )}}" method="POST" id="ingredientForm" class="space-y-5 bg-white rounded-xl" enctype="multipart/form-data">
+                                <form action="{{ route('ingredients.store') }}" method="POST" id="ingredientForm"
+                                    class="space-y-5 bg-white rounded-xl" enctype="multipart/form-data">
                                     @csrf
                                     <!-- Ingredient Name -->
                                     <div>
@@ -185,8 +191,8 @@
                                         <select id="ingredientCategory" name="category_id"
                                             class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
                                             required>
-                                            @foreach($categories as $category)
-                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -218,91 +224,9 @@
         </div>
     </div>
 
-        <!-- Modal pour modifier un ingrédient -->
-    <div id="editIngredientModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="edit-modal-title"
-    role="dialog" aria-modal="true">
-    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-        <div
-            class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="edit-modal-title">
-                            Modifier un ingrédient
-                        </h3>
-                        <div class="mt-2">
-                            <form action="{{route('ingredients.update')}}" method="POST" id="editIngredientForm" class="space-y-5 bg-white rounded-xl">
-                                @csrf
-                                @method('PUT')
-                                <input type="hidden" name="id" id="editIngredientId" value="">
-
-                                <!-- Ingredient Name -->
-                                <div>
-                                    <label for="editIngredientName"
-                                        class="block text-sm font-semibold text-gray-700">Nom</label>
-                                    <input type="text" name="name" id="editIngredientName"
-                                        class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                        required>
-                                </div>
-
-                                <!-- Ingredient Image Upload -->
-                                <div>
-                                    <label for="editIngredientImage"
-                                        class="block text-sm font-semibold text-gray-700">Image (optionnel)</label>
-                                        <input type="file" id="photo" name="photo"
-                                        class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white">
-                                    </div>
-
-                                <!-- Ingredient Category -->
-                                <div>
-                                    <label for="editIngredientCategory"
-                                        class="block text-sm font-semibold text-gray-700">Catégorie</label>
-                                    <select id="editIngredientCategory" name="category_id"
-                                        class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
-                                        required>
-                                        @foreach($categories as $category)
-                                            <option value="{{$category->id}}">{{$category->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <!-- Ingredient Description -->
-                                <div>
-                                    <label for="editIngredientDescription"
-                                        class="block text-sm font-semibold text-gray-700">Description
-                                        (optionnel)</label>
-                                    <textarea id="editIngredientDescription" name="description" rows="3"
-                                        class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"></textarea>
-                                </div>
-                                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                    <button type="submit" id="saveEditIngredientBtn"
-                                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Enregistrer
-                                    </button>
-                                    <button type="button" id="cancelEditIngredientBtn"
-                                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                                        Annuler
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-    <!-- Modal de confirmation de suppression -->
-    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
-        <form action="{{route('ingredients.destroy')}}" method="POST">
-            @csrf
-            <input type="hidden" name="id" id="deleteIngredientId" value="">
-
+    <!-- Modal pour modifier un ingrédient -->
+    <div id="editIngredientModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto"
+        aria-labelledby="edit-modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
@@ -310,38 +234,121 @@
                 class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
-                        <div
-                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <i class="fas fa-exclamation-triangle text-red-600"></i>
-                        </div>
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Supprimer l'ingrédient
+                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="edit-modal-title">
+                                Modifier un ingrédient
                             </h3>
                             <div class="mt-2">
-                                <p class="text-sm text-gray-500">
-                                    Êtes-vous sûr de vouloir supprimer cet ingrédient ? Cette action est irréversible.
-                                </p>
+                                <form action="{{ route('ingredients.update') }}" method="POST"
+                                    id="editIngredientForm" class="space-y-5 bg-white rounded-xl">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="id" id="editIngredientId" value="">
+
+                                    <!-- Ingredient Name -->
+                                    <div>
+                                        <label for="editIngredientName"
+                                            class="block text-sm font-semibold text-gray-700">Nom</label>
+                                        <input type="text" name="name" id="editIngredientName"
+                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
+                                            required>
+                                    </div>
+
+                                    <!-- Ingredient Image Upload -->
+                                    <div>
+                                        <label for="editIngredientImage"
+                                            class="block text-sm font-semibold text-gray-700">Image (optionnel)</label>
+                                        <input type="file" id="photo" name="photo"
+                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white">
+                                    </div>
+
+                                    <!-- Ingredient Category -->
+                                    <div>
+                                        <label for="editIngredientCategory"
+                                            class="block text-sm font-semibold text-gray-700">Catégorie</label>
+                                        <select id="editIngredientCategory" name="category_id"
+                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm bg-white"
+                                            required>
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <!-- Ingredient Description -->
+                                    <div>
+                                        <label for="editIngredientDescription"
+                                            class="block text-sm font-semibold text-gray-700">Description
+                                            (optionnel)</label>
+                                        <textarea id="editIngredientDescription" name="description" rows="3"
+                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"></textarea>
+                                    </div>
+                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                        <button type="submit" id="saveEditIngredientBtn"
+                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                            Enregistrer
+                                        </button>
+                                        <button type="button" id="cancelEditIngredientBtn"
+                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                            Annuler
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit" id="confirmDeleteBtn"
-                        class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Supprimer
-                    </button>
-                    <button type="button" id="cancelDeleteBtn"
-                        class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Annuler
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
 
-    <script>
+    <!-- Modal de confirmation de suppression -->
+    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto"
+        aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <form action="{{ route('ingredients.destroy') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id" id="deleteIngredientId" value="">
 
+            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div
+                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                    <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                        <div class="sm:flex sm:items-start">
+                            <div
+                                class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                <i class="fas fa-exclamation-triangle text-red-600"></i>
+                            </div>
+                            <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                    Supprimer l'ingrédient
+                                </h3>
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-500">
+                                        Êtes-vous sûr de vouloir supprimer cet ingrédient ? Cette action est
+                                        irréversible.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                        <button type="submit" id="confirmDeleteBtn"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            Supprimer
+                        </button>
+                        <button type="button" id="cancelDeleteBtn"
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Annuler
+                        </button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <script>
         // Gestion des modals
         const ingredientModal = document.getElementById('ingredientModal');
         const deleteConfirmModal = document.getElementById('deleteConfirmModal');
@@ -392,7 +399,7 @@
             idInput.value = id;
             nameInput.value = name;
             for (let option of categorySelect.options) {
-                if(option.textContent.trim() === category){
+                if (option.textContent.trim() === category) {
                     categorySelect.value = option.value;
                     break;
                 }
@@ -418,6 +425,48 @@
         cancelDeleteBtn.addEventListener('click', () => {
             deleteConfirmModal.classList.add('hidden');
         });
+
+
+        // Filtrer les ingrédients par catégorie
+        document.getElementById('categoryFilter').addEventListener('change', function() {
+                    const selectedCategory = this.value;
+                    fetch(`/ingredients?category=${selectedCategory}`)
+                        .then(response => response.json())
+                            .then(data => {
+                                const liste = document.getElementById('ingredientsTableBody');
+                                liste.innerHTML = '';
+                                data.forEach(ingredient => {
+                                    const row = document.createElement('tr');
+                                    row.classList.add('table-row');
+                                    row.innerHTML = `
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">${ingredient.id}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">${ingredient.name}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <img src="{{ asset('storage/${ingredient.photo}') }}" alt="${ingredient.name}" class="h-10 w-10 rounded-full object-cover">
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">${ingredient.category.name}</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">${ingredient.description}</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                        <button class="text-brand-600 hover:text-brand-900 mr-3 edit-ingredient">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="text-red-600 hover:text-red-900 delete-ingredient">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    </td>`;
+                                    liste.appendChild(row);
+                                });
+                            });
+                        });
     </script>
 </body>
+
 </html>

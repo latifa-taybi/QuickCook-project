@@ -65,4 +65,18 @@ class IngredientController extends Controller
         $ingredient->delete();
         return redirect()->route('ingredients.index');
     }
+
+
+    /**
+     * Filtrer les ingrédients par catégorie.
+     */
+    public function filtrer(Request $request)
+    {
+        $ingredients = Ingredient::where('category_id', $request->category_id)->get();
+        $categories = Category::all();
+        return response()->json([
+            'ingredients' => $ingredients,
+            'categories' => $categories,
+        ]);
+    }   
 }

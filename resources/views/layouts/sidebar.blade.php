@@ -36,7 +36,6 @@
                 <i class="fas fa-tachometer-alt mr-3 text-brand-400"></i>
                 Tableau de bord
             </a>
-
             <div class="pt-4 pb-2">
                 <p class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">Administration</p>
             </div>
@@ -55,8 +54,13 @@
                 <i class="fas fa-tags mr-3 text-brand-400"></i>
                 Catégories d'ingrédients
             </a>
-            <a href="{{route('gestionUtilisateurs')}}"
-                class="nav-item flex items-center px-4 py-3 {{request()->routeIs('gestionUtilisateurs') ? 'active' : ''}} text-sm font-medium text-gray-300 hover:text-white">
+            <a href="{{route('regimes.index')}}"
+                class="nav-item flex items-center {{request()->routeIs('regimes.index') ? 'active' : ''}} px-4 py-3 text-sm font-medium text-gray-300 hover:text-white">
+                <i class="fas fa-tags mr-3 text-brand-400"></i>
+                Gestion des regimes
+            </a>
+            <a href="{{route('approveRecette')}}"
+                class="nav-item flex items-center px-4 py-3 {{request()->routeIs('approveRecette') ? 'active' : ''}} text-sm font-medium text-gray-300 hover:text-white">
                 <i class="fas fa-users mr-3 text-brand-400"></i>
                 Gestion des utilisateurs
             </a>

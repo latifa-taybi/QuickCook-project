@@ -79,4 +79,17 @@ class IngredientController extends Controller
             'categories' => $categories,
         ]);
     }   
+
+    /**
+     * Rechercher un ingrédient.
+     */
+    public function rechercheIngredient(Request $request)
+    {
+        $ingredients = Ingredient::where('name', 'like', '%' . $request->search . '%')->get();
+        $categories = Category::all();
+        return response()->json([
+            'ingredients' => $ingredients,
+            'categories' => $categories,
+        ]);
+    }
 }

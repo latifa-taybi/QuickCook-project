@@ -18,9 +18,13 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
+        'phone_number',
+        'profile_photo',
         'email',
         'password',
+        'biographie'
     ];
 
     /**
@@ -47,8 +51,10 @@ class User extends Authenticatable
     }
 
 
-    public function favoritesRecette()
+   public function recettes()
     {
         return $this->belongsToMany(Recette::class, 'favorites')->withTimestamps();
     }
+
+
 }

@@ -12,7 +12,6 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Exception;
 
@@ -56,7 +55,7 @@ class RecetteController extends Controller
      */
 
     public function store(StoreRecetteRequest $request)
-{
+    {
         $recette = Recette::create([
             'name' => $request->name,
             'category' => $request->category,
@@ -72,7 +71,6 @@ class RecetteController extends Controller
         $recette->regimes()->attach($request->regimes);
 
         foreach ($request->ingredients as $item) {
-
             $ingredient = Ingredient::firstOrCreate([
                 'name' => $item['nameIngredient'],
             ]);
@@ -95,9 +93,7 @@ class RecetteController extends Controller
         } else {
             return redirect()->route('mesRecettes');
         }
-    
     }
-
 
     /**
      * Display the specified resource.
@@ -208,7 +204,10 @@ class RecetteController extends Controller
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         $users = User::all();
-        return view('admin.dashboard', compact('regimes', 'ingredients', 'users', 'recettes'));
+        $recettesParUtilisateur = User::withCount('recettes')->get();
+        $userNames = $recettesParUtilisateur->pluck('name')->toArray();
+        $recipeCounts = $recettesParUtilisateur->pluck('recettes_count')->toArray();
+        return view('admin.dashboard', compact('regimes', 'ingredients', 'users', 'recettes', 'userNames', 'recipeCounts'));
     }
 
     public function indexSearch()
@@ -230,6 +229,7 @@ class RecetteController extends Controller
             $query->whereIn('name', $ingredients);
         })->with(['ingredients', 'regimes', 'etapes'])->paginate(8);
 
+        // dd($ingredients);
         return view('client.search', compact('recettes', 'allIngredients'));
     }
 
@@ -242,13 +242,19 @@ class RecetteController extends Controller
     public function favories($id)
     {
         $user = Auth::user();
-        if (!$user->favoritesRecette()->where('recette_id', $id)->exists()) {
-            $user->favoritesRecette()->attach($id);
+        if (!$user->recettes()->where('recette_id', $id)->exists()) {
+            $user->recettes()->attach($id);
         }else{
-            $user->favoritesRecette()->detach($id);
+            $user->recettes()->detach($id);
         }
 
         return redirect()->back();
+    }
+
+    public function favoriesRecettes()
+    {
+        $recettes = Auth::user()->recettes()->with(['ingredients', 'regimes', 'etapes'])->paginate(8);
+        return view('client.favoriesRecettes', compact('recettes'));
     }
 
     public function approveRecette()
@@ -272,5 +278,16 @@ class RecetteController extends Controller
         $recette->etapes()->delete();
         $recette->delete();
         return redirect()->route('approveRecette');
+    }
+
+
+    public function rechercheRecette(Request $request)
+    {
+        $recettes = Recette::where('name', 'like', '%' . $request->search . '%')->paginate(8);
+        if (Gate::allows('is-admin')) {
+            return view('admin.recettes.gestionRecettes', compact('recettes'));
+        } else {
+            return view('client.recettes', compact('recettes'));
+        }
     }
 }

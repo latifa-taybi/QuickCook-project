@@ -14,8 +14,9 @@ class AuthController extends Controller
     public function register(AuthRequest $request)
     {
         $user = User::create([
-            'name'     => $request->firstName . ' ' . $request->lastName,
-            'email'    => $request->email,
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
         Auth::login($user);
@@ -37,7 +38,7 @@ class AuthController extends Controller
             if(Gate::allows('is-admin')){
                 return redirect()->route('statistique');
             }else{
-                return redirect()->route('mesRecettes');
+                return redirect()->route('recettes.indexSearch');
             }
         }
     }
@@ -46,6 +47,11 @@ class AuthController extends Controller
     {
         Auth::logout();
         return redirect()->route('home');
+    }
+
+    public function edit(Request $request){
+        $user = Auth::user();
+        return view('client.editProfile', compact('user'));
     }
 
     

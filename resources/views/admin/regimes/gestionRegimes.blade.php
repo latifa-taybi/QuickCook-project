@@ -4,167 +4,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Gestion des regimes de recette</title>
+    <title>QuickCook - Gestion des régimes de recette</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slate: {
+                            850: '#17212e',
+                            900: '#0f172a',
+                            950: '#020617'
+                        },
+                        teal: {
+                            150: '#a8f0e6',
+                            250: '#80e5d8',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488'
+                        },
+                        amber: {
+                            400: '#f59e0b',
+                            500: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"Inter"', 'sans-serif'],
+                        display: ['"Poppins"', 'sans-serif']
+                    },
+                }
+            }
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <script src="{{ asset('js/app.js') }}"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #0d9488 0%, #2dd4bf 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+        }
+        
+        .btn-secondary:hover {
+            background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
+        }
+        
+        .table-row:hover {
+            background-color: #f8fafc;
+        }
+        
+        .badge-category {
+            background-color: rgba(45, 212, 191, 0.1);
+            color: #0d9488;
+        }
+        
+        .image-preview {
+            max-height: 120px;
+            object-fit: contain;
+        }
+    </style>
 </head>
 
-<body class="bg-light text-dark min-h-screen flex flex-col">
-    @section('title', 'Gestion des regimes de recette')
-
-    <div class="flex min-h-screen">
-        <!-- Sidebar -->
-        @include('layouts.sidebar')
-        <!-- Main content -->
-        <div class="flex-1 flex flex-col">
-            <!-- Top navbar -->
-            @include('layouts.nav')
-            <!-- Main content area -->
-            <main class="flex-1 overflow-y-auto bg-gray-50 p-4 md:p-6">
-                <!-- Page header with actions -->
-                <div class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between">
+<body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
+    <!-- Sidebar -->
+    @include('layouts.sidebar')
+    
+    <!-- Main content -->
+    <div class="flex-1 flex flex-col ml-0">
+        <!-- Top navbar -->
+        @include('layouts.nav')
+        
+        <!-- Main content area -->
+        <main class="flex-1 overflow-y-auto p-6">
+            <!-- Page header with actions -->
+            <div class="mb-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h2 class="text-2xl font-display font-bold text-gray-900">regimes de recette</h2>
-                        <p class="mt-1 text-sm text-gray-500">Gérez les regimes pour organiser vos recettes</p>
+                        <h2 class="text-2xl font-display font-bold text-slate-800">Gestion des régimes</h2>
+                        <p class="mt-2 text-slate-600">Gérez les régimes alimentaires pour vos recettes</p>
                     </div>
                     <div class="mt-4 md:mt-0">
                         <button id="addRegimeBtn"
-                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-brand-600 hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
+                            class="btn-primary inline-flex items-center px-4 py-2.5 rounded-lg shadow text-sm font-medium text-white">
                             <i class="fas fa-plus mr-2"></i>
-                            Ajouter un regime
+                            Ajouter un régime
                         </button>
                     </div>
                 </div>
+            </div>
 
-                <!-- Search and Filters -->
-                <div class="mb-6 bg-white rounded-xl shadow-md p-5">
-                    <div class="flex flex-col md:flex-row gap-4 items-center">
-                        <!-- Search Bar -->
-                        <div class="flex-1 w-full relative">
-                            <i
-                                class="fas fa-search text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
-                            <input type="text" id="searchRegime"
-                                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm"
-                                placeholder="Rechercher un regime...">
-                        </div>
+            <!-- Search section -->
+            
 
-                        <!-- Sorting Filter -->
-                        <div class="w-full md:w-48">
-                            <select id="sortRegimes"
-                                class="w-full py-2 px-3 border border-gray-300 rounded-lg focus:ring-brand-500 focus:border-brand-500 text-sm">
-                                <option value="name-asc">Nom (A-Z)</option>
-                                <option value="name-desc">Nom (Z-A)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white shadow rounded-lg overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        ID
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Nom
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Description
-                                    </th>
-                                    <th scope="col"
-                                        class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                        Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200" id="regimeTableBody">
-                                <!-- Exemple d'ingrédient -->
-                                @if (isset($regimes) && $regimes->isEmpty())
-                                <tr class="table-row">
-                                    <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
-                                        Aucun regime trouvé
+            <!-- Regimes table -->
+            <div class="bg-white shadow rounded-lg overflow-hidden border border-slate-200">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    ID
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    Nom
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    Description
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200" id="regimesTableBody">
+                            @if (isset($regimes) && $regimes->isEmpty())
+                            <tr class="table-row">
+                                <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-slate-500">
+                                    Aucun régime trouvé
+                                </td>
+                            </tr>
+                            @else
+                            @foreach ($regimes as $regime)
+                                <tr class="table-row transition-colors duration-150 hover:bg-slate-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-slate-500">{{ $regime->id }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="text-sm font-medium text-slate-900">{{ $regime->name }}</div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-slate-500">{{ $regime->description }}</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        <button class="editRegime text-teal-600 hover:text-teal-800 mr-4">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="deleteRegime text-red-600 hover:text-red-800">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
                                     </td>
                                 </tr>
-                                @else
-                                @foreach ($regimes as $regime)
-                                    <tr class="table-row">
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm text-gray-500">{{ $regime->id }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">{{ $regime->name }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="text-sm font-medium text-gray-900">
-                                                {{ $regime->description }}</div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <button class="editRegime text-brand-600 hover:text-brand-900 mr-3">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <button class="deleteRegime text-red-600 hover:text-red-900">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
                 </div>
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Modal pour ajouter une regime -->
-    <div id="regimeModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+    <!-- Modal pour ajouter un régime -->
+    <div id="regimeModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-slate-500 bg-opacity-75 transition-opacity"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Ajouter un regime
+                            <h3 class="text-lg leading-6 font-medium text-slate-900">
+                                Ajouter un régime
                             </h3>
                             <div class="mt-2">
-                                <form action="{{ route('regimes.store') }}" method="POST" id="regimeForm"
-                                    class="space-y-5 bg-white rounded-xl">
+                                <form action="{{ route('regimes.store') }}" method="POST" id="regimeForm" class="space-y-5">
                                     @csrf
-                                    <!-- regime Name -->
+                                    <!-- Regime Name -->
                                     <div>
-                                        <label for="regimeName"
-                                            class="block text-sm font-semibold text-gray-700">Nom</label>
+                                        <label for="regimeName" class="block text-sm font-medium text-slate-700">Nom</label>
                                         <input type="text" name="name" id="regimeName"
-                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
+                                            class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                                             required>
                                     </div>
-                                    <!-- regime Description -->
+                                    <!-- Regime Description -->
                                     <div>
-                                        <label for="regimeDescription"
-                                            class="block text-sm font-semibold text-gray-700">Description
-                                            (optionnel)</label>
+                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
                                         <textarea id="regimeDescription" name="description" rows="3"
-                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"></textarea>
+                                            class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
-                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="submit" id="saveregime"
-                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                    <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                        <button type="submit" class="btn-primary w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-sm font-medium text-white sm:ml-3 sm:w-auto">
                                             Enregistrer
                                         </button>
-                                        <button type="button" id="cancelregimeBtn"
-                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                        <button type="button" id="cancelRegimeBtn"
+                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 sm:mt-0 sm:ml-3 sm:w-auto">
                                             Annuler
                                         </button>
                                     </div>
@@ -173,56 +208,48 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- Modal pour modifier une regime -->
-    <div id="regimeModalEdit" class="modal hidden fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title"
-        role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true">
-            </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+    <!-- Modal pour modifier un régime -->
+    <div id="regimeModalEdit" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-slate-500 bg-opacity-75 transition-opacity"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                Modifier le regime
+                            <h3 class="text-lg leading-6 font-medium text-slate-900">
+                                Modifier le régime
                             </h3>
                             <div class="mt-2">
-                                <form id="regimeEditForm" action="{{ route('regimes.update')}}" method="POST"
-                                    class="space-y-5 bg-white rounded-xl">
+                                <form id="regimeEditForm" action="{{ route('regimes.update') }}" method="POST" class="space-y-5">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name='id' id="regimeId" value="">
 
-                                    <!-- regime Name -->
+                                    <!-- Regime Name -->
                                     <div>
-                                        <label for="regimeName"
-                                            class="block text-sm font-semibold text-gray-700">Nom</label>
+                                        <label for="regimeName" class="block text-sm font-medium text-slate-700">Nom</label>
                                         <input type="text" name="name" id="regimeName"
-                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"
+                                            class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                                             required>
                                     </div>
-                                    <!-- regime Description -->
+                                    <!-- Regime Description -->
                                     <div>
-                                        <label for="regimeDescription"
-                                            class="block text-sm font-semibold text-gray-700">Description
-                                            (optionnel)</label>
+                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
                                         <textarea id="regimeDescription" name="description" rows="3"
-                                            class="mt-2 w-full py-2 px-3 border border-gray-300 rounded-lg shadow-sm focus:ring-brand-500 focus:border-brand-500 text-sm"></textarea>
+                                            class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
-                                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="submit" id="saveEditregimeBtn"
-                                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-brand-600 text-base font-medium text-white hover:bg-brand-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:ml-3 sm:w-auto sm:text-sm">
+                                    <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                                        <button type="submit" id="saveEditRegimeBtn"
+                                            class="btn-primary w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-sm font-medium text-white sm:ml-3 sm:w-auto">
                                             Enregistrer
                                         </button>
-                                        <button type="button" id="cancelEditregimeBtn"
-                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                                        <button type="button" id="cancelEditRegimeBtn"
+                                            class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 sm:mt-0 sm:ml-3 sm:w-auto">
                                             Annuler
                                         </button>
                                     </div>
@@ -231,76 +258,65 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
+
     <!-- Modal de confirmation de suppression -->
-    <div id="deleteConfirmModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto"
-        aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
-
-        <form action="{{ route('regimes.destroy') }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <input type="hidden" name="id" id="deleteregimeId" value="">
-            <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div
-                    class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+    <div id="deleteConfirmModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 bg-slate-500 bg-opacity-75 transition-opacity"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <form action="{{ route('regimes.destroy') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <input type="hidden" name="id" id="deleteRegimeId" value="">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
-                            <div
-                                class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                            <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                                 <i class="fas fa-exclamation-triangle text-red-600"></i>
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
-                                    Supprimer le regime
+                                <h3 class="text-lg leading-6 font-medium text-slate-900">
+                                    Supprimer le régime
                                 </h3>
                                 <div class="mt-2">
-                                    <p class="text-sm text-gray-500">
-                                        Êtes-vous sûr de vouloir supprimer cet regime ? Cette action est
-                                        irréversible.
+                                    <p class="text-sm text-slate-500">
+                                        Êtes-vous sûr de vouloir supprimer ce régime ? Cette action est irréversible.
                                     </p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                         <button type="submit" id="confirmDeleteBtn"
-                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm">
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-sm font-medium text-white hover:bg-red-700 sm:ml-3 sm:w-auto">
                             Supprimer
                         </button>
                         <button type="button" id="cancelDeleteBtn"
-                            class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 sm:mt-0 sm:ml-3 sm:w-auto">
                             Annuler
                         </button>
                     </div>
-                </div>
+                </form>
             </div>
-        </form>
-
+        </div>
     </div>
-
 
     <script>
         // Récupération des éléments des modals
         const addRegimeBtn = document.getElementById("addRegimeBtn");
         const regimeModal = document.getElementById("regimeModal");
-        const cancelregimeBtn = document.getElementById("cancelregimeBtn");
+        const cancelRegimeBtn = document.getElementById("cancelRegimeBtn");
         const regimeForm = document.getElementById("regimeForm");
         const deleteConfirmModal = document.getElementById("deleteConfirmModal");
 
-        const editregimeBtns = document.querySelectorAll(".editRegime");
+        const editRegimeBtns = document.querySelectorAll(".editRegime");
         const regimeModalEdit = document.getElementById("regimeModalEdit");
-        const cancelEditregimeBtn = document.getElementById("cancelEditregimeBtn");
-        const saveEditregimeBtn = document.getElementById("saveEditregimeBtn");
+        const cancelEditRegimeBtn = document.getElementById("cancelEditRegimeBtn");
         const regimeEditForm = document.getElementById("regimeEditForm");
         const regimeDelete = document.querySelectorAll(".deleteRegime");
-        const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-        const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
 
         // Afficher le modal d'ajout
         addRegimeBtn.addEventListener("click", function() {
@@ -308,7 +324,7 @@
         });
 
         // Fermer le modal d'ajout
-        cancelregimeBtn.addEventListener("click", function() {
+        cancelRegimeBtn.addEventListener("click", function() {
             regimeModal.classList.add("hidden");
             regimeForm.reset();
         });
@@ -317,12 +333,13 @@
         regimeDelete.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
-                const idInput = deleteConfirmModal.querySelector("#deleteregimeId");
+                const idInput = deleteConfirmModal.querySelector("#deleteRegimeId");
                 const id = row.querySelector('td:first-child').textContent.trim();
                 idInput.value = id;
                 deleteConfirmModal.classList.remove("hidden");
             });
         });
+        
         // Fermer le modal de suppression
         cancelDeleteBtn.addEventListener("click", function() {
             deleteConfirmModal.classList.add("hidden");
@@ -343,19 +360,33 @@
         }
 
         // Afficher le modal de modification
-        editregimeBtns.forEach(button => {
+        editRegimeBtns.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
                 regimeModalEdit.classList.remove("hidden");
                 populateEditForm(row);
             });
         });
+        
         // Fermer le modal de modification
-        cancelEditregimeBtn.addEventListener("click", function() {
+        cancelEditRegimeBtn.addEventListener("click", function() {
             regimeModalEdit.classList.add("hidden");
             regimeEditForm.reset();
         });
+
+        // Fermer les modals en cliquant à l'extérieur
+        window.addEventListener('click', (event) => {
+            if (event.target === regimeModal) {
+                regimeModal.classList.add('hidden');
+                regimeForm.reset();
+            }
+            if (event.target === regimeModalEdit) {
+                regimeModalEdit.classList.add('hidden');
+            }
+            if (event.target === deleteConfirmModal) {
+                deleteConfirmModal.classList.add('hidden');
+            }
+        });
     </script>
 </body>
-
 </html>

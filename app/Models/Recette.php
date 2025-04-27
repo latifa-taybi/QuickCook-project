@@ -38,9 +38,9 @@ class Recette extends Model
         return $this->hasMany(Etape::class);
     }
 
-    public function favoritesUsers()
+    public function users()
     {
-        return $this->belongsToMany(Recette::class, 'favorites')->withTimestamps();
+        return $this->belongsTo(User::class, 'favorites');
     }
 
 }

@@ -47,4 +47,10 @@ class CategoryController extends Controller
         $category->delete();
         return redirect()->route('categories.index');
     }
+
+    public function rechercheCategory(Request $request)
+    {
+        $categories = Category::where('name', 'like', '%' . $request->search . '%')->get();
+        return response()->json($categories);
+    }
 }

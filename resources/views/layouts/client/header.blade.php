@@ -396,21 +396,26 @@
                     </a>
                 </div>
 
-                            <div class="flex items-center space-x-4">
-                                <div class="relative">
-                                    <button id="profile-btn" class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-100 hover:bg-brand-200 transition">
-                                        <i class="fas fa-user text-brand-600"></i>
-                                    </button>
-                                    <div id="profile-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 hidden z-50 border border-slate-100">
-                                        <a href="{{route('editProfile', Auth::id())}}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-50">Mon Profil</a>
-                                        <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-50">Déconnexion</a>
-                                    </div>
-                                </div>
-                                <button id="mobile-menu-btn" class="md:hidden text-slate-800 hover:text-brand-500">
-                                    <i class="fas fa-bars text-xl"></i>
-                                </button>
-                            </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <div class="flex items-center space-x-2">
+                            <button id="profile-btn" class="flex items-center justify-center w-10 h-10 rounded-full bg-brand-100 hover:bg-brand-200 transition shadow-md">
+                                <img src="{{ Auth::user()->profile_photo ? asset('/storage/' . Auth::user()->profile_photo) : asset('avatar3.jpg') }}" alt="Profile Picture" class="w-8 h-8 rounded-full object-cover">
+                            </button>
+                            <span class="ml-2 text-sm font-medium text-slate-800 hover:text-brand-500 transition">
+                                {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}
+                            </span>
                         </div>
+                        <div id="profile-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 hidden z-50 border border-slate-100">
+                            <a href="{{route('editProfile', Auth::id())}}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-50">Mon Profil</a>
+                            <a href="{{route('logout')}}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-brand-50">Déconnexion</a>
+                        </div>
+                    </div>
+                    <button id="mobile-menu-btn" class="md:hidden text-slate-800 hover:text-brand-500">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
             
         </div>
 

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -54,5 +56,32 @@ class AuthController extends Controller
         return view('client.editProfile', compact('user'));
     }
 
-    
+    public function update(UpdateUserRequest $request)
+    {
+        $user = Auth::user();
+
+        // dd(Hash::check($request->current_password, $user->password));
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->back();
+        }
+
+        // dd($request->hasFile('profile_photo') ? $request->file('profile_photo')->store('profiles', 'public')  : ($user->profile_photo ?? null));
+        $userData = [
+            'profile_photo' => $request->hasFile('profile_photo') ? $request->file('profile_photo')->store('profiles', 'public')  : ($user->profile_photo ?? null),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'phone_number' => $request->phone,
+            'biographie' => $request->bio,
+        ];
+        if (!empty($validatedData['password'])) {
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        User::where('id', $user->id)->update($userData);
+
+        return redirect()->route('mesRecettes');
+    }
+
 }

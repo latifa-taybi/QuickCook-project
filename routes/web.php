@@ -60,6 +60,7 @@ Route::post('/recettes/approve/{recette}', [RecetteController::class, 'approve']
 Route::post('/recettes/reject/{recette}', [RecetteController::class, 'reject'])->name('recettes.reject');
 
 Route::get('/editProfile/{user}', [AuthController::class, 'edit'])->name('editProfile');
+Route::put('/updateProfile/{user}', [AuthController::class, 'update'])->name('profile.update');
 
 // Route::post('/commentaire', [CommentaireController::class, 'commentaire'])->name('commentaire');
 

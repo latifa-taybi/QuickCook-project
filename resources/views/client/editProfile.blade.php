@@ -149,7 +149,7 @@
             <div class="bg-white overflow-hidden shadow-sm rounded-xl mb-8 fade-in">
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- Form -->
-                    <form id="profileForm" class="mt-4 space-y-8" action="" method="POST" enctype="multipart/form-data">
+                    <form id="profileForm" class="mt-4 space-y-8" action="{{route('profile.update', Auth::id())}}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 
@@ -162,10 +162,14 @@
                             <div class="flex flex-col items-center md:flex-row md:items-start space-y-6 md:space-y-0 md:space-x-8">
                                 <div class="avatar-upload">
                                     <div class="avatar-preview rounded-full w-32 h-32 bg-slate-100 overflow-hidden border-4 border-white shadow-md">
-                                        <img id="imagePreview" src="{{ asset('images/default-avatar.jpg') }}" alt="Photo de profil" class="w-full h-full object-cover">
+                                        @if($user->profile_photo)
+                                            <img id="imagePreview" src="{{ asset('storage/' . $user->profile_photo) }}" alt="Photo de profil" class="w-full h-full object-cover">
+                                        @else
+                                            <img id="imagePreview" src="{{ asset('avatar3.jpg') }}" alt="Photo de profil" class="w-full h-full object-cover">
+                                        @endif
                                     </div>
                                     <div class="avatar-edit">
-                                        <input type="file" id="avatarUpload" name="avatar" accept="image/*" class="hidden">
+                                        <input type="file" id="avatarUpload" name="profile_photo" accept="image/*" class="hidden">
                                         <label for="avatarUpload" class="btn-hover">
                                             <i class="fas fa-camera"></i>
                                         </label>
@@ -211,7 +215,7 @@
                                 </div>
                                 <div>
                                     <label for="phone" class="block text-sm font-semibold text-slate-700">Téléphone (optionnel)</label>
-                                    <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
+                                    <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone_number) }}"
                                         class="mt-2 w-full py-2 px-4 border border-slate-200 rounded-lg shadow-sm focus:ring-brand-100 focus:border-brand-400 text-sm">
                                 </div>
                             </div>
@@ -220,7 +224,7 @@
                                 <label for="bio" class="block text-sm font-semibold text-slate-700">Bio (optionnel)</label>
                                 <textarea id="bio" name="bio" rows="3"
                                     class="mt-2 w-full py-2 px-4 border border-slate-200 rounded-lg shadow-sm focus:ring-brand-100 focus:border-brand-400 text-sm"
-                                    placeholder="Décrivez-vous en quelques mots...">{{ old('bio', $user->bio) }}</textarea>
+                                    placeholder="Décrivez-vous en quelques mots...">{{ old('bio', $user->biographie) }}</textarea>
                             </div>
                         </div>
 
@@ -237,7 +241,7 @@
                                     <label for="currentPassword" class="block text-sm font-semibold text-slate-700">Mot de passe actuel</label>
                                     <input type="password" name="current_password" id="currentPassword"
                                         class="mt-2 w-full py-2 px-4 border border-slate-200 rounded-lg shadow-sm focus:ring-brand-100 focus:border-brand-400 text-sm"
-                                        placeholder="••••••••">
+                                        placeholder="••••••••" value="{{ old('current_password') }}">
                                     <p class="text-xs text-slate-500 mt-1">Nécessaire uniquement pour changer le mot de passe</p>
                                 </div>
                             </div>

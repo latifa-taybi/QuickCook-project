@@ -129,24 +129,13 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
     <script>
-        // Initialisation de Tom Select
+
         const selectElement = document.querySelector('#ingredient');
         const ts = new TomSelect(selectElement, {
             maxItems: 1,
             placeholder: 'Rechercher un ingrédient...',
-            render: {
-                option: function(data, escape) {
-                    return `<div class="flex items-center p-2 hover:bg-brand-50">
-                        <span>${escape(data.text)}</span>
-                    </div>`;
-                },
-                item: function(data, escape) {
-                    return `<div class="ts-item">${escape(data.text)}</div>`;
-                }
-            }
         });
 
-        // Gestion des tags d'ingrédients
         const addButton = document.querySelector('#add-ingredient-btn');
         const tagContainer = document.querySelector('#containerTag');
 

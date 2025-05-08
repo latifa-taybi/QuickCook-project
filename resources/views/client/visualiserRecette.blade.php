@@ -8,7 +8,7 @@
             <div class="relative h-96 w-full overflow-hidden">
                 <div class="relative mx-auto max-w-4xl h-full">
                     <img class="w-full h-full object-cover rounded-lg transition-transform duration-500 hover:scale-105"
-                        src="{{ $recette->image ? asset('storage/' . $recette->image) : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c' }}"
+                        src="{{ asset('storage/' . $recette->image)}}"
                         alt="{{ $recette->name }}" id="viewRecipeImage">
                     <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent rounded-lg"></div>
                     <!-- Recipe Title and Meta - Enhanced layout -->

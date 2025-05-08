@@ -37,7 +37,7 @@
                         </div>
                         <p class="text-gray-600 text-sm mb-4">{{$recette->description}}</p>
                         <div class="flex justify-between items-center">
-                            <a href="{{route('recette.show', $recette)}}    " class="text-brand-500 hover:text-brand-700 font-medium text-sm">Voir la recette</a>
+                            <a href="{{route('recettes.show', $recette)}}    " class="text-brand-500 hover:text-brand-700 font-medium text-sm">Voir la recette</a>
                         </div>
                     </div>
                 </div>

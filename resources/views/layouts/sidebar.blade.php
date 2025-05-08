@@ -5,6 +5,7 @@
         <div class="p-5 border-b border-teal-700/30 bg-slate-800/50">
             <div class="flex items-center justify-between">
                 <span class="font-display font-bold text-2xl">
+                    <i class="far fa-crown"></i>
                     <span class="text-teal-400">Quick</span><span class="text-amber-400">Cook</span>
                 </span>
                 <button id="closeSidebarBtn" class="text-slate-300 hover:text-white transition-colors p-1 rounded-full hover:bg-slate-700/50">
@@ -17,13 +18,13 @@
         <div class="p-5 border-b border-teal-700/30 bg-gradient-to-r from-slate-800/80 to-slate-800/30">
             <div class="flex items-center">
                 <div class="flex-shrink-0 relative">
-                    <img src="/placeholder.svg" alt="User"
+                    <img src="{{asset('avatar3.jpg')}}" alt="User"
                         class="h-12 w-12 rounded-full object-cover border-2 border-teal-500/50 shadow-lg shadow-teal-500/20">
                     <span
                         class="absolute bottom-0 right-0 h-3.5 w-3.5 rounded-full bg-emerald-500 border-2 border-slate-800"></span>
                 </div>
                 <div class="ml-3">
-                    <p class="text-sm font-medium text-white">Latifa Taybi</p>
+                    <p class="text-sm font-medium text-white">{{Auth::user()->first_name}} {{Auth::user()->last_name}}</p>
                     <p class="text-xs text-teal-300/70">Administrateur</p>
                 </div>
             </div>

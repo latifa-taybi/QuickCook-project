@@ -1,78 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Gestion des ingrédients</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: {
-                            850: '#17212e',
-                            900: '#0f172a',
-                            950: '#020617'
-                        },
-                        teal: {
-                            150: '#a8f0e6',
-                            250: '#80e5d8',
-                            400: '#2dd4bf',
-                            500: '#14b8a6',
-                            600: '#0d9488'
-                        },
-                        amber: {
-                            400: '#f59e0b',
-                            500: '#f59e0b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                        display: ['"Poppins"', 'sans-serif']
-                    },
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(90deg, #0d9488 0%, #2dd4bf 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
-        }
-        
-        .table-row:hover {
-            background-color: #f8fafc;
-        }
-        
-        .badge-category {
-            background-color: rgba(45, 212, 191, 0.1);
-            color: #0d9488;
-        }
-    </style>
-</head>
-
+@include('layouts.header')
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
     <!-- Sidebar -->
     @include('layouts.sidebar')
@@ -184,7 +110,42 @@
                     </table>
                 </div>
             </div>
+
+                <!-- Pagination -->
+    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center">
+        <nav class="flex items-center space-x-1">
+            @if ($ingredients->onFirstPage())
+                <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+            @else
+                <a href="{{ $ingredients->previousPageUrl() }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            @endif
+            
+            @foreach ($ingredients->getUrlRange(1, $ingredients->lastPage()) as $page => $url)
+                @if ($page == $ingredients->currentPage())
+                    <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-teal-500 to-amber-400 text-white">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">{{ $page }}</a>
+                @endif
+            @endforeach
+            
+            @if ($ingredients->hasMorePages())
+                <a href="{{ $ingredients->nextPageUrl() }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            @else
+                <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+            @endif
+        </nav>
+    </div>
+
         </main>
+
     </div>
 
     <!-- Modal pour ajouter un ingrédient -->
@@ -365,6 +326,7 @@
         </div>
     </div>
 
+    
     <script>
         // Gestion des modals
         const ingredientModal = document.getElementById('ingredientModal');

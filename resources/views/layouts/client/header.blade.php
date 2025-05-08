@@ -382,8 +382,8 @@
                        class="menu-item text-slate-800 hover:text-brand-500 text-sm font-medium {{request()->routeIs('recettes.indexSearch') ? 'active' : ''}}">
                         Accueil
                     </a>
-                    <a href="{{route('client.recettes')}}" 
-                       class="menu-item text-slate-800 hover:text-brand-500 text-sm font-medium {{request()->routeIs('client.recettes') ? 'active' : ''}}">
+                    <a href="{{route('recettes.index')}}" 
+                       class="menu-item text-slate-800 hover:text-brand-500 text-sm font-medium {{request()->routeIs('recettes.index') ? 'active' : ''}}">
                         Recettes
                     </a>
                     <a href="{{route('mesRecettes')}}" 
@@ -426,7 +426,7 @@
                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-800 hover:bg-brand-50 hover:text-brand-500 transition">
                     Accueil
                 </a>
-                <a href="{{route('client.recettes')}}" 
+                <a href="{{route('recettes.index')}}" 
                    class="block px-3 py-2 rounded-md text-base font-medium text-slate-800 hover:bg-brand-50 hover:text-brand-500 transition">
                     Recettes
                 </a>

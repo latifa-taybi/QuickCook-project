@@ -28,7 +28,7 @@
                 <h5 class="font-semibold text-lg mb-4">Navigation</h5>
                 <ul class="space-y-2">
                     <li><a href="{{route('recettes.indexSearch')}}" class="text-slate-400 hover:text-white transition">Accueil</a></li>
-                    <li><a href="{{route('client.recettes')}}" class="text-slate-400 hover:text-white transition">Recettes</a></li>
+                    <li><a href="{{route('recettes.index')}}" class="text-slate-400 hover:text-white transition">Recettes</a></li>
                     <li><a href="{{route('mesRecettes')}}" class="text-slate-400 hover:text-white transition">Mes Recettes</a></li>
                     <li><a href="{{route('favoriesRecettes')}}" class="text-slate-400 hover:text-white transition">Favoris</a></li>
                 </ul>

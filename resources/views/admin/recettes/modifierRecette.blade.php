@@ -1,128 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Modifier une recette</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: {
-                            850: '#17212e',
-                            900: '#0f172a',
-                            950: '#020617'
-                        },
-                        teal: {
-                            150: '#a8f0e6',
-                            250: '#80e5d8',
-                            400: '#2dd4bf',
-                            500: '#14b8a6',
-                            600: '#0d9488'
-                        },
-                        amber: {
-                            400: '#f59e0b',
-                            500: '#f59e0b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                        display: ['"Poppins"', 'sans-serif']
-                    },
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-    <style>
-        .btn-primary {
-            background: linear-gradient(90deg, #0d9488 0%, #2dd4bf 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
-        }
-        
-        .form-section {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .form-section-title {
-            color: #1e293b;
-            font-weight: 600;
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .form-input {
-            border: 1px solid #e2e8f0;
-            border-radius: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            width: 100%;
-            transition: all 0.2s ease;
-        }
-        
-        .form-input:focus {
-            border-color: #0d9488;
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
-            outline: none;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 500;
-            color: #334155;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-        
-        .ingredient-table th {
-            background-color: #f8fafc;
-            color: #64748b;
-            font-weight: 500;
-            text-align: left;
-            padding: 0.5rem 1rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-        
-        .ingredient-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            color: #334155;
-        }
-        
-        .existing-image {
-            max-height: 200px;
-            width: auto;
-            margin: 0 auto;
-            display: block;
-        }
-    </style>
-</head>
+@include('layouts.header')
 
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
     <!-- Sidebar -->
@@ -329,21 +205,20 @@
                     <div class="mb-6">
                         <label class="form-label">Photo principale</label>
                         <div class="mt-2 border-2 border-dashed border-slate-300 rounded-lg p-6 text-center">
-                            @if($recette->image_path)
-                                <img src="{{ asset('storage/' . $recette->image_path) }}" alt="Image de la recette" class="existing-image mb-4">
-                            @else
-                                <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                            @endif
+                            <svg class="mx-auto h-12 w-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                      d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
                             <div class="mt-4">
                                 <label class="cursor-pointer">
                                     <span class="text-teal-600 hover:text-teal-500 font-medium">Télécharger une image</span>
-                                    <input type="file" name="image" accept="image/*" class="sr-only">
+                                    <input type="file" name="image" accept="image/*" class="sr-only" id="imageInput">
                                 </label>
                                 <p class="text-xs text-slate-500 mt-1">Formats acceptés : PNG, JPG, GIF (max 10MB)</p>
                             </div>
+                            <div class="mt-4" id="imagePreviewContainer" style="display:block;">
+                                <img id="imagePreview" src="{{asset('/storage/' . $recette->image)}}" alt="Aperçu de l'image" class="mx-auto max-h-48 rounded-md shadow-md" />
+                            </div>   
                         </div>
                     </div>
 
@@ -502,6 +377,22 @@
                 });
             }
         });
+
+        function afficherApercu() {
+            const input = document.getElementById('imageInput');
+            const apercu = document.getElementById('imagePreview');
+            const conteneur = document.getElementById('imagePreviewContainer');
+            
+            const fichier = input.files[0];
+
+            if (fichier && fichier.type.startsWith('image/')) {
+                apercu.src = URL.createObjectURL(fichier);
+                conteneur.style.display = 'block';
+            }
+        }
+
+        document.getElementById('imageInput').addEventListener('change', afficherApercu);
+
 
         // Initialize TomSelect for ingredient field
         new TomSelect("#ingredient", {

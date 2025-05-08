@@ -92,15 +92,6 @@
                         <h2 class="text-2xl font-display font-bold text-slate-800">Bibliothèque de recettes</h2>
                         <p class="mt-2 text-slate-600">Gérez toutes vos recettes en un seul endroit</p>
                     </div>
-                    <div class="mt-4 md:mt-0">
-                        <a href="{{ route('recettes.create') }}">
-                            <button id="addRecipeBtn"
-                                class="btn-primary inline-flex items-center px-4 py-2.5 rounded-lg shadow text-sm font-medium text-white">
-                                <i class="fas fa-plus mr-2"></i>
-                                Ajouter une recette
-                            </button>
-                        </a>
-                    </div>
                 </div>
             </div>
 

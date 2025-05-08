@@ -38,7 +38,7 @@ class AuthController extends Controller
         if (Auth::attempt($loginData)) {
             $request->session()->regenerate();
             if(Gate::allows('is-admin')){
-                return redirect()->route('statistique');
+                return redirect()->route('statistique', );
             }else{
                 return redirect()->route('recettes.indexSearch');
             }

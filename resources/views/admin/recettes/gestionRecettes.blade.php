@@ -1,102 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook | Gestion des recettes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: {
-                            850: '#17212e',
-                            900: '#0f172a',
-                            950: '#020617'
-                        },
-                        teal: {
-                            150: '#a8f0e6',
-                            250: '#80e5d8'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                        display: ['"Poppins"', 'sans-serif']
-                    },
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        .sidebar {
-            background: linear-gradient(180deg, #0f172a 0%, #020617 100%);
-        }
-        
-        .nav-item.active {
-            background: linear-gradient(90deg, rgba(6, 148, 162, 0.2) 0%, rgba(6, 148, 162, 0.05) 100%);
-            border-left: 4px solid #2dd4bf;
-        }
-        
-        .recipe-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
-        }
-        
-        .recipe-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(90deg, #0d9488 0%, #2dd4bf 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
-        }
-        
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-        }
-        
-        .text-gradient {
-            background: linear-gradient(90deg, #2dd4bf 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .scrollbar-thin {
-            scrollbar-width: thin;
-            scrollbar-color: #0d9488 transparent;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar {
-            width: 6px;
-        }
-        
-        .scrollbar-thin::-webkit-scrollbar-thumb {
-            background-color: #0d9488;
-            border-radius: 3px;
-        }
-    </style>
-</head>
+@include('layouts.header')
 
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
     <!-- Sidebar (version originale conservée) -->
     @include('layouts.sidebar')
-
     <!-- Main content -->
     <div class="flex-1 flex flex-col ml-0 ">
         <!-- Top navbar -->
        @include('layouts.nav')
-        
         <!-- Main content area -->
         <main class="flex-1 overflow-y-auto bg-slate-50 p-6">
             <!-- Page header with actions -->
@@ -279,16 +189,7 @@
             document.getElementById('sidebar').classList.add('-translate-x-full');
         });
         
-        // Toggle user dropdown
-        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
-            e.stopPropagation();
-            document.getElementById('userDropdown').classList.toggle('hidden');
-        });
         
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function() {
-            document.getElementById('userDropdown').classList.add('hidden');
-        });
         
         // Delete modal functions
         const deleteConfirmModal = document.getElementById('deleteConfirmModal');

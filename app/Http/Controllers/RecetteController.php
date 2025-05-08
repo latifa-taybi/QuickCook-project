@@ -24,7 +24,7 @@ class RecetteController extends Controller
     public function index()
     {
         if (Gate::allows('is-admin')) {
-            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->paginate(8);
+            $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->orderBy('created_at', 'desc')->paginate(8);
             $regimes = Regime::all();
             $ingredients = Ingredient::all();
             $etapes = Etape::all();
@@ -56,6 +56,7 @@ class RecetteController extends Controller
 
     public function store(StoreRecetteRequest $request)
     {
+  
         $recette = Recette::create([
             'name' => $request->name,
             'category' => $request->category,
@@ -113,7 +114,6 @@ class RecetteController extends Controller
      */
     public function edit(Recette $recette)
     {
-        $this->authorize('update', $recette);
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         if (Gate::allows('is-admin')) {
@@ -200,7 +200,7 @@ class RecetteController extends Controller
 
     public function statistique()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->paginate(8);
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée');
         $regimes = Regime::all();
         $ingredients = Ingredient::all();
         $users = User::all();
@@ -229,13 +229,12 @@ class RecetteController extends Controller
             $query->whereIn('name', $ingredients);
         })->with(['ingredients', 'regimes', 'etapes'])->paginate(8);
 
-        // dd($ingredients);
         return view('client.search', compact('recettes', 'allIngredients'));
     }
 
     public function mesRecettes()
     {
-        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->paginate(8);
+        $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(8);
         return view('client.mesRecettes', compact('recettes'));
     }
 

@@ -1,8 +1,6 @@
 @include('layouts.header')
 
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
-    @section('title', 'Gestion des recettes')
-
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         @include('layouts.sidebar')
@@ -29,7 +27,7 @@
                         <div class="group bg-white rounded-xl shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1 border border-slate-100">
                             <div class="relative h-48">
                                 <img class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                                     src="{{ $recette->image ? asset('storage/' . $recette->image) : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c' }}" 
+                                     src="{{ asset('storage/' . $recette->image) }}" 
                                      alt="{{ $recette->name }}">
                                 <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent"></div>
                                 <div class="absolute top-3 right-3 flex flex-wrap gap-2">

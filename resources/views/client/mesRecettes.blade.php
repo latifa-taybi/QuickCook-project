@@ -86,7 +86,7 @@
                             <span>{{$recette->difficulty}}</span>
                         </div>
                         <p class="text-slate-600 text-sm mb-4 line-clamp-2">{{$recette->description}}</p>
-                        <a href="{{route('recette.show', $recette)}}" 
+                        <a href="{{route('recettes.show', $recette)}}" 
                            class="inline-flex items-center text-brand-500 hover:text-brand-700 font-medium text-sm transition-colors">
                             Voir la recette
                             <i class="fas fa-arrow-right ml-1.5 text-xs"></i>

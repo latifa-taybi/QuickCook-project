@@ -1,122 +1,4 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Ajouter une recette</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: {
-                            850: '#17212e',
-                            900: '#0f172a',
-                            950: '#020617'
-                        },
-                        teal: {
-                            150: '#a8f0e6',
-                            250: '#80e5d8',
-                            400: '#2dd4bf',
-                            500: '#14b8a6',
-                            600: '#0d9488'
-                        },
-                        amber: {
-                            400: '#f59e0b',
-                            500: '#f59e0b'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['"Inter"', 'sans-serif'],
-                        display: ['"Poppins"', 'sans-serif']
-                    },
-                }
-            }
-        }
-    </script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    
-    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
-    <style>
-        .btn-primary {
-            background: linear-gradient(90deg, #0d9488 0%, #2dd4bf 100%);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(90deg, #0f766e 0%, #14b8a6 100%);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
-        }
-        
-        .btn-secondary:hover {
-            background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
-        }
-        
-        .form-section {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .form-section-title {
-            color: #1e293b;
-            font-weight: 600;
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .form-input {
-            border: 1px solid #e2e8f0;
-            border-radius: 0.375rem;
-            padding: 0.5rem 0.75rem;
-            width: 100%;
-            transition: all 0.2s ease;
-        }
-        
-        .form-input:focus {
-            border-color: #0d9488;
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
-            outline: none;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 500;
-            color: #334155;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-        
-        .ingredient-table th {
-            background-color: #f8fafc;
-            color: #64748b;
-            font-weight: 500;
-            text-align: left;
-            padding: 0.5rem 1rem;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-        }
-        
-        .ingredient-table td {
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid #e2e8f0;
-            color: #334155;
-        }
-    </style>
-</head>
-
+@include('layouts.header')
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
     <!-- Sidebar -->
     @include('layouts.sidebar')
@@ -138,11 +20,20 @@
                 </div>
             </div>
 
+            {{-- @if ($errors->any())
+                <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif --}}
+
             <!-- Form -->
             <form id="recipeForm" class="space-y-6" action="{{ route('recettes.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" id="recipeId" value="">
-
                 <!-- Section: Informations générales -->
                 <div class="form-section">
                     <h3 class="form-section-title">Informations générales</h3>
@@ -151,11 +42,14 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label for="recipeName" class="form-label">Nom de la recette</label>
-                            <input type="text" name="name" id="recipeName" class="form-input" required>
+                            <input type="text" name="name" id="recipeName" class="form-input" value="{{ old('name') }}">
+                            @error('name')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div>
                             <label for="recipeCategory" class="form-label">Catégorie</label>
-                            <select id="recipeCategory" name="category" class="form-input" required>
+                            <select id="recipeCategory" name="category" class="form-input" >
                                 <option value="">Sélectionner une catégorie</option>
                                 <option value="entree">Entrée</option>
                                 <option value="plat">Plat principal</option>
@@ -170,11 +64,12 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
                             <label for="prepTime" class="form-label">Temps de préparation (min)</label>
-                            <input type="number" name="prepTime" id="prepTime" min="0" class="form-input" required>
+                            <input type="number" name="prepTime" id="prepTime" min="0" class="form-input" >
                         </div>
                         <div>
                             <label for="difficulty" class="form-label">Niveau de difficulté</label>
-                            <select id="difficulty" name="difficulty" class="form-input" required>
+                            <select id="difficulty" name="difficulty" class="form-input" >
+                                <option value="" selected>Sélectionner un niveau</option>
                                 <option value="facile">Facile</option>
                                 <option value="moyen">Moyen</option>
                                 <option value="difficile">Difficile</option>
@@ -185,7 +80,7 @@
                     <!-- Recipe Description -->
                     <div class="mb-6">
                         <label for="recipeDescription" class="form-label">Description</label>
-                        <textarea id="recipeDescription" name="description" rows="4" class="form-input" required></textarea>
+                        <textarea id="recipeDescription" name="description" rows="4" class="form-input" ></textarea>
                     </div>
 
                     <!-- Dietary Restrictions -->
@@ -210,7 +105,8 @@
                     <div class="flex items-end gap-4 mb-6">
                         <div class="flex-1">
                             <label for="ingredient" class="form-label">Ingrédient</label>
-                            <select id="ingredient" name="nameIngredients" placeholder="Selectionner un ingrédient..." autocomplete="off">
+                            <select id="ingredient" name="nameIngredients" placeholder="Sélectionner un ingrédient..." autocomplete="off">
+                                <option value="" disabled selected>Sélectionner un ingrédient...</option>
                                 @foreach ($ingredients as $ingredient)
                                     <option value="{{ $ingredient->id }}">{{ $ingredient->name }}</option>
                                 @endforeach
@@ -300,10 +196,13 @@
                             <div class="mt-4">
                                 <label class="cursor-pointer">
                                     <span class="text-teal-600 hover:text-teal-500 font-medium">Télécharger une image</span>
-                                    <input type="file" name="image" accept="image/*" class="sr-only">
+                                    <input type="file" name="image" accept="image/*" class="sr-only" id="imageInput">
                                 </label>
                                 <p class="text-xs text-slate-500 mt-1">Formats acceptés : PNG, JPG, GIF (max 10MB)</p>
                             </div>
+                            <div class="mt-4" id="imagePreviewContainer" style="display:none;">
+                                <img id="imagePreview" src="" alt="Aperçu de l'image" class="mx-auto max-h-48 rounded-md shadow-md" />
+                            </div>   
                         </div>
                     </div>
 
@@ -328,7 +227,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Ingredients management
             
             const addIngredientBtn = document.getElementById('addIngredientToList');
             const ingredientsTable = document.getElementById('ingredientsTable');
@@ -344,7 +242,6 @@
                     const quantity = quantityInput.value;
                     const unit = unitSelect.options[unitSelect.selectedIndex].text;
 
-                    // Create table row
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-800">${ingredientName}</td>
@@ -361,12 +258,11 @@
                     `;
                     ingredientsTable.appendChild(row);
 
-                    // Clear inputs
                     quantityInput.value = '';
+                    unitSelect.selectedIndex = 0;
                 }
             });
 
-            // Delete ingredient event delegation
             ingredientsTable.addEventListener('click', function(e) {
                 if (e.target.classList.contains('delete-ingredient') || e.target.closest(
                         '.delete-ingredient')) {
@@ -375,7 +271,6 @@
                 }
             });
 
-            // Steps management
             const addStepBtn = document.getElementById('addStepToList');
             const stepsList = document.getElementById('stepsList');
 
@@ -384,8 +279,6 @@
                 const description = stepInput.value.trim();
                 if (description) {
                     const stepCount = stepsList.children.length + 1;
-
-                    // Create list item
                     const li = document.createElement('li');
                     li.className = 'flex items-start';
                     li.innerHTML = `
@@ -401,7 +294,6 @@
 
                     li.querySelector('.remove-step').addEventListener('click', () => {
                             li.remove();
-                            // Met à jour les positions des étapes restantes
                             Array.from(stepsList.children).forEach((step, index) => {
                                 step.querySelector('span').textContent =
                                     `${index + 1}. ${step.querySelector('input').value}`;
@@ -410,13 +302,10 @@
                         });
 
                     stepsList.appendChild(li);
-
-                    // Clear input
                     stepInput.value = '';
                 }
             });
 
-            // Delete step event delegation
             stepsList.addEventListener('click', function(e) {
                 if (e.target.classList.contains('delete-step') || e.target.closest('.delete-step')) {
                     const li = e.target.closest('li');
@@ -425,13 +314,31 @@
             });
         });
 
+        function afficherApercu() {
+            const input = document.getElementById('imageInput');
+            const apercu = document.getElementById('imagePreview');
+            const conteneur = document.getElementById('imagePreviewContainer');
+            
+            const fichier = input.files[0];
+
+            if (fichier && fichier.type.startsWith('image/')) {
+                apercu.src = URL.createObjectURL(fichier);
+                conteneur.style.display = 'block';
+            } else {
+                conteneur.style.display = 'none';
+            }
+        }
+
+        // Ajouter l'événement au champ input
+        document.getElementById('imageInput').addEventListener('change', afficherApercu);
+
         new TomSelect("#ingredient",{
-	create: true,
-	sortField: {
-		field: "text",
-		direction: "asc"
-	}
-});
+            create: true,
+            sortField: {
+                field: "text",
+                direction: "asc"
+            }
+        });
     </script>
 </body>
 </html>

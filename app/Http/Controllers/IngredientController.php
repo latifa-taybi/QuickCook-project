@@ -16,7 +16,7 @@ class IngredientController extends Controller
      */
     public function index()
     {
-        $ingredients = Ingredient::with('category')->get();
+        $ingredients = Ingredient::with('category')->paginate(20);
         $categories = Category::all();
         return view('admin.ingredients.gestionIngredients', compact('ingredients', 'categories'));
     }
@@ -67,18 +67,7 @@ class IngredientController extends Controller
     }
 
 
-    /**
-     * Filtrer les ingrédients par catégorie.
-     */
-    public function filtrer(Request $request)
-    {
-        $ingredients = Ingredient::where('category_id', $request->category_id)->get();
-        $categories = Category::all();
-        return response()->json([
-            'ingredients' => $ingredients,
-            'categories' => $categories,
-        ]);
-    }   
+    
 
     /**
      * Rechercher un ingrédient.

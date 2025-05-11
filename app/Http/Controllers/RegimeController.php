@@ -2,65 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Regime;
 use App\Http\Requests\StoreRegimeRequest;
 use App\Http\Requests\UpdateRegimeRequest;
+use App\Interfaces\RegimeRepositoryInterface;
+use Illuminate\Http\Request;
 
 class RegimeController extends Controller
 {
+    private RegimeRepositoryInterface $regimeRepositoryInterface;
+
+    public function __construct(RegimeRepositoryInterface $regimeRepositoryInterface)
+    {
+        $this->regimeRepositoryInterface = $regimeRepositoryInterface;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        
+        $regimes = $this->regimeRepositoryInterface->index();
+        return view('admin.gestionRegimes', compact('regimes'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreRegimeRequest $request)
     {
-        //
+        $regimes =[
+            'name' => $request->name,
+            'description' => $request->description
+        ];
+        
+        $this->regimeRepositoryInterface->store($regimes);
+
+        return redirect()->route('regimes.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Regime $regime)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Regime $regime)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRegimeRequest $request, Regime $regime)
+    public function update(UpdateRegimeRequest $request)
     {
-        //
+        $updateData =[
+            'name' => $request->name,
+            'description' => $request->description
+        ];
+
+        $this->regimeRepositoryInterface->update($updateData, $request->id);
+        return redirect()->route('regimes.index');
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Regime $regime)
+    public function destroy(Request $request)
     {
-        //
+        $this->regimeRepositoryInterface->delete($request->id);
+        return redirect()->route('regimes.index');
+
     }
 }

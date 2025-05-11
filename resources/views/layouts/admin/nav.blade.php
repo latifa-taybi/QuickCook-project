@@ -18,20 +18,27 @@
                             class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
                             <span class="sr-only">Ouvrir le menu utilisateur</span>
                             <img class="h-8 w-8 rounded-full object-cover"
-                                src="" alt="User">
+                                src="{{asset('avatar3.jpg')}}" alt="User">
                         </button>
                     </div>
                     <div id="userDropdown"
                         class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-20">
-                        <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700">Votre
-                            profil</a>
-                        <a href="#"
-                            class="dropdown-item block px-4 py-2 text-sm text-gray-700">Paramètres</a>
-                        <a href="#" class="dropdown-item block px-4 py-2 text-sm text-gray-700">Se
-                            déconnecter</a>
+                        <a href="{{route('logout')}}" class="dropdown-item block px-4 py-2 text-sm text-gray-700">Se déconnecter</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // Toggle user dropdown
+        document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('userDropdown').classList.toggle('hidden');
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function() {
+            document.getElementById('userDropdown').classList.add('hidden');
+        });
+    </script>
 </header>

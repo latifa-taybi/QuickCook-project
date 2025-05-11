@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('admin.categories.gestionCategories', compact('categories'));
+        return view('admin.gestionCategories', compact('categories'));
     }
 
     /**
@@ -46,5 +46,13 @@ class CategoryController extends Controller
         $category = Category::find($request->id);
         $category->delete();
         return redirect()->route('categories.index');
+    }
+    /**
+     * Search for a category by name.
+     */
+    public function rechercheCategory(Request $request)
+    {
+        $categories = Category::where('name', 'like', '%' . $request->search . '%')->get();
+        return response()->json($categories);
     }
 }

@@ -1,7 +1,8 @@
 <?php
-
 namespace App\Http\Requests;
 
+use  Illuminate\Http\Exceptions\HttpResponseException ; 
+use  Illuminate\Contracts\Validation\Validator ;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRegimeRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreRegimeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,10 @@ class StoreRegimeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'description' => 'required|string|max:255',
         ];
     }
+
+
 }

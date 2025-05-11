@@ -1,12 +1,12 @@
-@include('layouts.header')
+@include('layouts.admin.header')
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
     <!-- Sidebar -->
-    @include('layouts.sidebar')
+    @include('layouts.admin.sidebar')
     
     <!-- Main content -->
     <div class="flex-1 flex flex-col ml-0">
         <!-- Top navbar -->
-        @include('layouts.nav')
+        @include('layouts.admin.nav')
         
         <!-- Main content area -->
         <main class="flex-1 overflow-y-auto p-6">

@@ -6,7 +6,6 @@ use App\Http\Requests\StoreIngredientRequest;
 use App\Http\Requests\UpdateIngredientRequest;
 use App\Models\Ingredient;
 use App\Models\Category;
-use App\Models\Unite;
 use Illuminate\Http\Request;
 
 class IngredientController extends Controller
@@ -18,7 +17,7 @@ class IngredientController extends Controller
     {
         $ingredients = Ingredient::with('category')->paginate(20);
         $categories = Category::all();
-        return view('admin.ingredients.gestionIngredients', compact('ingredients', 'categories'));
+        return view('admin.gestionIngredients', compact('ingredients', 'categories'));
     }
 
     /**
@@ -33,8 +32,6 @@ class IngredientController extends Controller
             'category_id' => $request->category_id,
             'description' => $request->description,
         ]);
-        // dd($request->all());
-
 
         return redirect()->route('ingredients.index');
     }
@@ -65,9 +62,6 @@ class IngredientController extends Controller
         $ingredient->delete();
         return redirect()->route('ingredients.index');
     }
-
-
-    
 
     /**
      * Rechercher un ingrédient.

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QuickCook - Gestion des catégories d'ingrédients</title>
+    <title>QuickCook - Gestion des régimes de recette</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -65,17 +65,27 @@
         .table-row:hover {
             background-color: #f8fafc;
         }
+        
+        .badge-category {
+            background-color: rgba(45, 212, 191, 0.1);
+            color: #0d9488;
+        }
+        
+        .image-preview {
+            max-height: 120px;
+            object-fit: contain;
+        }
     </style>
 </head>
 
 <body class="bg-slate-50 font-sans text-slate-800 min-h-screen flex">
     <!-- Sidebar -->
-    @include('layouts.sidebar')
+    @include('layouts.admin.sidebar')
     
     <!-- Main content -->
     <div class="flex-1 flex flex-col ml-0">
         <!-- Top navbar -->
-        @include('layouts.nav')
+        @include('layouts.admin.nav')
         
         <!-- Main content area -->
         <main class="flex-1 overflow-y-auto p-6">
@@ -83,41 +93,23 @@
             <div class="mb-8">
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between">
                     <div>
-                        <h2 class="text-2xl font-display font-bold text-slate-800">Catégories d'ingrédients</h2>
-                        <p class="mt-2 text-slate-600">Gérez les catégories pour organiser vos ingrédients</p>
+                        <h2 class="text-2xl font-display font-bold text-slate-800">Gestion des régimes</h2>
+                        <p class="mt-2 text-slate-600">Gérez les régimes alimentaires pour vos recettes</p>
                     </div>
                     <div class="mt-4 md:mt-0">
-                        <button id="addCategoryBtn"
+                        <button id="addRegimeBtn"
                             class="btn-primary inline-flex items-center px-4 py-2.5 rounded-lg shadow text-sm font-medium text-white">
                             <i class="fas fa-plus mr-2"></i>
-                            Ajouter une catégorie
+                            Ajouter un régime
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- Search section -->
-            <div class="mb-8">
-                <div class="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
-                    <form action="{{route('rechercheCategory')}}" method="POST">
-                        @csrf
-                        <div class="flex flex-col md:flex-row gap-4">
-                            <div class="relative flex-grow">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="fas fa-search text-slate-400"></i>
-                                </div>
-                                <input type="text" name="search" placeholder="Rechercher une catégorie..." 
-                                    class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:border-teal-300 focus:ring-2 focus:ring-teal-100 outline-none transition duration-200">
-                            </div>
-                            <button type="submit" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg hover:from-amber-600 hover:to-amber-500 transition">
-                                Rechercher
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            
 
-            <!-- Categories table -->
+            <!-- Regimes table -->
             <div class="bg-white shadow rounded-lg overflow-hidden border border-slate-200">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200">
@@ -137,28 +129,36 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-slate-200" id="ingredientsTableBody">
-                            @foreach ($categories as $category)
-                                <tr class="table-row transition-colors duration-150">
+                        <tbody class="bg-white divide-y divide-slate-200" id="regimesTableBody">
+                            @if (isset($regimes) && $regimes->isEmpty())
+                            <tr class="table-row">
+                                <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center text-sm text-slate-500">
+                                    Aucun régime trouvé
+                                </td>
+                            </tr>
+                            @else
+                            @foreach ($regimes as $regime)
+                                <tr class="table-row transition-colors duration-150 hover:bg-slate-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm text-slate-500">{{ $category->id }}</div>
+                                        <div class="text-sm text-slate-500">{{ $regime->id }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-slate-900">{{ $category->name }}</div>
+                                        <div class="text-sm font-medium text-slate-900">{{ $regime->name }}</div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm text-slate-500">{{ $category->description }}</div>
+                                        <div class="text-sm text-slate-500">{{ $regime->description }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <button class="editCategorie text-teal-600 hover:text-teal-800 mr-4">
+                                        <button class="editRegime text-teal-600 hover:text-teal-800 mr-4">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="deleteCategorie text-red-600 hover:text-red-800">
+                                        <button class="deleteRegime text-red-600 hover:text-red-800">
                                             <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </td>
                                 </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
                 </div>
@@ -166,8 +166,8 @@
         </main>
     </div>
 
-    <!-- Modal pour ajouter une catégorie -->
-    <div id="categoryModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <!-- Modal pour ajouter un régime -->
+    <div id="regimeModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-slate-500 bg-opacity-75 transition-opacity"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
@@ -176,29 +176,29 @@
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                             <h3 class="text-lg leading-6 font-medium text-slate-900">
-                                Ajouter une catégorie
+                                Ajouter un régime
                             </h3>
                             <div class="mt-2">
-                                <form action="{{ route('categories.store') }}" method="POST" id="categoryForm" class="space-y-5">
+                                <form action="{{ route('regimes.store') }}" method="POST" id="regimeForm" class="space-y-5">
                                     @csrf
-                                    <!-- Category Name -->
+                                    <!-- Regime Name -->
                                     <div>
-                                        <label for="categoryName" class="block text-sm font-medium text-slate-700">Nom</label>
-                                        <input type="text" name="name" id="categoryName"
+                                        <label for="regimeName" class="block text-sm font-medium text-slate-700">Nom</label>
+                                        <input type="text" name="name" id="regimeName"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                                             required>
                                     </div>
-                                    <!-- Category Description -->
+                                    <!-- Regime Description -->
                                     <div>
-                                        <label for="categoryDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
-                                        <textarea id="categoryDescription" name="description" rows="3"
+                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
+                                        <textarea id="regimeDescription" name="description" rows="3"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
                                     <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                                         <button type="submit" class="btn-primary w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-sm font-medium text-white sm:ml-3 sm:w-auto">
                                             Enregistrer
                                         </button>
-                                        <button type="button" id="cancelCategoryBtn"
+                                        <button type="button" id="cancelRegimeBtn"
                                             class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 sm:mt-0 sm:ml-3 sm:w-auto">
                                             Annuler
                                         </button>
@@ -212,8 +212,8 @@
         </div>
     </div>
 
-    <!-- Modal pour modifier une catégorie -->
-    <div id="categoryModalEdit" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <!-- Modal pour modifier un régime -->
+    <div id="regimeModalEdit" class="hidden fixed inset-0 z-50 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-slate-500 bg-opacity-75 transition-opacity"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
@@ -222,33 +222,33 @@
                     <div class="sm:flex sm:items-start">
                         <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                             <h3 class="text-lg leading-6 font-medium text-slate-900">
-                                Modifier la catégorie
+                                Modifier le régime
                             </h3>
                             <div class="mt-2">
-                                <form id="categoryEditForm" action="{{ route('categories.update') }}" method="POST" class="space-y-5">
+                                <form id="regimeEditForm" action="{{ route('regimes.update') }}" method="POST" class="space-y-5">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name='id' id="categoryId" value="">
+                                    <input type="hidden" name='id' id="regimeId" value="">
 
-                                    <!-- Category Name -->
+                                    <!-- Regime Name -->
                                     <div>
-                                        <label for="categoryName" class="block text-sm font-medium text-slate-700">Nom</label>
-                                        <input type="text" name="name" id="categoryName"
+                                        <label for="regimeName" class="block text-sm font-medium text-slate-700">Nom</label>
+                                        <input type="text" name="name" id="regimeName"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
                                             required>
                                     </div>
-                                    <!-- Category Description -->
+                                    <!-- Regime Description -->
                                     <div>
-                                        <label for="categoryDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
-                                        <textarea id="categoryDescription" name="description" rows="3"
+                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
+                                        <textarea id="regimeDescription" name="description" rows="3"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
                                     <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                        <button type="submit" id="saveEditCategoryBtn"
+                                        <button type="submit" id="saveEditRegimeBtn"
                                             class="btn-primary w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-sm font-medium text-white sm:ml-3 sm:w-auto">
                                             Enregistrer
                                         </button>
-                                        <button type="button" id="cancelEditCategoryBtn"
+                                        <button type="button" id="cancelEditRegimeBtn"
                                             class="mt-3 w-full inline-flex justify-center rounded-md border border-slate-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-slate-700 hover:bg-slate-50 sm:mt-0 sm:ml-3 sm:w-auto">
                                             Annuler
                                         </button>
@@ -268,9 +268,10 @@
             <div class="fixed inset-0 bg-slate-500 bg-opacity-75 transition-opacity"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <form action="{{ route('categories.destroy') }}" method="POST">
+                <form action="{{ route('regimes.destroy') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="id" id="deleteCategoryId" value="">
+                    @method('DELETE')
+                    <input type="hidden" name="id" id="deleteRegimeId" value="">
                     <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                         <div class="sm:flex sm:items-start">
                             <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
@@ -278,11 +279,11 @@
                             </div>
                             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                                 <h3 class="text-lg leading-6 font-medium text-slate-900">
-                                    Supprimer la catégorie
+                                    Supprimer le régime
                                 </h3>
                                 <div class="mt-2">
                                     <p class="text-sm text-slate-500">
-                                        Êtes-vous sûr de vouloir supprimer cette catégorie ? Cette action est irréversible.
+                                        Êtes-vous sûr de vouloir supprimer ce régime ? Cette action est irréversible.
                                     </p>
                                 </div>
                             </div>
@@ -305,35 +306,34 @@
 
     <script>
         // Récupération des éléments des modals
-        const addCategoryBtn = document.getElementById("addCategoryBtn");
-        const categoryModal = document.getElementById("categoryModal");
-        const cancelCategoryBtn = document.getElementById("cancelCategoryBtn");
-        const categoryForm = document.getElementById("categoryForm");
+        const addRegimeBtn = document.getElementById("addRegimeBtn");
+        const regimeModal = document.getElementById("regimeModal");
+        const cancelRegimeBtn = document.getElementById("cancelRegimeBtn");
+        const regimeForm = document.getElementById("regimeForm");
         const deleteConfirmModal = document.getElementById("deleteConfirmModal");
 
-        const editCategoryBtns = document.querySelectorAll(".editCategorie");
-        const categoryModalEdit = document.getElementById("categoryModalEdit");
-        const cancelEditCategoryBtn = document.getElementById("cancelEditCategoryBtn");
-        const categoryEditForm = document.getElementById("categoryEditForm");
-        const categoryDelete = document.querySelectorAll(".deleteCategorie");
-        const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+        const editRegimeBtns = document.querySelectorAll(".editRegime");
+        const regimeModalEdit = document.getElementById("regimeModalEdit");
+        const cancelEditRegimeBtn = document.getElementById("cancelEditRegimeBtn");
+        const regimeEditForm = document.getElementById("regimeEditForm");
+        const regimeDelete = document.querySelectorAll(".deleteRegime");
 
         // Afficher le modal d'ajout
-        addCategoryBtn.addEventListener("click", function() {
-            categoryModal.classList.remove("hidden");
+        addRegimeBtn.addEventListener("click", function() {
+            regimeModal.classList.remove("hidden");
         });
 
         // Fermer le modal d'ajout
-        cancelCategoryBtn.addEventListener("click", function() {
-            categoryModal.classList.add("hidden");
-            categoryForm.reset();
+        cancelRegimeBtn.addEventListener("click", function() {
+            regimeModal.classList.add("hidden");
+            regimeForm.reset();
         });
 
         // Afficher le modal de suppression
-        categoryDelete.forEach(button => {
+        regimeDelete.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
-                const idInput = deleteConfirmModal.querySelector("#deleteCategoryId");
+                const idInput = deleteConfirmModal.querySelector("#deleteRegimeId");
                 const id = row.querySelector('td:first-child').textContent.trim();
                 idInput.value = id;
                 deleteConfirmModal.classList.remove("hidden");
@@ -346,9 +346,9 @@
         });
 
         function populateEditForm(row) {
-            const idInput = categoryEditForm.querySelector("#categoryId");
-            const nameInput = categoryEditForm.querySelector("#categoryName");
-            const descriptionInput = categoryEditForm.querySelector("#categoryDescription");
+            const idInput = regimeEditForm.querySelector("#regimeId");
+            const nameInput = regimeEditForm.querySelector("#regimeName");
+            const descriptionInput = regimeEditForm.querySelector("#regimeDescription");
 
             const id = row.querySelector('td:first-child').textContent.trim();
             const name = row.querySelector('td:nth-child(2)').textContent.trim();
@@ -360,18 +360,32 @@
         }
 
         // Afficher le modal de modification
-        editCategoryBtns.forEach(button => {
+        editRegimeBtns.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
-                categoryModalEdit.classList.remove("hidden");
+                regimeModalEdit.classList.remove("hidden");
                 populateEditForm(row);
             });
         });
         
         // Fermer le modal de modification
-        cancelEditCategoryBtn.addEventListener("click", function() {
-            categoryModalEdit.classList.add("hidden");
-            categoryEditForm.reset();
+        cancelEditRegimeBtn.addEventListener("click", function() {
+            regimeModalEdit.classList.add("hidden");
+            regimeEditForm.reset();
+        });
+
+        // Fermer les modals en cliquant à l'extérieur
+        window.addEventListener('click', (event) => {
+            if (event.target === regimeModal) {
+                regimeModal.classList.add('hidden');
+                regimeForm.reset();
+            }
+            if (event.target === regimeModalEdit) {
+                regimeModalEdit.classList.add('hidden');
+            }
+            if (event.target === deleteConfirmModal) {
+                deleteConfirmModal.classList.add('hidden');
+            }
         });
     </script>
 </body>

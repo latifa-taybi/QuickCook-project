@@ -190,6 +190,9 @@ class RecetteController extends Controller
         }
     }
 
+    /**
+     * Display the home page with random recipes.
+     */
     public function home()
     {
         $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée')->inRandomOrder()->limit(3)->get();
@@ -197,7 +200,9 @@ class RecetteController extends Controller
         $ingredients = Ingredient::all();
         return view('client.home', compact('regimes', 'ingredients', 'recettes'));
     }
-
+    /**
+     * Display the admin dashboard with statistics.
+     */
     public function statistique()
     {
         $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'publiée');
@@ -210,6 +215,9 @@ class RecetteController extends Controller
         return view('admin.dashboard', compact('regimes', 'ingredients', 'users', 'recettes', 'userNames', 'recipeCounts'));
     }
 
+    /**
+     * Display the search page with all ingredients.
+     */
     public function indexSearch()
     {
         $allIngredients = Ingredient::all();
@@ -219,7 +227,6 @@ class RecetteController extends Controller
     /**
      * Search for a recipe based on ingredients.
      */
-
     public function search(Request $request)
     {
         $allIngredients = Ingredient::all();
@@ -231,13 +238,17 @@ class RecetteController extends Controller
 
         return view('client.search', compact('recettes', 'allIngredients'));
     }
-
+    /**
+     * Display the user's recipes.
+     */
     public function mesRecettes()
     {
         $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(8);
         return view('client.mesRecettes', compact('recettes'));
     }
-
+    /**
+     * Display the user's favorite recipes.
+     */
     public function favories($id)
     {
         $user = Auth::user();
@@ -249,13 +260,17 @@ class RecetteController extends Controller
 
         return redirect()->back();
     }
-
+    /**
+     * Display the user's favorite recipes.
+     */
     public function favoriesRecettes()
     {
         $recettes = Auth::user()->recettes()->with(['ingredients', 'regimes', 'etapes'])->paginate(8);
         return view('client.favoriesRecettes', compact('recettes'));
     }
-
+    /**
+     * Display the page for approving recipes.
+     */
     public function approveRecette()
     {
         $recettes = Recette::with(['ingredients', 'regimes', 'etapes'])->where('status', 'en_attente')->paginate(8);
@@ -264,12 +279,17 @@ class RecetteController extends Controller
         $etapes = Etape::all();
         return view('admin.recettes.approveRecette', compact('regimes', 'ingredients', 'etapes', 'recettes'));
     }
-
+    /**
+     * Approve a recipe.
+     */
     public function approve(Recette $recette)
     {
         $recette->update(['status' => 'publiée']);
         return redirect()->route('approveRecette');
     }
+    /**
+     * Reject a recipe.
+     */
     public function reject(Recette $recette)
     {
         $recette->ingredients()->detach();
@@ -278,8 +298,9 @@ class RecetteController extends Controller
         $recette->delete();
         return redirect()->route('approveRecette');
     }
-
-
+    /**
+     * Search for a recipe by name.
+     */
     public function rechercheRecette(Request $request)
     {
         $recettes = Recette::where('name', 'like', '%' . $request->search . '%')->paginate(8);

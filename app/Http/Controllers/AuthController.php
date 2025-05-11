@@ -25,7 +25,7 @@ class AuthController extends Controller
         if(Gate::allows('is-admin')){
             return redirect()->route('statistique');
         }else{
-            return redirect()->route('mesRecettes');
+            return redirect()->route('recettes.indexSearch');
         }
     }
 
@@ -60,13 +60,9 @@ class AuthController extends Controller
     {
         $user = Auth::user();
 
-        // dd(Hash::check($request->current_password, $user->password));
-
         if (!Hash::check($request->current_password, $user->password)) {
             return redirect()->back();
         }
-
-        // dd($request->hasFile('profile_photo') ? $request->file('profile_photo')->store('profiles', 'public')  : ($user->profile_photo ?? null));
         $userData = [
             'profile_photo' => $request->hasFile('profile_photo') ? $request->file('profile_photo')->store('profiles', 'public')  : ($user->profile_photo ?? null),
             'first_name' => $request->first_name,

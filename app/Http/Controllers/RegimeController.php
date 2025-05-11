@@ -21,7 +21,7 @@ class RegimeController extends Controller
     public function index()
     {
         $regimes = $this->regimeRepositoryInterface->index();
-        return view('admin.regimes.gestionRegimes', compact('regimes'));
+        return view('admin.gestionRegimes', compact('regimes'));
 
     }
 

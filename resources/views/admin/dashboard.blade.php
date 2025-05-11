@@ -71,6 +71,8 @@
         .stat-card-icon.purple {
             background: rgba(168, 85, 247, 0.1);
         }
+
+        
     </style>
 </head>
 

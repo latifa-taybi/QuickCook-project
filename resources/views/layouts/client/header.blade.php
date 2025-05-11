@@ -372,6 +372,7 @@
         <div class="container mx-auto px-4">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center">
+                    <img src="{{asset('chef.png')}}" alt="Logo" class="h-10 w-10 inline-block ">
                     <span class="font-bold text-2xl md:text-3xl">
                         <span class="text-brand-500">Quick</span><span class="text-accent-500">Cook</span>
                     </span>

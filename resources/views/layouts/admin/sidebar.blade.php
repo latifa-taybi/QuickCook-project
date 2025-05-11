@@ -5,7 +5,7 @@
         <div class="p-5 border-b border-teal-700/30 bg-slate-800/50">
             <div class="flex items-center justify-between">
                 <span class="font-display font-bold text-2xl">
-                    <i class="far fa-crown"></i>
+                    <img src="{{asset('chef.png')}}" alt="Logo" class="h-10 w-10 inline-block ">
                     <span class="text-teal-400">Quick</span><span class="text-amber-400">Cook</span>
                 </span>
                 <button id="closeSidebarBtn" class="text-slate-300 hover:text-white transition-colors p-1 rounded-full hover:bg-slate-700/50">

@@ -75,4 +75,5 @@ class IngredientController extends Controller
             'categories' => $categories,
         ]);
     }
+    
 }

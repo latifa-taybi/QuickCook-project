@@ -247,6 +247,8 @@
             <div class="flex justify-between h-20">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
+                        <img src="{{asset('chef.png')}}" alt="Logo" class="h-10 w-10 inline-block ">
+
                         <span class="font-display font-bold text-2xl md:text-3xl">
                             <span class="text-teal-400">Quick</span><span class="text-amber-400">Cook</span>
                         </span>
@@ -631,7 +633,7 @@
                                         class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                                         <div class="p-4 text-white">
                                             <div class="flex items-center text-sm">
-                                                <i class="fas fa-clock mr-1"></i> {{$recette->prepTime}}
+                                                <i class="fas fa-clock mr-1"></i> {{$recette->prepTime}} min
                                                 <span class="mx-2">•</span>
                                                 <span>{{$recette->difficulty}}</span>
                                             </div>

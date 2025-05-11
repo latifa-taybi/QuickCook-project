@@ -30,19 +30,16 @@
             <!-- Search section -->
             <div class="mb-8">
                 <div class="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
-                    <form action="{{route('rechercheIngredient')}}" method="POST">
+                    <form id="searchFormIngredients">
                         @csrf
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="relative flex-grow">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fas fa-search text-slate-400"></i>
                                 </div>
-                                <input type="text" name="search" placeholder="Rechercher un ingrédient..." 
+                                <input type="text" id="search" name="search" placeholder="Rechercher un ingrédient..." 
                                     class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:border-teal-300 focus:ring-2 focus:ring-teal-100 outline-none transition duration-200">
                             </div>
-                            <button type="submit" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg hover:from-amber-600 hover:to-amber-500 transition">
-                                Rechercher
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -111,38 +108,38 @@
                 </div>
             </div>
 
-                <!-- Pagination -->
-    <div class="mt-10 flex flex-col sm:flex-row items-center justify-center">
-        <nav class="flex items-center space-x-1">
-            @if ($ingredients->onFirstPage())
-                <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed">
-                    <i class="fas fa-chevron-left"></i>
-                </span>
-            @else
-                <a href="{{ $ingredients->previousPageUrl() }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">
-                    <i class="fas fa-chevron-left"></i>
-                </a>
-            @endif
-            
-            @foreach ($ingredients->getUrlRange(1, $ingredients->lastPage()) as $page => $url)
-                @if ($page == $ingredients->currentPage())
-                    <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-teal-500 to-amber-400 text-white">{{ $page }}</span>
-                @else
-                    <a href="{{ $url }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">{{ $page }}</a>
-                @endif
-            @endforeach
-            
-            @if ($ingredients->hasMorePages())
-                <a href="{{ $ingredients->nextPageUrl() }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">
-                    <i class="fas fa-chevron-right"></i>
-                </a>
-            @else
-                <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed">
-                    <i class="fas fa-chevron-right"></i>
-                </span>
-            @endif
-        </nav>
-    </div>
+            <!-- Pagination -->
+            <div class="mt-10 flex flex-col sm:flex-row items-center justify-center">
+                <nav class="flex items-center space-x-1">
+                    @if ($ingredients->onFirstPage())
+                        <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed">
+                            <i class="fas fa-chevron-left"></i>
+                        </span>
+                    @else
+                        <a href="{{ $ingredients->previousPageUrl() }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    @endif
+                    
+                    @foreach ($ingredients->getUrlRange(1, $ingredients->lastPage()) as $page => $url)
+                        @if ($page == $ingredients->currentPage())
+                            <span class="px-3 py-1 rounded-lg bg-gradient-to-r from-teal-500 to-amber-400 text-white">{{ $page }}</span>
+                        @else
+                            <a href="{{ $url }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">{{ $page }}</a>
+                        @endif
+                    @endforeach
+                    
+                    @if ($ingredients->hasMorePages())
+                        <a href="{{ $ingredients->nextPageUrl() }}" class="px-3 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors duration-200">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    @else
+                        <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed">
+                            <i class="fas fa-chevron-right"></i>
+                        </span>
+                    @endif
+                </nav>
+            </div>
 
         </main>
 
@@ -328,7 +325,7 @@
 
     
     <script>
-        // Gestion des modals
+        // Recuperation des elements des modals
         const ingredientModal = document.getElementById('ingredientModal');
         const deleteConfirmModal = document.getElementById('deleteConfirmModal');
         const addIngredientBtn = document.getElementById('addIngredientBtn');
@@ -341,17 +338,17 @@
         const deleteIngredient = document.querySelectorAll('.delete-ingredient');
         const editIngredientForm = document.getElementById('editIngredientForm');
 
-        // Ouvrir le modal d'ajout d'ingrédient
+        // afficher le modal d'ajout
         addIngredientBtn.addEventListener('click', () => {
             ingredientModal.classList.remove("hidden");
         });
 
-        // Fermer le modal d'ingrédient
+        // fermer le modal d'ajout
         cancelIngredientBtn.addEventListener('click', () => {
             ingredientModal.classList.add('hidden');
         });
 
-        // Gérer les boutons de suppression
+        // afficher le modal de suppression
         deleteIngredient.forEach(button => {
             button.addEventListener('click', () => {
                 const row = button.closest("tr");
@@ -361,7 +358,13 @@
                 deleteConfirmModal.classList.remove('hidden');
             });
         });
+        
+        // fermer le modal de suppression
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteConfirmModal.classList.add('hidden');
+        });
 
+        // remplir le formulaire de modification avec les donnees de cette ingredient
         function populateEditForm(row) {
             const idInput = editIngredientForm.querySelector("#editIngredientId");
             const nameInput = editIngredientForm.querySelector("#editIngredientName");
@@ -384,7 +387,7 @@
             descriptionInput.value = description;
         }
 
-        // Gérer les boutons de modification
+        // afficher le modal de modification
         editIngredient.forEach(button => {
             button.addEventListener('click', () => {
                 let row = button.closest("tr");
@@ -393,15 +396,15 @@
             });
         });
 
-        // Fermer le modal de modification
+        // fermer le modal de modification
         cancelEditIngredientBtn.addEventListener('click', () => {
             editIngredientModal.classList.add('hidden');
         });
 
-        // Fermer le modal de confirmation de suppression
-        cancelDeleteBtn.addEventListener('click', () => {
-            deleteConfirmModal.classList.add('hidden');
-        });
+
+
+
+        
     </script>
 </body>
 </html>

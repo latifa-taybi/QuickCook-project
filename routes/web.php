@@ -22,13 +22,13 @@ Route::middleware([AdminMiddleware::class])->group(function () {
     Route::post('/categories',[CategoryController::class,'store'])->name('categories.store');
     Route::put('/categories',[CategoryController::class,'update'])->name('categories.update');
     Route::post('/categories/destroy',[CategoryController::class,'destroy'])->name('categories.destroy');
-    Route::post('/categories/recherche',[CategoryController::class,'rechercheCategory'])->name('rechercheCategory');
+    Route::get('/categories/recherche',[CategoryController::class,'rechercheCategory'])->name('rechercheCategory');
     
     Route::get('/ingredients',[IngredientController::class,'index'])->name('ingredients.index');
     Route::post('/ingredients',[IngredientController::class,'store'])->name('ingredients.store');
     Route::put('/ingredients',[IngredientController::class,'update'])->name('ingredients.update');
     Route::post('/ingredients/destroy',[IngredientController::class,'destroy'])->name('ingredients.destroy');
-    Route::post('/ingredients/recherche',[IngredientController::class,'rechercheIngredient'])->name('rechercheIngredient');
+    Route::get('/ingredients/recherche',[IngredientController::class,'rechercheIngredient'])->name('rechercheIngredient');
     
     Route::get('/regimes', [RegimeController::class, 'index'])->name('regimes.index');
     Route::post('/regimes', [RegimeController::class, 'store'])->name('regimes.store');

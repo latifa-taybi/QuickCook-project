@@ -99,19 +99,16 @@
             <!-- Search section -->
             <div class="mb-8">
                 <div class="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
-                    <form action="{{route('rechercheCategory')}}" method="POST">
+                    <form id="searchForm">
                         @csrf
                         <div class="flex flex-col md:flex-row gap-4">
                             <div class="relative flex-grow">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <i class="fas fa-search text-slate-400"></i>
                                 </div>
-                                <input type="text" name="search" placeholder="Rechercher une catégorie..." 
+                                <input type="text" id="search" name="search" placeholder="Rechercher une catégorie..."
                                     class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:border-teal-300 focus:ring-2 focus:ring-teal-100 outline-none transition duration-200">
                             </div>
-                            <button type="submit" class="px-4 py-2.5 bg-gradient-to-r from-amber-500 to-amber-400 text-white rounded-lg hover:from-amber-600 hover:to-amber-500 transition">
-                                Rechercher
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -137,7 +134,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-slate-200" id="ingredientsTableBody">
+                        <tbody class="bg-white divide-y divide-slate-200" id="categoriesTableBody">
                             @foreach ($categories as $category)
                                 <tr class="table-row transition-colors duration-150">
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -304,7 +301,7 @@
     </div>
 
     <script>
-        // Récupération des éléments des modals
+        // Recuperation des elements des modals
         const addCategoryBtn = document.getElementById("addCategoryBtn");
         const categoryModal = document.getElementById("categoryModal");
         const cancelCategoryBtn = document.getElementById("cancelCategoryBtn");
@@ -318,18 +315,18 @@
         const categoryDelete = document.querySelectorAll(".deleteCategorie");
         const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
 
-        // Afficher le modal d'ajout
+        // afficher le modal d'ajout
         addCategoryBtn.addEventListener("click", function() {
             categoryModal.classList.remove("hidden");
         });
 
-        // Fermer le modal d'ajout
+        // fermer le modal d'ajout
         cancelCategoryBtn.addEventListener("click", function() {
             categoryModal.classList.add("hidden");
             categoryForm.reset();
         });
 
-        // Afficher le modal de suppression
+        // afficher le modal de suppression
         categoryDelete.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
@@ -340,11 +337,12 @@
             });
         });
         
-        // Fermer le modal de suppression
+        // fermer le modal de suppression
         cancelDeleteBtn.addEventListener("click", function() {
             deleteConfirmModal.classList.add("hidden");
         });
 
+        // remplir le formulaire de modification avec les donnees de cette categorie
         function populateEditForm(row) {
             const idInput = categoryEditForm.querySelector("#categoryId");
             const nameInput = categoryEditForm.querySelector("#categoryName");
@@ -359,7 +357,7 @@
             descriptionInput.value = description;
         }
 
-        // Afficher le modal de modification
+        // afficher le modal de modification
         editCategoryBtns.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
@@ -368,11 +366,53 @@
             });
         });
         
-        // Fermer le modal de modification
+        // fermer le modal de modification
         cancelEditCategoryBtn.addEventListener("click", function() {
             categoryModalEdit.classList.add("hidden");
             categoryEditForm.reset();
         });
+
+        // traitement de recherche des categories
+        document.getElementById('search').addEventListener('input', async function() {
+            const searchValue = this.value;
+            try {
+                const response = await fetch(`/categories/recherche?search=${encodeURIComponent(searchValue)}`, {
+                });
+                const data = await response.json();
+                const tbody = document.getElementById('categoriesTableBody');
+                tbody.innerHTML = '';
+
+                if (data.length > 0) {
+                    for (let categorie of data) {
+                        const row = document.createElement('tr');
+                        row.classList.add('table-row', 'transition-colors', 'duration-150');
+
+                        row.innerHTML = `
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-slate-500">${categorie.id}</div></td>
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium text-slate-900">${categorie.name}</div></td>
+                            <td class="px-6 py-4"><div class="text-sm text-slate-500">${categorie.description}</div></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="editCategorie text-teal-600 hover:text-teal-800 mr-4">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="deleteCategorie text-red-600 hover:text-red-800">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    }
+                } else {
+                    const noResultsRow = document.createElement('tr');
+                    noResultsRow.innerHTML = '<td colspan="4" class="text-center text-slate-500 py-4">Aucune catégorie trouvée</td>';
+                    tbody.appendChild(noResultsRow);
+                }
+
+            } catch (error) {
+                console.error('Erreur de recherche:', error);
+            }
+        });
+
     </script>
 </body>
 </html>

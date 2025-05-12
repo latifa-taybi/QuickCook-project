@@ -214,14 +214,14 @@
                                         required>
                                 </div>
                                 <div>
-                                    <label for="phone" class="block text-sm font-semibold text-slate-700">Téléphone (optionnel)</label>
+                                    <label for="phone" class="block text-sm font-semibold text-slate-700">Téléphone</label>
                                     <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone_number) }}"
                                         class="mt-2 w-full py-2 px-4 border border-slate-200 rounded-lg shadow-sm focus:ring-brand-100 focus:border-brand-400 text-sm">
                                 </div>
                             </div>
 
                             <div>
-                                <label for="bio" class="block text-sm font-semibold text-slate-700">Bio (optionnel)</label>
+                                <label for="bio" class="block text-sm font-semibold text-slate-700">Bio</label>
                                 <textarea id="bio" name="bio" rows="3"
                                     class="mt-2 w-full py-2 px-4 border border-slate-200 rounded-lg shadow-sm focus:ring-brand-100 focus:border-brand-400 text-sm"
                                     placeholder="Décrivez-vous en quelques mots...">{{ old('bio', $user->biographie) }}</textarea>

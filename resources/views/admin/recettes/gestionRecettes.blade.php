@@ -4,7 +4,7 @@
     <!-- Sidebar (version originale conservée) -->
     @include('layouts.admin.sidebar')
     <!-- Main content -->
-    <div class="flex-1 flex flex-col ml-0 ">
+    <div class="flex-1 flex flex-col">
         <!-- Top navbar -->
        @include('layouts.admin.nav')
         <!-- Main content area -->
@@ -28,31 +28,7 @@
                 </div>
             </div>
 
-            <!-- Search section -->
-            <div class="mb-8">
-                <div class="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
-                    <form action="{{route('rechercheRecette')}}" method="POST">
-                        @csrf
-                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-                            <div class="md:col-span-4">
-                                <div class="relative">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <i class="fas fa-search text-slate-400"></i>
-                                    </div>
-                                    <input type="text" name="search" placeholder="Rechercher une recette..." 
-                                        class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg focus:border-teal-300 focus:ring-2 focus:ring-teal-100 outline-none transition duration-200">
-                                </div>
-                            </div>
-                            <div>
-                                <button type="submit" class="w-full inline-flex justify-center items-center px-4 py-2.5 rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-600 hover:to-amber-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 transition-all duration-200">
-                                    <i class="fas fa-search mr-2"></i>
-                                    Rechercher
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
+            
 
             <!-- Recipes grid -->
             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

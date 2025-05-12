@@ -233,8 +233,14 @@ class RecetteController extends Controller
         $ingredients = $request->ingredients;
 
         $recettes = Recette::whereHas('ingredients', function ($query) use ($ingredients) {
-            $query->whereIn('name', $ingredients);
-        })->with(['ingredients', 'regimes', 'etapes'])->paginate(8);
+                $query->whereIn('name', $ingredients);
+            })
+            ->withCount(['ingredients as matching_ingredients_count' => function ($query) use ($ingredients) {
+                $query->whereIn('name', $ingredients);
+            }])
+            ->having('matching_ingredients_count', '>=', 2)
+            ->with(['ingredients', 'regimes', 'etapes'])
+            ->paginate(8);
 
         return view('client.search', compact('recettes', 'allIngredients'));
     }

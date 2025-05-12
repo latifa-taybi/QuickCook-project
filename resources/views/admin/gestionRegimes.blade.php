@@ -106,9 +106,6 @@
                 </div>
             </div>
 
-            <!-- Search section -->
-            
-
             <!-- Regimes table -->
             <div class="bg-white shadow rounded-lg overflow-hidden border border-slate-200">
                 <div class="overflow-x-auto">
@@ -190,7 +187,7 @@
                                     </div>
                                     <!-- Regime Description -->
                                     <div>
-                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
+                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description</label>
                                         <textarea id="regimeDescription" name="description" rows="3"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
@@ -239,7 +236,7 @@
                                     </div>
                                     <!-- Regime Description -->
                                     <div>
-                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
+                                        <label for="regimeDescription" class="block text-sm font-medium text-slate-700">Description</label>
                                         <textarea id="regimeDescription" name="description" rows="3"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
@@ -305,7 +302,7 @@
     </div>
 
     <script>
-        // Récupération des éléments des modals
+        // recuperation des elements des modals
         const addRegimeBtn = document.getElementById("addRegimeBtn");
         const regimeModal = document.getElementById("regimeModal");
         const cancelRegimeBtn = document.getElementById("cancelRegimeBtn");
@@ -318,18 +315,18 @@
         const regimeEditForm = document.getElementById("regimeEditForm");
         const regimeDelete = document.querySelectorAll(".deleteRegime");
 
-        // Afficher le modal d'ajout
+        // afficher le modal d'ajout
         addRegimeBtn.addEventListener("click", function() {
             regimeModal.classList.remove("hidden");
         });
 
-        // Fermer le modal d'ajout
+        // fermer le modal d'ajout
         cancelRegimeBtn.addEventListener("click", function() {
             regimeModal.classList.add("hidden");
             regimeForm.reset();
         });
 
-        // Afficher le modal de suppression
+        // afficher le modal de suppression
         regimeDelete.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
@@ -340,11 +337,12 @@
             });
         });
         
-        // Fermer le modal de suppression
+        // fermer le modal de suppression
         cancelDeleteBtn.addEventListener("click", function() {
             deleteConfirmModal.classList.add("hidden");
         });
 
+        // remplir le formulaire de modification avec les donnees de cet regime
         function populateEditForm(row) {
             const idInput = regimeEditForm.querySelector("#regimeId");
             const nameInput = regimeEditForm.querySelector("#regimeName");
@@ -359,7 +357,7 @@
             descriptionInput.value = description;
         }
 
-        // Afficher le modal de modification
+        // afficher le modal de modification
         editRegimeBtns.forEach(button => {
             button.addEventListener("click", () => {
                 const row = button.closest("tr");
@@ -368,13 +366,13 @@
             });
         });
         
-        // Fermer le modal de modification
+        // fermer le modal de modification
         cancelEditRegimeBtn.addEventListener("click", function() {
             regimeModalEdit.classList.add("hidden");
             regimeEditForm.reset();
         });
 
-        // Fermer les modals en cliquant à l'extérieur
+        // fermer les modals en cliquant à l'extérieur
         window.addEventListener('click', (event) => {
             if (event.target === regimeModal) {
                 regimeModal.classList.add('hidden');

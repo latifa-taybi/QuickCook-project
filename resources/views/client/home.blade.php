@@ -773,15 +773,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="flex items-center justify-between">
-                                        <div class="text-sm">
-                                            <a href="#"
-                                                class="font-medium text-teal-400 hover:text-teal-300">
-                                                Mot de passe oublié?
-                                            </a>
-                                        </div>
-                                    </div>
-
                                     <div>
                                         <button type="submit"
                                             class="w-full flex justify-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-teal-600 to-teal-500 hover:from-teal-700 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-all duration-300">

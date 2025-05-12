@@ -20,15 +20,6 @@
                 </div>
             </div>
 
-            {{-- @if ($errors->any())
-                <div class="bg-red-100 text-red-700 p-4 rounded mb-4">
-                    <ul class="list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif --}}
 
             <!-- Form -->
             <form id="recipeForm" class="space-y-6" action="{{ route('recettes.store') }}" method="POST" enctype="multipart/form-data">
@@ -57,6 +48,9 @@
                                 <option value="boisson">Boisson</option>
                                 <option value="aperitif">Apéritif</option>
                             </select>
+                            @error('category')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -74,6 +68,9 @@
                                 <option value="moyen">Moyen</option>
                                 <option value="difficile">Difficile</option>
                             </select>
+                            @error('prepTime')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
@@ -81,6 +78,9 @@
                     <div class="mb-6">
                         <label for="recipeDescription" class="form-label">Description</label>
                         <textarea id="recipeDescription" name="description" rows="4" class="form-input" ></textarea>
+                        @error('description')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     <!-- Dietary Restrictions -->
@@ -210,6 +210,9 @@
                         <label for="videoUrl" class="form-label">URL de vidéo (YouTube, Vimeo)</label>
                         <input type="url" id="videoUrl" name="videoUrl" class="form-input" 
                                placeholder="https://www.youtube.com/watch?v=...">
+                            @error('videoUrl')
+                               <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                           @enderror
                     </div>
                 </div>
 

@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-
+{{-- 
             <!-- Search section -->
             <div class="mb-8">
                 <div class="bg-white rounded-xl shadow-sm p-4 border border-slate-200">
@@ -43,7 +43,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Ingredients table -->
             <div class="bg-white shadow rounded-lg overflow-hidden border border-slate-200">
@@ -170,7 +170,7 @@
 
                                     <!-- Ingredient Image Upload -->
                                     <div>
-                                        <label for="ingredientImage" class="block text-sm font-medium text-slate-700">Image (optionnel)</label>
+                                        <label for="ingredientImage" class="block text-sm font-medium text-slate-700">Image</label>
                                         <input type="file" id="photo" name="photo"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm bg-white">
                                     </div>
@@ -189,7 +189,7 @@
 
                                     <!-- Ingredient Description -->
                                     <div>
-                                        <label for="ingredientDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
+                                        <label for="ingredientDescription" class="block text-sm font-medium text-slate-700">Description</label>
                                         <textarea id="ingredientDescription" name="description" rows="3"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
@@ -240,7 +240,7 @@
 
                                     <!-- Ingredient Image Upload -->
                                     <div>
-                                        <label for="editIngredientImage" class="block text-sm font-medium text-slate-700">Image (optionnel)</label>
+                                        <label for="editIngredientImage" class="block text-sm font-medium text-slate-700">Image</label>
                                         <input type="file" id="photo" name="photo"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm bg-white">
                                     </div>
@@ -259,7 +259,7 @@
 
                                     <!-- Ingredient Description -->
                                     <div>
-                                        <label for="editIngredientDescription" class="block text-sm font-medium text-slate-700">Description (optionnel)</label>
+                                        <label for="editIngredientDescription" class="block text-sm font-medium text-slate-700">Description</label>
                                         <textarea id="editIngredientDescription" name="description" rows="3"
                                             class="mt-1 block w-full border border-slate-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm"></textarea>
                                     </div>
